@@ -1,0 +1,2 @@
+import { createFileRoute } from '@tanstack/react-router'; import { StandardPageView } from '@/components/standard-page'
+export const Route=createFileRoute('/second-home-care-algarve')({head:()=>({meta:[{title:'Second Home Care Algarve, Portugal | Guardemar'},{name:'description',content:'A trusted local presence for overseas owners of apartments, villas and second homes in the Western Algarve.'}],links:[{rel:'canonical',href:'https://guardemar.com/second-home-care-algarve/'}]}),component:()=> <StandardPageView pageKey="second-home-care-algarve" />})

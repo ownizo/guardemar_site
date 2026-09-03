@@ -1,0 +1,17 @@
+[build]
+  command = "vite build"
+  publish = "dist/client"
+[dev]
+  command = "npm run dev"
+  targetPort = 3000
+  port = 8888
+
+[[redirects]]
+  from = "/posts/:slug"
+  to = "/blog/:slug"
+  status = 301
+
+[[redirects]]
+  from = "/category/:category"
+  to = "/blog/category/:category"
+  status = 301

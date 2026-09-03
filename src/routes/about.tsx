@@ -1,0 +1,2 @@
+import { createFileRoute } from '@tanstack/react-router'; import { StandardPageView } from '@/components/standard-page'
+export const Route=createFileRoute('/about')({head:()=>({meta:[{title:'About Guardemar | Private Property Care'},{name:'description',content:'Guardemar provides accountable, documented property care for overseas homeowners in the Western Algarve.'}],links:[{rel:'canonical',href:'https://guardemar.com/about/'}]}),component:()=> <StandardPageView pageKey="about" />})

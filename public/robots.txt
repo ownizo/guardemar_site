@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://guardemar.com/sitemap.xml

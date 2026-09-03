@@ -1,0 +1,2 @@
+import { createFileRoute } from '@tanstack/react-router'; import { StandardPageView } from '@/components/standard-page'
+export const Route=createFileRoute('/property-care')({head:()=>({meta:[{title:'Property Care Algarve | Guardemar'},{name:'description',content:'Professional property care, inspections and local coordination for privately owned holiday homes in the Western Algarve.'}],links:[{rel:'canonical',href:'https://guardemar.com/property-care/'}]}),component:()=> <StandardPageView pageKey="property-care" />})
