@@ -4,8 +4,9 @@ import { z } from 'zod'
 
 const MAX_BODY_BYTES = 32_000
 const MIN_COMPLETION_MS = 2_000
-const DEFAULT_NOTIFICATION_EMAIL = 'info@guardemar.com'
-const DEFAULT_FROM_EMAIL = 'website@guardemar.com'
+const NOTIFICATION_EMAIL = 'info@guardemar.com'
+const FROM_EMAIL = 'Guardemar Website <website@guardemar.com>'
+const DELIVERY_FAILURE_MESSAGE = "We couldn't send your enquiry just now. Please try again or contact us directly at info@guardemar.com or +351 928 226 570."
 
 const optionalText = (maximum: number) => z.string().trim().max(maximum).optional().default('')
 
@@ -55,6 +56,10 @@ type ContactDependencies = {
   now?: () => number
   sendNotification: EmailSender
   sendConfirmation: EmailSender
+}
+
+function providerErrorName(error: unknown) {
+  return error instanceof Error ? error.name : 'UnknownProviderError'
 }
 
 function jsonResponse(body: Record<string, unknown>, status: number) {
@@ -234,14 +239,14 @@ export function createContactHandler(dependencies: ContactDependencies) {
         subject: propertyLocation ? `New Guardemar enquiry — ${propertyLocation}` : 'New Guardemar website enquiry',
         ...notification,
       }, `guardemar-notification-${enquiry.submission_id}`)
-      console.info('contact_notification_sent', { submissionId: enquiry.submission_id })
+      console.info('contact_notification_accepted', { submissionId: enquiry.submission_id })
     } catch (error) {
       console.error('contact_email_provider_failure', {
         stage: 'notification',
         submissionId: enquiry.submission_id,
-        error: error instanceof Error ? error.message : 'Unknown provider error',
+        errorType: providerErrorName(error),
       })
-      return jsonResponse({ error: 'We could not send your enquiry just now.' }, 502)
+      return jsonResponse({ error: DELIVERY_FAILURE_MESSAGE }, 502)
     }
 
     const confirmation = renderConfirmationEmail(enquiry.first_name)
@@ -251,13 +256,14 @@ export function createContactHandler(dependencies: ContactDependencies) {
         subject: "We've received your Guardemar enquiry",
         ...confirmation,
       }, `guardemar-confirmation-${enquiry.submission_id}`)
-      console.info('contact_confirmation_sent', { submissionId: enquiry.submission_id })
+      console.info('contact_confirmation_accepted', { submissionId: enquiry.submission_id })
     } catch (error) {
       console.error('contact_email_provider_failure', {
         stage: 'confirmation',
         submissionId: enquiry.submission_id,
-        error: error instanceof Error ? error.message : 'Unknown provider error',
+        errorType: providerErrorName(error),
       })
+      return jsonResponse({ error: DELIVERY_FAILURE_MESSAGE }, 502)
     }
 
     return jsonResponse({ ok: true }, 200)
@@ -266,30 +272,37 @@ export function createContactHandler(dependencies: ContactDependencies) {
 
 export default async function handler(request: Request) {
   const apiKey = process.env.RESEND_API_KEY
-  const notificationEmail = process.env.CONTACT_NOTIFICATION_EMAIL?.trim() || DEFAULT_NOTIFICATION_EMAIL
-  const fromEmail = process.env.CONTACT_FROM_EMAIL?.trim() || DEFAULT_FROM_EMAIL
 
   if (!apiKey) {
-    console.error('contact_email_provider_failure', { stage: 'configuration', error: 'RESEND_API_KEY is not configured' })
-    return jsonResponse({ error: 'Email delivery is not configured.' }, 503)
+    console.error('contact_email_provider_failure', { stage: 'configuration', errorType: 'MissingResendApiKey' })
+    return jsonResponse({ error: DELIVERY_FAILURE_MESSAGE }, 503)
   }
 
   const resend = new Resend(apiKey)
   const sendEmail: EmailSender = async (message, idempotencyKey) => {
     const result = await resend.emails.send({
-      from: `Guardemar Website <${fromEmail}>`,
-      to: message.to || notificationEmail,
+      from: FROM_EMAIL,
+      to: message.to || NOTIFICATION_EMAIL,
       subject: message.subject,
       html: message.html,
       text: message.text,
       replyTo: message.replyTo,
     }, { idempotencyKey })
 
-    if (result.error) throw new Error(`${result.error.name}: ${result.error.message}`)
+    if (result.error) {
+      const providerError = new Error('Resend rejected the email request.')
+      providerError.name = result.error.name
+      throw providerError
+    }
+    if (!result.data?.id) {
+      const providerError = new Error('Resend did not return an email identifier.')
+      providerError.name = 'MissingResendEmailId'
+      throw providerError
+    }
   }
 
   return createContactHandler({
-    sendNotification: (message, key) => sendEmail({ ...message, to: notificationEmail }, key),
+    sendNotification: (message, key) => sendEmail({ ...message, to: NOTIFICATION_EMAIL }, key),
     sendConfirmation: sendEmail,
   })(request)
 }
