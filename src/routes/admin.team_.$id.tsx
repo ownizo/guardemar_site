@@ -13,7 +13,7 @@ import type { PortalProfile, StaffProfile } from '@/lib/portal/types'
 
 type Notice = { kind: 'success' | 'warning' | 'error'; message: string }
 
-export const Route = createFileRoute('/admin/team/$id')({ component: TeamMemberRoute })
+export const Route = createFileRoute('/admin/team_/$id')({ component: TeamMemberRoute })
 function TeamMemberRoute() { return <PrivateGuard area="admin">{(profile) => <TeamMember profile={profile} />}</PrivateGuard> }
 
 function TeamMember({ profile }: { profile: PortalProfile }) {

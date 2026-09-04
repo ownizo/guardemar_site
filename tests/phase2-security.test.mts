@@ -4,7 +4,7 @@ import test from 'node:test'
 
 const migrationPath = new URL('../supabase/migrations/20260904120000_create_phase2_inspection_operations.sql', import.meta.url)
 const fieldApiPath = new URL('../netlify/functions/inspection-api.mts', import.meta.url)
-const adminRoutePath = new URL('../src/routes/admin.inspections.$id.tsx', import.meta.url)
+const adminRoutePath = new URL('../src/routes/admin.inspections_.$id.tsx', import.meta.url)
 
 test('Phase 2 creates relational inspection snapshots with RLS', async () => {
   const migration = await readFile(migrationPath, 'utf8')
