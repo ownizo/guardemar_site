@@ -12,7 +12,7 @@ type PropertyDetail = Record<string, unknown> & { id: string; display_name: stri
 export const Route = createFileRoute('/admin/properties/$id')({ component: PropertyPage })
 
 function PropertyPage() {
-  return <PrivateGuard roles={['staff', 'admin']} loginPath="/admin/login">{(profile) => <PropertyDetails profile={profile} />}</PrivateGuard>
+  return <PrivateGuard area="admin">{(profile) => <PropertyDetails profile={profile} />}</PrivateGuard>
 }
 
 function PropertyDetails({ profile }: { profile: PortalProfile }) {

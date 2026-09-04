@@ -97,6 +97,12 @@ h1,h2,h3 { font-family:'Manrope',sans-serif; color:var(--navy); letter-spacing:-
 .private-loading { display: flex; align-items: center; gap: .75rem; color: var(--private-navy); font-weight: 600; }
 .private-app { display: flex; }
 .private-sidebar { position: fixed; z-index: 40; inset: 0 auto 0 0; width: 260px; display: flex; flex-direction: column; color: white; background: var(--private-navy); }
+.private-app-admin { background: #f3f6f7; }
+.private-app-admin .private-sidebar { background: linear-gradient(180deg, #041d44 0%, var(--private-navy) 58%, #0b395f 100%); box-shadow: 8px 0 30px rgba(6,39,90,.12); }
+.private-app-admin .private-sidebar::before { content: ""; height: 4px; background: var(--private-blue); }
+.private-app-admin .private-topbar { background: #f7f3ec; border-bottom-color: rgba(6,39,90,.18); }
+.private-app-admin .private-content { position: relative; }
+.private-app-admin .private-content::before { content: "Operations"; position: absolute; top: 1.25rem; right: clamp(2rem, 5vw, 4rem); color: rgba(6,39,90,.06); font: 700 clamp(2.5rem, 8vw, 7rem) 'Manrope',sans-serif; letter-spacing: -.06em; text-transform: uppercase; pointer-events: none; }
 .private-sidebar-head { height: 86px; display: flex; align-items: center; padding: 0 1.4rem; border-bottom: 1px solid rgba(255,255,255,.12); }
 .private-app-logo img { width: 165px; filter: brightness(0) invert(1); }
 .private-area-label { margin: 1.5rem 1.4rem .65rem; color: #a9c3d4; font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .14em; }

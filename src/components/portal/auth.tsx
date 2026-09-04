@@ -3,8 +3,9 @@ import { ArrowRight, KeyRound, LoaderCircle, ShieldCheck } from 'lucide-react'
 import { type FormEvent, type ReactNode, useEffect, useState } from 'react'
 
 import { portalApi, PortalApiError } from '@/lib/portal/api'
+import { canAccessPrivateArea, getPrivateHomePath, getPrivateLoginPath, type PrivateArea } from '@/lib/portal/access'
 import { getPortalSupabase } from '@/lib/portal/supabase'
-import type { ApplicationRole, PortalProfile } from '@/lib/portal/types'
+import type { PortalProfile } from '@/lib/portal/types'
 
 const authCallbackParameters = [
   'access_token',
@@ -39,7 +40,7 @@ function clearAuthCallbackParameters() {
   window.history.replaceState(window.history.state, '', `${url.pathname}${url.search}${url.hash}`)
 }
 
-export function AuthCard({ area }: { area: 'portal' | 'admin' }) {
+export function AuthCard({ area }: { area: PrivateArea }) {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -71,8 +72,8 @@ export function AuthCard({ area }: { area: 'portal' | 'admin' }) {
           return
         }
         if (callback.hasCallback) clearAuthCallbackParameters()
-        await portalApi('session/initialise', { method: 'POST' })
-        await navigate({ to: area === 'admin' ? '/admin' : '/portal' })
+        const { profile } = await portalApi<{ profile: PortalProfile }>('session/initialise', { method: 'POST' })
+        await navigate({ to: getPrivateHomePath(profile.role), replace: true })
       } catch {
         if (callback.hasCallback && active) {
           clearAuthCallbackParameters()
@@ -92,8 +93,8 @@ export function AuthCard({ area }: { area: 'portal' | 'admin' }) {
       const supabase = await getPortalSupabase()
       const { error: authError } = await supabase.auth.signInWithPassword({ email, password })
       if (authError) throw authError
-      await portalApi('session/initialise', { method: 'POST' })
-      await navigate({ to: area === 'admin' ? '/admin' : '/portal' })
+      const { profile } = await portalApi<{ profile: PortalProfile }>('session/initialise', { method: 'POST' })
+      await navigate({ to: getPrivateHomePath(profile.role), replace: true })
     } catch {
       setError('The email or password was not recognised.')
     } finally {
@@ -219,12 +220,11 @@ export function ResetPasswordCard() {
   return <PrivatePageFrame><section className="auth-card"><p className="private-eyebrow">Secure account recovery</p><h1>Choose a new password</h1><form className="private-form" onSubmit={submit}><label>New password<input type="password" minLength={10} autoComplete="new-password" value={password} onChange={(event) => setPassword(event.target.value)} required /></label>{error && <p className="form-error" role="alert">{error}</p>}<button className="private-primary" disabled={busy}>{busy ? 'Updating…' : 'Update password'}</button></form><Link className="quiet-link" to="/portal/login">Return to sign in</Link></section></PrivatePageFrame>
 }
 
-export function PrivateGuard({ roles, loginPath, children }: { roles: ApplicationRole[]; loginPath: '/portal/login' | '/admin/login'; children: (profile: PortalProfile) => ReactNode }) {
+export function PrivateGuard({ area, children }: { area: PrivateArea; children: (profile: PortalProfile) => ReactNode }) {
   const navigate = useNavigate()
   const [profile, setProfile] = useState<PortalProfile | null>(null)
   const [error, setError] = useState('')
 
-  const roleKey = roles.join(',')
   useEffect(() => {
     let active = true
     async function load() {
@@ -232,26 +232,26 @@ export function PrivateGuard({ roles, loginPath, children }: { roles: Applicatio
         const supabase = await getPortalSupabase()
         const { data } = await supabase.auth.getSession()
         if (!data.session) {
-          await navigate({ to: loginPath })
+          await navigate({ to: getPrivateLoginPath(area), replace: true })
           return
         }
         await portalApi('session/initialise', { method: 'POST' })
         const result = await portalApi<{ profile: PortalProfile }>('session')
-        if (!roleKey.split(',').includes(result.profile.role)) {
-          setError('You do not have permission to access this area.')
+        if (!canAccessPrivateArea(result.profile.role, area)) {
+          await navigate({ to: getPrivateHomePath(result.profile.role), replace: true })
           return
         }
         if (active) setProfile(result.profile)
       } catch (loadError) {
-        if (loadError instanceof PortalApiError && loadError.status === 401) await navigate({ to: loginPath })
+        if (loadError instanceof PortalApiError && loadError.status === 401) await navigate({ to: getPrivateLoginPath(area), replace: true })
         else if (active) setError('The portal is temporarily unavailable. Please try again.')
       }
     }
     void load()
     return () => { active = false }
-  }, [loginPath, navigate, roleKey])
+  }, [area, navigate])
 
-  if (error) return <PrivatePageFrame><section className="auth-card"><p className="private-eyebrow">Access restricted</p><h1>Unable to open this area</h1><p>{error}</p><Link className="private-primary inline-action" to="/portal">Return to the client portal</Link></section></PrivatePageFrame>
+  if (error) return <PrivatePageFrame><section className="auth-card"><p className="private-eyebrow">Private access</p><h1>Unable to open this area</h1><p>{error}</p><Link className="private-primary inline-action" to={getPrivateLoginPath(area)}>Return to sign in</Link></section></PrivatePageFrame>
   if (!profile) return <PrivatePageFrame><div className="private-loading"><LoaderCircle className="spin" /><span>Opening your secure portal…</span></div></PrivatePageFrame>
   return children(profile)
 }
