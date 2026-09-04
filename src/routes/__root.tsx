@@ -40,7 +40,9 @@ function Header() {
   return (
     <header className="site-header">
       <div className="shell header-inner">
-        <Link to="/" className="wordmark" aria-label="Guardemar home"><strong>GUARDEMAR</strong><span>Private Property Care</span></Link>
+        <Link to="/" className="wordmark" aria-label="Guardemar home">
+          <img src="/guardemar-logo.png" alt="GUARDEMAR — Private Property Care" width="180" height="42" />
+        </Link>
         <nav className={open ? 'main-nav open' : 'main-nav'} aria-label="Primary navigation">
           {navigation.map((item) => <Link key={item.href} to={item.href} onClick={() => setOpen(false)} activeProps={{ className: 'active' }}>{item.label}</Link>)}
           <Link to="/contact/" className="nav-cta" onClick={() => setOpen(false)}>Request an Assessment</Link>
