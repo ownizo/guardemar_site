@@ -14,7 +14,7 @@ Phase 1 now targets the dedicated Guardemar Supabase project `ablktbpledjceddess
 
 ## Applying the database correction
 
-The Supabase migration is `supabase/migrations/20260904090000_create_guardemar_portal_foundation.sql`. Apply it only to project `ablktbpledjceddessyg` using a Supabase CLI session linked to that project or the Guardemar Supabase SQL editor.
+The Supabase migrations are `supabase/migrations/20260904074341_create_guardemar_portal_foundation.sql` and `supabase/migrations/20260904113000_add_admin_client_deletion.sql`. Apply them in order only to project `ablktbpledjceddessyg` using a Supabase CLI session linked to that project or the Guardemar Supabase SQL editor.
 
 The current environment does not include a Supabase database connection secret or linked Supabase CLI, so the migration is generated but not applied by this repository change. Do not apply it to Adler or any other project.
 
@@ -37,8 +37,14 @@ Public user registration must remain disabled in the Supabase Auth provider sett
 
 The portal Function forwards the caller's bearer token through Supabase JS. Customer property reads use direct table queries protected by RLS. Staff CRM reads and transactional creates use authenticated RPCs that check `profiles.role`; they do not use service-role or direct database credentials.
 
+## Client deletion rules
+
+Client deletion is admin-only in the UI, the portal Function and the database RPC. An unlinked client can be hard-deleted. A client with properties or linked portal users is blocked and must have those relationships removed or reassigned first. Bulk deletion evaluates each requested UUID independently and returns separate deleted and blocked results, so a protected client does not make successful deletions ambiguous.
+
+The deletion RPC does not add cascade behaviour. Existing property restrictions remain in place, portal-user links are treated as protected despite their legacy foreign-key cascade, and audit events remain as historical records with a `client_deleted` event for each completed deletion.
+
 ## Validation
 
-`tests/portal-security.test.mts` statically checks the migration and application wiring. `tests/portal-rls.sql` verifies customer property isolation, UUID guessing resistance, client isolation, protected columns, role immutability, staff access and anonymous denial after the migration has been applied.
+`tests/portal-security.test.mts` and `tests/admin-clients.test.mts` check the migrations, application wiring, creation success semantics and submit locking. `tests/portal-rls.sql` verifies customer property isolation, UUID guessing resistance, client isolation, protected columns, role immutability, admin-only deletion, dependency blocking, partial bulk results, audit creation and anonymous denial after the migrations have been applied.
 
 The Supabase SQL test and security advisors cannot produce live results until the owner applies the migration to a disposable Guardemar database target with a privileged SQL connection.
