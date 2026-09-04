@@ -7,6 +7,18 @@ import { canAccessPrivateArea, getPrivateHomePath, getPrivateLoginPath, type Pri
 import { getPortalSupabase } from '@/lib/portal/supabase'
 import type { PortalProfile } from '@/lib/portal/types'
 
+type AuthDiagnosticCode = 'AUTH_CREDENTIAL_ERROR' | 'PROFILE_INITIALISATION_ERROR' | 'PORTAL_ACCESS_ERROR' | 'NAVIGATION_ERROR'
+
+const portalOpenError = 'Your sign-in was successful, but your Guardemar portal access could not be opened. Please contact Guardemar.'
+
+function logAuthDiagnostic(code: AuthDiagnosticCode, error: unknown, stage: string) {
+  console.error('Portal sign-in failed', {
+    code,
+    stage,
+    message: error instanceof Error ? error.message : 'Unknown error',
+  })
+}
+
 const authCallbackParameters = [
   'access_token',
   'code',
@@ -89,14 +101,55 @@ export function AuthCard({ area }: { area: PrivateArea }) {
     event.preventDefault()
     setBusy(true)
     setError('')
+
+    let supabase: Awaited<ReturnType<typeof getPortalSupabase>>
     try {
-      const supabase = await getPortalSupabase()
+      supabase = await getPortalSupabase()
+    } catch (configurationError) {
+      logAuthDiagnostic('PORTAL_ACCESS_ERROR', configurationError, 'auth_client')
+      setError('The Guardemar portal is temporarily unavailable. Please try again.')
+      setBusy(false)
+      return
+    }
+
+    try {
       const { error: authError } = await supabase.auth.signInWithPassword({ email, password })
-      if (authError) throw authError
-      const { profile } = await portalApi<{ profile: PortalProfile }>('session/initialise', { method: 'POST' })
-      await navigate({ to: getPrivateHomePath(profile.role), replace: true })
-    } catch {
+      if (authError) {
+        logAuthDiagnostic('AUTH_CREDENTIAL_ERROR', authError, 'credentials')
+        setError('The email or password was not recognised.')
+        setBusy(false)
+        return
+      }
+    } catch (authError) {
+      logAuthDiagnostic('AUTH_CREDENTIAL_ERROR', authError, 'credentials')
       setError('The email or password was not recognised.')
+      setBusy(false)
+      return
+    }
+
+    let profile: PortalProfile
+    try {
+      const result = await portalApi<{ profile: PortalProfile }>('session/initialise', { method: 'POST' })
+      profile = result.profile
+    } catch (initialisationError) {
+      logAuthDiagnostic('PROFILE_INITIALISATION_ERROR', initialisationError, 'session_initialise')
+      setError(portalOpenError)
+      setBusy(false)
+      return
+    }
+
+    if (!canAccessPrivateArea(profile.role, area)) {
+      logAuthDiagnostic('PORTAL_ACCESS_ERROR', new Error(`Role ${profile.role} cannot access ${area}`), 'portal_access')
+      setError(portalOpenError)
+      setBusy(false)
+      return
+    }
+
+    try {
+      await navigate({ to: getPrivateHomePath(profile.role), replace: true })
+    } catch (navigationError) {
+      logAuthDiagnostic('NAVIGATION_ERROR', navigationError, 'navigation')
+      setError(portalOpenError)
     } finally {
       setBusy(false)
     }

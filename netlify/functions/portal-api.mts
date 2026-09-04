@@ -247,9 +247,10 @@ async function routeRequest(req: Request, authenticated: AuthenticatedRequest) {
   }
 
   if (req.method === 'GET' && segments[0] === 'inspections' && segments[1]) {
-    const inspection = requireData(await authenticated.supabase.rpc('get_customer_inspection', { inspection_uuid: z.string().uuid().parse(segments[1]) }))
-    if (!inspection) return publicError(404, 'Inspection report not found.', 'VALIDATION_ERROR', 'inspection_lookup')
-    return json({ inspection })
+    const result = await authenticated.supabase.rpc('get_customer_inspection', { inspection_uuid: z.string().uuid().parse(segments[1]) })
+    if (result.error) requireData(result)
+    if (!result.data) return publicError(404, 'Inspection report not found.', 'VALIDATION_ERROR', 'inspection_lookup')
+    return json({ inspection: result.data })
   }
 
   if (segments[0] === 'admin') {
