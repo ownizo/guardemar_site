@@ -102,7 +102,7 @@ test('portal API exposes structured creation and deletion stages', async () => {
 })
 
 test('delete migration enforces admin-only dependency-aware individual and bulk deletion', async () => {
-  const migration = await readFile(new URL('../supabase/migrations/20260904113000_add_admin_client_deletion.sql', import.meta.url), 'utf8')
+  const migration = await readFile(new URL('../supabase/migrations/20260904090707_add_admin_client_deletion.sql', import.meta.url), 'utf8')
   assert.match(migration, /create function private\.require_admin\(\)[\s\S]*private\.is_admin\(\)/i)
   assert.match(migration, /create function public\.delete_admin_client\(client_uuid uuid\)[\s\S]*perform private\.require_admin\(\)/i)
   assert.match(migration, /create function public\.delete_admin_clients\(client_uuids uuid\[\]\)[\s\S]*perform private\.require_admin\(\)/i)
@@ -112,4 +112,24 @@ test('delete migration enforces admin-only dependency-aware individual and bulk 
   assert.match(migration, /revoke all on function public\.delete_admin_client\(uuid\) from public, anon;/i)
   assert.match(migration, /revoke all on function public\.delete_admin_clients\(uuid\[\]\) from public, anon;/i)
   assert.doesNotMatch(migration, /on delete cascade|service_role/i)
+})
+
+test('client directory exposes admin-only individual and bulk deletion controls', async () => {
+  const route = await readFile(new URL('../src/routes/admin.clients.tsx', import.meta.url), 'utf8')
+  const api = await readFile(new URL('../netlify/functions/portal-api.mts', import.meta.url), 'utf8')
+  assert.match(route, /profile\.role === 'admin' && selectedIds\.size > 0[\s\S]*Delete selected/)
+  assert.match(route, /aria-label="Select all visible clients"/)
+  assert.match(route, /onChange=\{\(\) => toggleClient\(client\.id\)\}/)
+  assert.match(route, /onClick=\{\(\) => requestDelete\(client\)\}>Delete/)
+  assert.match(api, /pathname === 'admin\/clients\/bulk-delete'[\s\S]*await requireAdmin\(authenticated\)/)
+  assert.match(api, /req\.method === 'DELETE'[\s\S]*await requireAdmin\(authenticated\)/)
+})
+
+test('successful deletions remove rows and selections without reloading the directory', async () => {
+  const route = await readFile(new URL('../src/routes/admin.clients.tsx', import.meta.url), 'utf8')
+  const confirmDelete = route.slice(route.indexOf('async function confirmDelete()'), route.indexOf('return <PrivateShell'))
+  assert.match(confirmDelete, /setClients\(\(current\) => current\.filter\(\(client\) => !deletedIds\.has\(client\.id\)\)\)/)
+  assert.match(confirmDelete, /setSelectedIds\(\(current\) => new Set\(\[\.\.\.current\]\.filter\(\(id\) => !deletedIds\.has\(id\)\)\)\)/)
+  assert.doesNotMatch(confirmDelete, /await load\(|location\.reload|window\.location/)
+  assert.match(confirmDelete, /No clients were deleted[\s\S]*is protected by/)
 })
