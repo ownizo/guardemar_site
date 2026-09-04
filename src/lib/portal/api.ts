@@ -42,3 +42,34 @@ export async function portalApi<T>(path: string, init?: RequestInit): Promise<T>
     throw new PortalApiError('The portal could not connect. Please try again.', 0, 'NETWORK_ERROR', 'network')
   }
 }
+
+export async function portalFile(path: string): Promise<Response> {
+  const supabase = await getPortalSupabase()
+  const { data } = await supabase.auth.getSession()
+  const token = data.session?.access_token
+  if (!token) throw new PortalApiError('Your session has expired. Please sign in again.', 401, 'AUTHENTICATION_ERROR', 'authentication')
+
+  const response = await fetch(`/api/portal/inspection-files/${path}`, {
+    headers: { Accept: '*/*', Authorization: `Bearer ${token}` },
+  })
+  if (!response.ok) {
+    const body = await response.json().catch(() => ({})) as { error?: { code?: PortalErrorCode; message?: string; stage?: string } }
+    throw new PortalApiError(body.error?.message ?? 'The inspection file could not be prepared.', response.status, body.error?.code ?? 'NETWORK_ERROR', body.error?.stage ?? 'inspection_file')
+  }
+  return response
+}
+
+export async function downloadPortalFile(path: string) {
+  const response = await portalFile(path)
+  const blob = await response.blob()
+  const disposition = response.headers.get('content-disposition') ?? ''
+  const filename = disposition.match(/filename="([^"]+)"/)?.[1] ?? 'Guardemar-download'
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = filename
+  document.body.append(link)
+  link.click()
+  link.remove()
+  URL.revokeObjectURL(url)
+}

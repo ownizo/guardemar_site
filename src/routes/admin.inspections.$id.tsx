@@ -3,7 +3,8 @@ import { ChevronLeft, Clipboard, ExternalLink, MessageCircle, Share2 } from 'luc
 import { type FormEvent, useEffect, useState } from 'react'
 
 import { PrivateGuard } from '@/components/portal/auth'
-import { InspectionReport, PrivateImage, StatusMark, statusLabel } from '@/components/portal/inspection-report'
+import { InspectionReport, StatusMark, statusLabel } from '@/components/portal/inspection-report'
+import { PrivateImage } from '@/components/portal/private-image'
 import { PrivateShell } from '@/components/portal/shell'
 import { portalApi } from '@/lib/portal/api'
 import type { AdminInspectionDetail, ClientInspectionReport, InspectionArea, InspectionItem, PortalProfile } from '@/lib/portal/types'

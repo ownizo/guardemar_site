@@ -3,7 +3,7 @@ import { Plus, UserRound } from 'lucide-react'
 import { type FormEvent, useEffect, useState } from 'react'
 
 import { PrivateGuard } from '@/components/portal/auth'
-import { PrivateImage } from '@/components/portal/inspection-report'
+import { PrivateImage } from '@/components/portal/private-image'
 import { EmptyState, PrivateShell } from '@/components/portal/shell'
 import { portalApi } from '@/lib/portal/api'
 import type { PortalProfile, StaffProfile } from '@/lib/portal/types'
