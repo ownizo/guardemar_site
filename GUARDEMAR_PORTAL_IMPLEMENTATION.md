@@ -48,3 +48,17 @@ The deletion RPC does not add cascade behaviour. Existing property restrictions 
 `tests/portal-security.test.mts` and `tests/admin-clients.test.mts` check the migrations, application wiring, creation success semantics and submit locking. `tests/portal-rls.sql` verifies customer property isolation, UUID guessing resistance, client isolation, protected columns, role immutability, admin-only deletion, dependency blocking, partial bulk results, audit creation and anonymous denial after the migrations have been applied.
 
 The Supabase SQL test and security advisors cannot produce live results until the owner applies the migration to a disposable Guardemar database target with a privileged SQL connection.
+
+## Phase 2 implementation
+
+Phase 2 adds team management, property inspection-area configuration, template-backed immutable inspection snapshots, scheduling, secure field links, mobile autosave, private photo handling, internal review, client preview, explicit publication and published customer reports.
+
+New private routes are `/admin/inspections`, `/admin/inspections/:id`, `/admin/team`, `/admin/team/:id`, `/portal/inspections` and `/portal/inspections/:id`. The field workflow uses `/i#token`; the fragment form deliberately keeps the credential out of request paths and access logs.
+
+The forward-only migration is `supabase/migrations/20260904120000_create_phase2_inspection_operations.sql`. It has not been applied by this repository run because no privileged database connection is configured. Apply it only to `ablktbpledjceddessyg`, then run `tests/phase2-rls.sql` in a disposable branch/test project and review Supabase Security and Performance Advisors.
+
+`SUPABASE_JWT_SECRET` is the only additional environment variable. It is used server-side solely to mint short-lived, inspection-scoped Storage JWTs after a mobile token has been verified. `SUPABASE_SERVICE_ROLE_KEY` is neither required nor introduced.
+
+Mobile notes and status changes are debounced, marked Saving/Saved/Connection problem, protected by per-record revisions so stale responses cannot mark newer edits saved, and retained in session storage for refresh recovery. Image uploads are resized in-browser where supported, remain private and are registered relationally only after Storage succeeds.
+
+Initial templates are conservative and editable at the database level. A dedicated template-management screen remains a future enhancement; checklist content is not hard-coded into the application runtime.

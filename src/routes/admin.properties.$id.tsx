@@ -1,27 +1,32 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { ChevronLeft, LockKeyhole } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { Archive, ArrowDown, ArrowUp, ChevronLeft, LockKeyhole, Plus } from 'lucide-react'
+import { type FormEvent, useEffect, useState } from 'react'
 
 import { PrivateGuard } from '@/components/portal/auth'
+import { statusLabel } from '@/components/portal/inspection-report'
 import { PrivateShell } from '@/components/portal/shell'
 import { portalApi } from '@/lib/portal/api'
-import type { PortalProfile } from '@/lib/portal/types'
+import type { PropertyArea, PortalProfile } from '@/lib/portal/types'
 
 type PropertyDetail = Record<string, unknown> & { id: string; display_name: string; client_name: string; address_line_1: string; address_line_2: string | null; postal_code: string; locality: string; municipality: string; country: string; property_type: string; bedrooms: number | null; bathrooms: number | null; has_pool: boolean; has_garden: boolean; has_irrigation: boolean; has_alarm: boolean; access_notes_private: string | null; internal_notes: string | null }
+type PropertyInspection = { id: string; scheduled_for: string; status: string; condition: string | null; inspector_name: string }
+const areaTypes = ['Security', 'Entrance', 'Hall', 'Living Room', 'Dining Room', 'Kitchen', 'Bedroom', 'WC', 'Bathroom', 'Ensuite', 'Office', 'Laundry', 'Storage', 'Garage', 'Terrace', 'Balcony', 'Exterior', 'Garden', 'Pool', 'Technical Room', 'Utilities', 'Mail', 'Other']
 
 export const Route = createFileRoute('/admin/properties/$id')({ component: PropertyPage })
-
-function PropertyPage() {
-  return <PrivateGuard area="admin">{(profile) => <PropertyDetails profile={profile} />}</PrivateGuard>
-}
+function PropertyPage() { return <PrivateGuard area="admin">{(profile) => <PropertyDetails profile={profile} />}</PrivateGuard> }
 
 function PropertyDetails({ profile }: { profile: PortalProfile }) {
-  const { id } = Route.useParams()
-  const [property, setProperty] = useState<PropertyDetail | null>(null)
-  useEffect(() => { void portalApi<{ property: PropertyDetail }>(`admin/properties/${id}`).then((data) => setProperty(data.property)) }, [id])
+  const { id } = Route.useParams(); const [property, setProperty] = useState<PropertyDetail | null>(null); const [areas, setAreas] = useState<PropertyArea[]>([]); const [inspections, setInspections] = useState<PropertyInspection[]>([]); const [adding, setAdding] = useState(false); const [pending, setPending] = useState(false)
+  async function load() { const [propertyData, operations] = await Promise.all([portalApi<{ property: PropertyDetail }>(`admin/properties/${id}`), portalApi<{ areas: PropertyArea[]; inspections: PropertyInspection[] }>(`admin/properties/${id}/operations`)]); setProperty(propertyData.property); setAreas(operations.areas); setInspections(operations.inspections) }
+  useEffect(() => { void load() }, [id])
+  async function add(event: FormEvent<HTMLFormElement>) { event.preventDefault(); if (pending) return; setPending(true); const form = new FormData(event.currentTarget); try { await portalApi(`admin/properties/${id}/areas`, { method: 'POST', body: JSON.stringify({ areaType: form.get('areaType'), customLabel: form.get('customLabel'), displayOrder: areas.length, internalNotes: '' }) }); setAdding(false); await load() } finally { setPending(false) } }
+  async function archive(area: PropertyArea) { await portalApi(`admin/properties/${id}/areas/${area.id}`, { method: 'PATCH', body: JSON.stringify({ areaType: area.area_type, customLabel: area.custom_label, displayOrder: area.display_order, internalNotes: area.internal_notes ?? '', active: false }) }); await load() }
+  async function move(index: number, offset: number) { const next = [...areas.filter((area) => area.active)]; const target = index + offset; if (target < 0 || target >= next.length) return; [next[index], next[target]] = [next[target], next[index]]; setAreas([...next, ...areas.filter((area) => !area.active)]); await portalApi(`admin/properties/${id}/areas-reorder`, { method: 'POST', body: JSON.stringify({ areaIds: next.map((area) => area.id) }) }); await load() }
   if (!property) return <PrivateShell area="admin" profile={profile} title="Property record"><div className="private-panel">Loading property…</div></PrivateShell>
+  const activeAreas = areas.filter((area) => area.active)
   return <PrivateShell area="admin" profile={profile} title={property.display_name} eyebrow={property.client_name} action={<Link className="private-secondary" to="/admin/properties"><ChevronLeft />Properties</Link>}>
     <div className="record-grid"><section className="private-panel"><div className="panel-heading"><h2>Property details</h2></div><dl className="details-list"><div><dt>Address</dt><dd>{property.address_line_1}{property.address_line_2 ? `, ${property.address_line_2}` : ''}<br />{property.postal_code} {property.locality}<br />{property.municipality}, {property.country}</dd></div><div><dt>Type</dt><dd>{property.property_type}</dd></div><div><dt>Bedrooms</dt><dd>{property.bedrooms ?? 'Not recorded'}</dd></div><div><dt>Bathrooms</dt><dd>{property.bathrooms ?? 'Not recorded'}</dd></div><div><dt>Features</dt><dd>{[property.has_pool && 'Pool', property.has_garden && 'Garden', property.has_irrigation && 'Irrigation', property.has_alarm && 'Alarm'].filter(Boolean).join(', ') || 'None recorded'}</dd></div></dl></section><section className="private-panel staff-only-panel"><div className="panel-heading"><h2><LockKeyhole />Private access information</h2><span>Staff only</span></div><p>{property.access_notes_private || 'No access notes recorded.'}</p><h3>Internal notes</h3><p>{property.internal_notes || 'No internal notes recorded.'}</p></section></div>
-    <div className="operations-grid"><section className="private-panel"><div className="panel-heading"><h2>Inspection history</h2></div><p className="panel-empty">No inspections have been recorded yet.</p></section><section className="private-panel"><div className="panel-heading"><h2>Open requests</h2></div><p className="panel-empty">No open property requests.</p></section></div>
+    <section className="private-panel area-config"><div className="panel-heading"><div><p className="private-eyebrow">Walking order</p><h2>Inspection areas</h2><p>Generic area types stay separate from the property-specific label shown in the field.</p></div>{profile.role === 'admin' && <button className="private-primary" onClick={() => setAdding(!adding)}><Plus />Add area</button>}</div>{adding && <form className="area-add-form" onSubmit={add}><label>Area type<select name="areaType">{areaTypes.map((type) => <option key={type}>{type}</option>)}</select></label><label>Name in this property<input name="customLabel" placeholder="WC quarto de casal" required /></label><button className="private-primary" disabled={pending}>{pending ? 'Adding…' : 'Add area'}</button></form>}<div className="area-order-list">{activeAreas.map((area, index) => <article key={area.id}><span className="area-number">{index + 1}</span><div><small>{area.area_type}</small><strong>{area.custom_label}</strong></div>{profile.role === 'admin' && <div className="area-actions"><button onClick={() => { void move(index, -1) }} disabled={index === 0} aria-label={`Move ${area.custom_label} up`}><ArrowUp /></button><button onClick={() => { void move(index, 1) }} disabled={index === activeAreas.length - 1} aria-label={`Move ${area.custom_label} down`}><ArrowDown /></button><button onClick={() => { void archive(area) }} aria-label={`Archive ${area.custom_label}`}><Archive /></button></div>}</article>)}</div>{activeAreas.length === 0 && <p className="panel-empty">No inspection areas configured. Add areas before creating an inspection snapshot.</p>}</section>
+    <section className="private-panel"><div className="panel-heading"><h2>Inspection history</h2><Link className="private-primary" to="/admin/inspections">New inspection</Link></div>{inspections.length === 0 ? <p className="panel-empty">No inspections have been recorded yet.</p> : <div className="private-list">{inspections.map((inspection) => <Link to="/admin/inspections/$id" params={{ id: inspection.id }} key={inspection.id}><div><strong>{new Intl.DateTimeFormat('en-GB', { dateStyle: 'medium' }).format(new Date(inspection.scheduled_for))}</strong><p>{inspection.inspector_name}</p></div><span className="private-pill">{statusLabel(inspection.status)}</span></Link>)}</div>}</section>
   </PrivateShell>
 }
