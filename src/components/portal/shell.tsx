@@ -2,6 +2,7 @@ import { Link, useNavigate } from '@tanstack/react-router'
 import { Building2, Home, LayoutDashboard, LogOut, Menu, UserRound, Users, X } from 'lucide-react'
 import { type ReactNode, useState } from 'react'
 
+import { getPrivateLoginPath, getRoleLabel, type PrivateArea } from '@/lib/portal/access'
 import { getPortalSupabase } from '@/lib/portal/supabase'
 import type { PortalProfile } from '@/lib/portal/types'
 
@@ -17,26 +18,27 @@ const adminLinks = [
   { to: '/admin/properties' as const, label: 'Properties', icon: Building2 },
 ]
 
-export function PrivateShell({ area, profile, title, eyebrow, children, action }: { area: 'portal' | 'admin'; profile: PortalProfile; title: string; eyebrow?: string; children: ReactNode; action?: ReactNode }) {
+export function PrivateShell({ area, profile, title, eyebrow, children, action }: { area: PrivateArea; profile: PortalProfile; title: string; eyebrow?: string; children: ReactNode; action?: ReactNode }) {
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const links = area === 'admin' ? adminLinks : portalLinks
-  const displayName = [profile.firstName, profile.lastName].filter(Boolean).join(' ') || (area === 'admin' ? 'Guardemar team' : 'Guardemar client')
+  const displayName = [profile.firstName, profile.lastName].filter(Boolean).join(' ') || (area === 'admin' ? 'Guardemar' : 'Guardemar client')
+  const roleLabel = getRoleLabel(profile.role)
 
   async function logout() {
     const supabase = await getPortalSupabase()
-    await supabase.auth.signOut()
-    await navigate({ to: area === 'admin' ? '/admin/login' : '/portal/login' })
+    await supabase.auth.signOut({ scope: 'local' })
+    await navigate({ to: getPrivateLoginPath(area), replace: true })
   }
 
-  return <div className="private-app">
+  return <div className={`private-app private-app-${area}`}>
     <aside className={open ? 'private-sidebar open' : 'private-sidebar'}>
       <div className="private-sidebar-head"><Link to="/" className="private-app-logo"><img src="/guardemar-logo.svg" alt="GUARDEMAR" /></Link><button className="private-close" onClick={() => setOpen(false)} aria-label="Close navigation"><X /></button></div>
       <div className="private-area-label">{area === 'admin' ? 'Operations' : 'Client portal'}</div>
       <nav aria-label={area === 'admin' ? 'Backoffice navigation' : 'Portal navigation'}>
         {links.map(({ to, label, icon: Icon }) => <Link key={to} to={to} onClick={() => setOpen(false)} activeProps={{ className: 'active' }}><Icon aria-hidden="true" />{label}</Link>)}
       </nav>
-      <div className="private-user"><span>{displayName}</span><small>{profile.role}</small><button onClick={logout}><LogOut aria-hidden="true" />Log out</button></div>
+      <div className="private-user"><span>{displayName}</span><small>{roleLabel}</small><button onClick={logout}><LogOut aria-hidden="true" />Log out</button></div>
     </aside>
     {open && <button className="private-scrim" onClick={() => setOpen(false)} aria-label="Close navigation" />}
     <div className="private-main">

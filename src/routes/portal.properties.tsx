@@ -10,7 +10,7 @@ import type { PortalProfile, PortalProperty } from '@/lib/portal/types'
 export const Route = createFileRoute('/portal/properties')({ component: PortalProperties })
 
 function PortalProperties() {
-  return <PrivateGuard roles={['customer', 'staff', 'admin']} loginPath="/portal/login">{(profile) => <PropertyList profile={profile} />}</PrivateGuard>
+  return <PrivateGuard area="portal">{(profile) => <PropertyList profile={profile} />}</PrivateGuard>
 }
 
 function PropertyList({ profile }: { profile: PortalProfile }) {

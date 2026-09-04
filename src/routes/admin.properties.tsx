@@ -10,7 +10,7 @@ import type { AdminClient, AdminProperty, PortalProfile } from '@/lib/portal/typ
 export const Route = createFileRoute('/admin/properties')({ component: AdminProperties })
 
 function AdminProperties() {
-  return <PrivateGuard roles={['staff', 'admin']} loginPath="/admin/login">{(profile) => <PropertyDirectory profile={profile} />}</PrivateGuard>
+  return <PrivateGuard area="admin">{(profile) => <PropertyDirectory profile={profile} />}</PrivateGuard>
 }
 
 function PropertyDirectory({ profile }: { profile: PortalProfile }) {

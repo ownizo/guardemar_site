@@ -13,7 +13,7 @@ export const Route = createFileRoute('/portal/')({
 })
 
 function PortalOverview() {
-  return <PrivateGuard roles={['customer', 'staff', 'admin']} loginPath="/portal/login">{(profile) => <Overview profile={profile} />}</PrivateGuard>
+  return <PrivateGuard area="portal">{(profile) => <Overview profile={profile} />}</PrivateGuard>
 }
 
 function Overview({ profile }: { profile: PortalProfile }) {

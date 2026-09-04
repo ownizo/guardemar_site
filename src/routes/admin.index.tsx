@@ -10,7 +10,7 @@ import type { PortalProfile } from '@/lib/portal/types'
 export const Route = createFileRoute('/admin/')({ head: () => ({ meta: [{ title: 'Operations | GUARDEMAR' }, { name: 'robots', content: 'noindex, nofollow' }] }), component: AdminDashboard })
 
 function AdminDashboard() {
-  return <PrivateGuard roles={['staff', 'admin']} loginPath="/admin/login">{(profile) => <Dashboard profile={profile} />}</PrivateGuard>
+  return <PrivateGuard area="admin">{(profile) => <Dashboard profile={profile} />}</PrivateGuard>
 }
 
 function Dashboard({ profile }: { profile: PortalProfile }) {

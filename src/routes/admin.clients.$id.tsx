@@ -13,7 +13,7 @@ type ClientProperty = { id: string; displayName: string; addressLine1: string; l
 export const Route = createFileRoute('/admin/clients/$id')({ component: ClientPage })
 
 function ClientPage() {
-  return <PrivateGuard roles={['staff', 'admin']} loginPath="/admin/login">{(profile) => <ClientDetails profile={profile} />}</PrivateGuard>
+  return <PrivateGuard area="admin">{(profile) => <ClientDetails profile={profile} />}</PrivateGuard>
 }
 
 function ClientDetails({ profile }: { profile: PortalProfile }) {
