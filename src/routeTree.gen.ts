@@ -14,11 +14,13 @@ import { Route as TermsRouteImport } from './routes/terms'
 import { Route as StormPropertyChecksAlgarveRouteImport } from './routes/storm-property-checks-algarve'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as SecondHomeCareAlgarveRouteImport } from './routes/second-home-care-algarve'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as PropertyManagementAlgarveRouteImport } from './routes/property-management-algarve'
 import { Route as PropertyHandoverAlgarveRouteImport } from './routes/property-handover-algarve'
 import { Route as PropertyHandoverRouteImport } from './routes/property-handover'
 import { Route as PropertyCareRouteImport } from './routes/property-care'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
+import { Route as PortalRouteImport } from './routes/portal'
 import { Route as PlansRouteImport } from './routes/plans'
 import { Route as KeyHoldingAlgarveRouteImport } from './routes/key-holding-algarve'
 import { Route as InspectionChecklistRouteImport } from './routes/inspection-checklist'
@@ -32,14 +34,26 @@ import { Route as ContractorAccessAlgarveRouteImport } from './routes/contractor
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ArrivalPreparationAlgarveRouteImport } from './routes/arrival-preparation-algarve'
 import { Route as ArrivalPreparationRouteImport } from './routes/arrival-preparation'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as PortalIndexRouteImport } from './routes/portal.index'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as AreasIndexRouteImport } from './routes/areas.index'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as PortalPropertiesRouteImport } from './routes/portal.properties'
+import { Route as PortalLoginRouteImport } from './routes/portal.login'
+import { Route as PortalForgotPasswordRouteImport } from './routes/portal.forgot-password'
+import { Route as PortalAccountRouteImport } from './routes/portal.account'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AreasAreaRouteImport } from './routes/areas.$area'
+import { Route as AdminPropertiesRouteImport } from './routes/admin.properties'
+import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as AdminClientsRouteImport } from './routes/admin.clients'
 import { Route as AboutHugoGoncalvesRouteImport } from './routes/about.hugo-goncalves'
 import { Route as BlogCategoryCategoryRouteImport } from './routes/blog.category.$category'
+import { Route as AdminPropertiesIdRouteImport } from './routes/admin.properties.$id'
+import { Route as AdminClientsIdRouteImport } from './routes/admin.clients.$id'
 
 const VacantPropertyInspectionsAlgarveRoute =
   VacantPropertyInspectionsAlgarveRouteImport.update({
@@ -68,6 +82,11 @@ const SecondHomeCareAlgarveRoute = SecondHomeCareAlgarveRouteImport.update({
   path: '/second-home-care-algarve',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PropertyManagementAlgarveRoute =
   PropertyManagementAlgarveRouteImport.update({
     id: '/property-management-algarve',
@@ -92,6 +111,11 @@ const PropertyCareRoute = PropertyCareRouteImport.update({
 const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
   id: '/privacy-policy',
   path: '/privacy-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PortalRoute = PortalRouteImport.update({
+  id: '/portal',
+  path: '/portal',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PlansRoute = PlansRouteImport.update({
@@ -161,6 +185,11 @@ const ArrivalPreparationRoute = ArrivalPreparationRouteImport.update({
   path: '/arrival-preparation',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -170,6 +199,11 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const PortalIndexRoute = PortalIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => PortalRoute,
 } as any)
 const BlogIndexRoute = BlogIndexRouteImport.update({
   id: '/blog/',
@@ -181,6 +215,31 @@ const AreasIndexRoute = AreasIndexRouteImport.update({
   path: '/areas/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const PortalPropertiesRoute = PortalPropertiesRouteImport.update({
+  id: '/properties',
+  path: '/properties',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalLoginRoute = PortalLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalForgotPasswordRoute = PortalForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalAccountRoute = PortalAccountRouteImport.update({
+  id: '/account',
+  path: '/account',
+  getParentRoute: () => PortalRoute,
+} as any)
 const BlogSlugRoute = BlogSlugRouteImport.update({
   id: '/blog/$slug',
   path: '/blog/$slug',
@@ -190,6 +249,21 @@ const AreasAreaRoute = AreasAreaRouteImport.update({
   id: '/areas/$area',
   path: '/areas/$area',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AdminPropertiesRoute = AdminPropertiesRouteImport.update({
+  id: '/properties',
+  path: '/properties',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminClientsRoute = AdminClientsRouteImport.update({
+  id: '/clients',
+  path: '/clients',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AboutHugoGoncalvesRoute = AboutHugoGoncalvesRouteImport.update({
   id: '/hugo-goncalves',
@@ -201,10 +275,21 @@ const BlogCategoryCategoryRoute = BlogCategoryCategoryRouteImport.update({
   path: '/blog/category/$category',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminPropertiesIdRoute = AdminPropertiesIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AdminPropertiesRoute,
+} as any)
+const AdminClientsIdRoute = AdminClientsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AdminClientsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRouteWithChildren
+  '/admin': typeof AdminRouteWithChildren
   '/arrival-preparation': typeof ArrivalPreparationRoute
   '/arrival-preparation-algarve': typeof ArrivalPreparationAlgarveRoute
   '/contact': typeof ContactRoute
@@ -218,21 +303,34 @@ export interface FileRoutesByFullPath {
   '/inspection-checklist': typeof InspectionChecklistRoute
   '/key-holding-algarve': typeof KeyHoldingAlgarveRoute
   '/plans': typeof PlansRoute
+  '/portal': typeof PortalRouteWithChildren
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/property-care': typeof PropertyCareRoute
   '/property-handover': typeof PropertyHandoverRoute
   '/property-handover-algarve': typeof PropertyHandoverAlgarveRoute
   '/property-management-algarve': typeof PropertyManagementAlgarveRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/second-home-care-algarve': typeof SecondHomeCareAlgarveRoute
   '/services': typeof ServicesRoute
   '/storm-property-checks-algarve': typeof StormPropertyChecksAlgarveRoute
   '/terms': typeof TermsRoute
   '/vacant-property-inspections-algarve': typeof VacantPropertyInspectionsAlgarveRoute
   '/about/hugo-goncalves': typeof AboutHugoGoncalvesRoute
+  '/admin/clients': typeof AdminClientsRouteWithChildren
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/properties': typeof AdminPropertiesRouteWithChildren
   '/areas/$area': typeof AreasAreaRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/portal/account': typeof PortalAccountRoute
+  '/portal/forgot-password': typeof PortalForgotPasswordRoute
+  '/portal/login': typeof PortalLoginRoute
+  '/portal/properties': typeof PortalPropertiesRoute
+  '/admin/': typeof AdminIndexRoute
   '/areas/': typeof AreasIndexRoute
   '/blog/': typeof BlogIndexRoute
+  '/portal/': typeof PortalIndexRoute
+  '/admin/clients/$id': typeof AdminClientsIdRoute
+  '/admin/properties/$id': typeof AdminPropertiesIdRoute
   '/blog/category/$category': typeof BlogCategoryCategoryRoute
 }
 export interface FileRoutesByTo {
@@ -256,22 +354,35 @@ export interface FileRoutesByTo {
   '/property-handover': typeof PropertyHandoverRoute
   '/property-handover-algarve': typeof PropertyHandoverAlgarveRoute
   '/property-management-algarve': typeof PropertyManagementAlgarveRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/second-home-care-algarve': typeof SecondHomeCareAlgarveRoute
   '/services': typeof ServicesRoute
   '/storm-property-checks-algarve': typeof StormPropertyChecksAlgarveRoute
   '/terms': typeof TermsRoute
   '/vacant-property-inspections-algarve': typeof VacantPropertyInspectionsAlgarveRoute
   '/about/hugo-goncalves': typeof AboutHugoGoncalvesRoute
+  '/admin/clients': typeof AdminClientsRouteWithChildren
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/properties': typeof AdminPropertiesRouteWithChildren
   '/areas/$area': typeof AreasAreaRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/portal/account': typeof PortalAccountRoute
+  '/portal/forgot-password': typeof PortalForgotPasswordRoute
+  '/portal/login': typeof PortalLoginRoute
+  '/portal/properties': typeof PortalPropertiesRoute
+  '/admin': typeof AdminIndexRoute
   '/areas': typeof AreasIndexRoute
   '/blog': typeof BlogIndexRoute
+  '/portal': typeof PortalIndexRoute
+  '/admin/clients/$id': typeof AdminClientsIdRoute
+  '/admin/properties/$id': typeof AdminPropertiesIdRoute
   '/blog/category/$category': typeof BlogCategoryCategoryRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRouteWithChildren
+  '/admin': typeof AdminRouteWithChildren
   '/arrival-preparation': typeof ArrivalPreparationRoute
   '/arrival-preparation-algarve': typeof ArrivalPreparationAlgarveRoute
   '/contact': typeof ContactRoute
@@ -285,21 +396,34 @@ export interface FileRoutesById {
   '/inspection-checklist': typeof InspectionChecklistRoute
   '/key-holding-algarve': typeof KeyHoldingAlgarveRoute
   '/plans': typeof PlansRoute
+  '/portal': typeof PortalRouteWithChildren
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/property-care': typeof PropertyCareRoute
   '/property-handover': typeof PropertyHandoverRoute
   '/property-handover-algarve': typeof PropertyHandoverAlgarveRoute
   '/property-management-algarve': typeof PropertyManagementAlgarveRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/second-home-care-algarve': typeof SecondHomeCareAlgarveRoute
   '/services': typeof ServicesRoute
   '/storm-property-checks-algarve': typeof StormPropertyChecksAlgarveRoute
   '/terms': typeof TermsRoute
   '/vacant-property-inspections-algarve': typeof VacantPropertyInspectionsAlgarveRoute
   '/about/hugo-goncalves': typeof AboutHugoGoncalvesRoute
+  '/admin/clients': typeof AdminClientsRouteWithChildren
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/properties': typeof AdminPropertiesRouteWithChildren
   '/areas/$area': typeof AreasAreaRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/portal/account': typeof PortalAccountRoute
+  '/portal/forgot-password': typeof PortalForgotPasswordRoute
+  '/portal/login': typeof PortalLoginRoute
+  '/portal/properties': typeof PortalPropertiesRoute
+  '/admin/': typeof AdminIndexRoute
   '/areas/': typeof AreasIndexRoute
   '/blog/': typeof BlogIndexRoute
+  '/portal/': typeof PortalIndexRoute
+  '/admin/clients/$id': typeof AdminClientsIdRoute
+  '/admin/properties/$id': typeof AdminPropertiesIdRoute
   '/blog/category/$category': typeof BlogCategoryCategoryRoute
 }
 export interface FileRouteTypes {
@@ -307,6 +431,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/admin'
     | '/arrival-preparation'
     | '/arrival-preparation-algarve'
     | '/contact'
@@ -320,21 +445,34 @@ export interface FileRouteTypes {
     | '/inspection-checklist'
     | '/key-holding-algarve'
     | '/plans'
+    | '/portal'
     | '/privacy-policy'
     | '/property-care'
     | '/property-handover'
     | '/property-handover-algarve'
     | '/property-management-algarve'
+    | '/reset-password'
     | '/second-home-care-algarve'
     | '/services'
     | '/storm-property-checks-algarve'
     | '/terms'
     | '/vacant-property-inspections-algarve'
     | '/about/hugo-goncalves'
+    | '/admin/clients'
+    | '/admin/login'
+    | '/admin/properties'
     | '/areas/$area'
     | '/blog/$slug'
+    | '/portal/account'
+    | '/portal/forgot-password'
+    | '/portal/login'
+    | '/portal/properties'
+    | '/admin/'
     | '/areas/'
     | '/blog/'
+    | '/portal/'
+    | '/admin/clients/$id'
+    | '/admin/properties/$id'
     | '/blog/category/$category'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -358,21 +496,34 @@ export interface FileRouteTypes {
     | '/property-handover'
     | '/property-handover-algarve'
     | '/property-management-algarve'
+    | '/reset-password'
     | '/second-home-care-algarve'
     | '/services'
     | '/storm-property-checks-algarve'
     | '/terms'
     | '/vacant-property-inspections-algarve'
     | '/about/hugo-goncalves'
+    | '/admin/clients'
+    | '/admin/login'
+    | '/admin/properties'
     | '/areas/$area'
     | '/blog/$slug'
+    | '/portal/account'
+    | '/portal/forgot-password'
+    | '/portal/login'
+    | '/portal/properties'
+    | '/admin'
     | '/areas'
     | '/blog'
+    | '/portal'
+    | '/admin/clients/$id'
+    | '/admin/properties/$id'
     | '/blog/category/$category'
   id:
     | '__root__'
     | '/'
     | '/about'
+    | '/admin'
     | '/arrival-preparation'
     | '/arrival-preparation-algarve'
     | '/contact'
@@ -386,27 +537,41 @@ export interface FileRouteTypes {
     | '/inspection-checklist'
     | '/key-holding-algarve'
     | '/plans'
+    | '/portal'
     | '/privacy-policy'
     | '/property-care'
     | '/property-handover'
     | '/property-handover-algarve'
     | '/property-management-algarve'
+    | '/reset-password'
     | '/second-home-care-algarve'
     | '/services'
     | '/storm-property-checks-algarve'
     | '/terms'
     | '/vacant-property-inspections-algarve'
     | '/about/hugo-goncalves'
+    | '/admin/clients'
+    | '/admin/login'
+    | '/admin/properties'
     | '/areas/$area'
     | '/blog/$slug'
+    | '/portal/account'
+    | '/portal/forgot-password'
+    | '/portal/login'
+    | '/portal/properties'
+    | '/admin/'
     | '/areas/'
     | '/blog/'
+    | '/portal/'
+    | '/admin/clients/$id'
+    | '/admin/properties/$id'
     | '/blog/category/$category'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRouteWithChildren
+  AdminRoute: typeof AdminRouteWithChildren
   ArrivalPreparationRoute: typeof ArrivalPreparationRoute
   ArrivalPreparationAlgarveRoute: typeof ArrivalPreparationAlgarveRoute
   ContactRoute: typeof ContactRoute
@@ -420,11 +585,13 @@ export interface RootRouteChildren {
   InspectionChecklistRoute: typeof InspectionChecklistRoute
   KeyHoldingAlgarveRoute: typeof KeyHoldingAlgarveRoute
   PlansRoute: typeof PlansRoute
+  PortalRoute: typeof PortalRouteWithChildren
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   PropertyCareRoute: typeof PropertyCareRoute
   PropertyHandoverRoute: typeof PropertyHandoverRoute
   PropertyHandoverAlgarveRoute: typeof PropertyHandoverAlgarveRoute
   PropertyManagementAlgarveRoute: typeof PropertyManagementAlgarveRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   SecondHomeCareAlgarveRoute: typeof SecondHomeCareAlgarveRoute
   ServicesRoute: typeof ServicesRoute
   StormPropertyChecksAlgarveRoute: typeof StormPropertyChecksAlgarveRoute
@@ -474,6 +641,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SecondHomeCareAlgarveRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/property-management-algarve': {
       id: '/property-management-algarve'
       path: '/property-management-algarve'
@@ -507,6 +681,13 @@ declare module '@tanstack/react-router' {
       path: '/privacy-policy'
       fullPath: '/privacy-policy'
       preLoaderRoute: typeof PrivacyPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/portal': {
+      id: '/portal'
+      path: '/portal'
+      fullPath: '/portal'
+      preLoaderRoute: typeof PortalRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/plans': {
@@ -600,6 +781,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArrivalPreparationRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -613,6 +801,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/portal/': {
+      id: '/portal/'
+      path: '/'
+      fullPath: '/portal/'
+      preLoaderRoute: typeof PortalIndexRouteImport
+      parentRoute: typeof PortalRoute
     }
     '/blog/': {
       id: '/blog/'
@@ -628,6 +823,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AreasIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/portal/properties': {
+      id: '/portal/properties'
+      path: '/properties'
+      fullPath: '/portal/properties'
+      preLoaderRoute: typeof PortalPropertiesRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/login': {
+      id: '/portal/login'
+      path: '/login'
+      fullPath: '/portal/login'
+      preLoaderRoute: typeof PortalLoginRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/forgot-password': {
+      id: '/portal/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/portal/forgot-password'
+      preLoaderRoute: typeof PortalForgotPasswordRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/account': {
+      id: '/portal/account'
+      path: '/account'
+      fullPath: '/portal/account'
+      preLoaderRoute: typeof PortalAccountRouteImport
+      parentRoute: typeof PortalRoute
+    }
     '/blog/$slug': {
       id: '/blog/$slug'
       path: '/blog/$slug'
@@ -641,6 +871,27 @@ declare module '@tanstack/react-router' {
       fullPath: '/areas/$area'
       preLoaderRoute: typeof AreasAreaRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/admin/properties': {
+      id: '/admin/properties'
+      path: '/properties'
+      fullPath: '/admin/properties'
+      preLoaderRoute: typeof AdminPropertiesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/clients': {
+      id: '/admin/clients'
+      path: '/clients'
+      fullPath: '/admin/clients'
+      preLoaderRoute: typeof AdminClientsRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/about/hugo-goncalves': {
       id: '/about/hugo-goncalves'
@@ -656,6 +907,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogCategoryCategoryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/properties/$id': {
+      id: '/admin/properties/$id'
+      path: '/$id'
+      fullPath: '/admin/properties/$id'
+      preLoaderRoute: typeof AdminPropertiesIdRouteImport
+      parentRoute: typeof AdminPropertiesRoute
+    }
+    '/admin/clients/$id': {
+      id: '/admin/clients/$id'
+      path: '/$id'
+      fullPath: '/admin/clients/$id'
+      preLoaderRoute: typeof AdminClientsIdRouteImport
+      parentRoute: typeof AdminClientsRoute
+    }
   }
 }
 
@@ -669,9 +934,69 @@ const AboutRouteChildren: AboutRouteChildren = {
 
 const AboutRouteWithChildren = AboutRoute._addFileChildren(AboutRouteChildren)
 
+interface AdminClientsRouteChildren {
+  AdminClientsIdRoute: typeof AdminClientsIdRoute
+}
+
+const AdminClientsRouteChildren: AdminClientsRouteChildren = {
+  AdminClientsIdRoute: AdminClientsIdRoute,
+}
+
+const AdminClientsRouteWithChildren = AdminClientsRoute._addFileChildren(
+  AdminClientsRouteChildren,
+)
+
+interface AdminPropertiesRouteChildren {
+  AdminPropertiesIdRoute: typeof AdminPropertiesIdRoute
+}
+
+const AdminPropertiesRouteChildren: AdminPropertiesRouteChildren = {
+  AdminPropertiesIdRoute: AdminPropertiesIdRoute,
+}
+
+const AdminPropertiesRouteWithChildren = AdminPropertiesRoute._addFileChildren(
+  AdminPropertiesRouteChildren,
+)
+
+interface AdminRouteChildren {
+  AdminClientsRoute: typeof AdminClientsRouteWithChildren
+  AdminLoginRoute: typeof AdminLoginRoute
+  AdminPropertiesRoute: typeof AdminPropertiesRouteWithChildren
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminClientsRoute: AdminClientsRouteWithChildren,
+  AdminLoginRoute: AdminLoginRoute,
+  AdminPropertiesRoute: AdminPropertiesRouteWithChildren,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
+interface PortalRouteChildren {
+  PortalAccountRoute: typeof PortalAccountRoute
+  PortalForgotPasswordRoute: typeof PortalForgotPasswordRoute
+  PortalLoginRoute: typeof PortalLoginRoute
+  PortalPropertiesRoute: typeof PortalPropertiesRoute
+  PortalIndexRoute: typeof PortalIndexRoute
+}
+
+const PortalRouteChildren: PortalRouteChildren = {
+  PortalAccountRoute: PortalAccountRoute,
+  PortalForgotPasswordRoute: PortalForgotPasswordRoute,
+  PortalLoginRoute: PortalLoginRoute,
+  PortalPropertiesRoute: PortalPropertiesRoute,
+  PortalIndexRoute: PortalIndexRoute,
+}
+
+const PortalRouteWithChildren =
+  PortalRoute._addFileChildren(PortalRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRouteWithChildren,
+  AdminRoute: AdminRouteWithChildren,
   ArrivalPreparationRoute: ArrivalPreparationRoute,
   ArrivalPreparationAlgarveRoute: ArrivalPreparationAlgarveRoute,
   ContactRoute: ContactRoute,
@@ -685,11 +1010,13 @@ const rootRouteChildren: RootRouteChildren = {
   InspectionChecklistRoute: InspectionChecklistRoute,
   KeyHoldingAlgarveRoute: KeyHoldingAlgarveRoute,
   PlansRoute: PlansRoute,
+  PortalRoute: PortalRouteWithChildren,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
   PropertyCareRoute: PropertyCareRoute,
   PropertyHandoverRoute: PropertyHandoverRoute,
   PropertyHandoverAlgarveRoute: PropertyHandoverAlgarveRoute,
   PropertyManagementAlgarveRoute: PropertyManagementAlgarveRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   SecondHomeCareAlgarveRoute: SecondHomeCareAlgarveRoute,
   ServicesRoute: ServicesRoute,
   StormPropertyChecksAlgarveRoute: StormPropertyChecksAlgarveRoute,

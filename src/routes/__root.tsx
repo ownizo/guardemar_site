@@ -1,4 +1,4 @@
-import { HeadContent, Link, Outlet, Scripts, createRootRoute } from '@tanstack/react-router'
+import { HeadContent, Link, Outlet, Scripts, createRootRoute, useRouterState } from '@tanstack/react-router'
 import { Menu, MessageCircle, X } from 'lucide-react'
 import { useState } from 'react'
 
@@ -48,8 +48,9 @@ function Header() {
           <img src="/guardemar-logo.svg" alt="GUARDEMAR — Private Property Care" width="180" height="42" />
         </Link>
         <nav className={open ? 'main-nav open' : 'main-nav'} aria-label="Primary navigation">
-          {navigation.map((item) => <Link key={item.href} to={item.href} onClick={() => setOpen(false)} activeProps={{ className: 'active' }}>{item.label}</Link>)}
-          <Link to="/contact/" className="nav-cta" onClick={() => setOpen(false)}>Request an Assessment</Link>
+          {navigation.map((item) => <a key={item.href} href={item.href} onClick={() => setOpen(false)}>{item.label}</a>)}
+          <Link to="/portal/login" className="client-login-link" onClick={() => setOpen(false)}>Client Login</Link>
+          <Link to="/contact" className="nav-cta" onClick={() => setOpen(false)}>Request an Assessment</Link>
         </nav>
         <div className="mobile-actions">
           <AnalyticsLink href={business.whatsapp} event="whatsapp_click" aria-label="Message Guardemar on WhatsApp"><MessageCircle size={20} /></AnalyticsLink>
@@ -65,18 +66,20 @@ function Footer() {
     <footer className="site-footer">
       <div className="shell footer-grid">
         <div><p className="footer-mark">GUARDEMAR</p><p>Private Property Care</p><p className="footer-tagline">Here when you&apos;re away.</p></div>
-        <div><h2>Explore</h2>{navigation.slice(0, 7).map((item) => <Link key={item.href} to={item.href}>{item.label}</Link>)}</div>
-        <div><h2>Service area</h2><p>Western Algarve<br />from Carvoeiro to Sagres.</p><Link to="/areas/">View all areas</Link></div>
+        <div><h2>Explore</h2>{navigation.slice(0, 7).map((item) => <a key={item.href} href={item.href}>{item.label}</a>)}<Link to="/portal/login">Client Login</Link></div>
+        <div><h2>Service area</h2><p>Western Algarve<br />from Carvoeiro to Sagres.</p><Link to="/areas">View all areas</Link></div>
         <div><h2>Contact</h2><AnalyticsLink href={business.phoneHref} event="phone_click">{business.phone}</AnalyticsLink><AnalyticsLink href={business.emailHref} event="email_click">{business.email}</AnalyticsLink><p>{business.addressLines.join(', ')}</p></div>
       </div>
       <div className="shell footer-identity">GUARDEMAR is a commercial brand of {legalEntity.legalName} · NIPC {legalEntity.taxId}</div>
-      <div className="shell footer-bottom"><span>© {new Date().getFullYear()} Guardemar</span><div><Link to="/privacy-policy/">Privacy Policy</Link><Link to="/terms/">Terms &amp; Conditions</Link><Link to="/cookie-policy/">Cookie Policy</Link><button type="button" className="footer-cookie-button" onClick={openCookieSettings}>Cookie Settings</button></div></div>
+      <div className="shell footer-bottom"><span>© {new Date().getFullYear()} Guardemar</span><div><Link to="/privacy-policy">Privacy Policy</Link><Link to="/terms">Terms &amp; Conditions</Link><Link to="/cookie-policy">Cookie Policy</Link><button type="button" className="footer-cookie-button" onClick={openCookieSettings}>Cookie Settings</button></div></div>
     </footer>
   )
 }
 
 function RootDocument({ children }: { children: React.ReactNode }) {
-  return <html lang="en-GB"><head><HeadContent /></head><body><a className="skip-link" href="#main">Skip to content</a><Header /><main id="main">{children}</main><Footer /><CookieConsent /><Scripts /></body></html>
+  const pathname = useRouterState({ select: (state) => state.location.pathname })
+  const isPrivateArea = pathname.startsWith('/portal') || pathname.startsWith('/admin') || pathname.startsWith('/reset-password')
+  return <html lang="en-GB"><head><HeadContent /></head><body>{isPrivateArea ? <main id="main">{children}</main> : <><a className="skip-link" href="#main">Skip to content</a><Header /><main id="main">{children}</main><Footer /><CookieConsent /></>}<Scripts /></body></html>
 }
 
 function NotFound() {
