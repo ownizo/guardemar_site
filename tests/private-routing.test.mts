@@ -43,24 +43,32 @@ test('every Phase 1 private route uses the matching shared guard', async () => {
   const adminRoutes = [
     '../src/routes/admin.index.tsx',
     '../src/routes/admin.clients.tsx',
-    '../src/routes/admin.clients.$id.tsx',
+    '../src/routes/admin.clients_.$id.tsx',
     '../src/routes/admin.properties.tsx',
-    '../src/routes/admin.properties.$id.tsx',
+    '../src/routes/admin.properties_.$id.tsx',
     '../src/routes/admin.inspections.tsx',
-    '../src/routes/admin.inspections.$id.tsx',
+    '../src/routes/admin.inspections_.$id.tsx',
     '../src/routes/admin.team.tsx',
-    '../src/routes/admin.team.$id.tsx',
+    '../src/routes/admin.team_.$id.tsx',
   ]
   const portalRoutes = [
     '../src/routes/portal.index.tsx',
     '../src/routes/portal.account.tsx',
     '../src/routes/portal.properties.tsx',
     '../src/routes/portal.inspections.tsx',
-    '../src/routes/portal.inspections.$id.tsx',
+    '../src/routes/portal.inspections_.$id.tsx',
   ]
 
   for (const route of adminRoutes) assert.match(await source(route), /<PrivateGuard area="admin">/)
   for (const route of portalRoutes) assert.match(await source(route), /<PrivateGuard area="portal">/)
+})
+
+test('detail routes keep their URLs without nesting under list components', async () => {
+  const routeTree = await source('../src/routeTree.gen.ts')
+  for (const route of ['clients', 'inspections', 'properties', 'team']) {
+    assert.match(routeTree, new RegExp(`id: '/${route}_/\\$id',[\\s\\S]{0,120}path: '/${route}/\\$id',[\\s\\S]{0,120}getParentRoute: \\(\\) => AdminRoute`))
+  }
+  assert.match(routeTree, /id: '\/inspections_\/\$id',[\s\S]{0,120}path: '\/inspections\/\$id',[\s\S]{0,120}getParentRoute: \(\) => PortalRoute/)
 })
 
 test('admin identity and Phase 2 navigation remain operational and distinct', async () => {

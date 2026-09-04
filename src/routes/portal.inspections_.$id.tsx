@@ -8,7 +8,7 @@ import { PrivateShell } from '@/components/portal/shell'
 import { downloadPortalFile, portalApi } from '@/lib/portal/api'
 import type { ClientInspectionReport, PortalProfile } from '@/lib/portal/types'
 
-export const Route = createFileRoute('/portal/inspections/$id')({ component: InspectionReportRoute })
+export const Route = createFileRoute('/portal/inspections_/$id')({ component: InspectionReportRoute })
 function InspectionReportRoute() { return <PrivateGuard area="portal">{(profile) => <Report profile={profile} />}</PrivateGuard> }
 function Report({ profile }: { profile: PortalProfile }) {
   const { id } = Route.useParams(); const [report, setReport] = useState<ClientInspectionReport | null>(null); const [error, setError] = useState('')

@@ -12,7 +12,7 @@ type PropertyDetail = Record<string, unknown> & { id: string; display_name: stri
 type PropertyInspection = { id: string; scheduled_for: string; status: string; condition: string | null; inspector_name: string }
 const areaTypes = ['Security', 'Entrance', 'Hall', 'Living Room', 'Dining Room', 'Kitchen', 'Bedroom', 'WC', 'Bathroom', 'Ensuite', 'Office', 'Laundry', 'Storage', 'Garage', 'Terrace', 'Balcony', 'Exterior', 'Garden', 'Pool', 'Technical Room', 'Utilities', 'Mail', 'Other']
 
-export const Route = createFileRoute('/admin/properties/$id')({ component: PropertyPage })
+export const Route = createFileRoute('/admin/properties_/$id')({ component: PropertyPage })
 function PropertyPage() { return <PrivateGuard area="admin">{(profile) => <PropertyDetails profile={profile} />}</PrivateGuard> }
 
 function PropertyDetails({ profile }: { profile: PortalProfile }) {

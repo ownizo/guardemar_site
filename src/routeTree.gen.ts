@@ -55,12 +55,12 @@ import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminInspectionsRouteImport } from './routes/admin.inspections'
 import { Route as AdminClientsRouteImport } from './routes/admin.clients'
 import { Route as AboutHugoGoncalvesRouteImport } from './routes/about.hugo-goncalves'
-import { Route as PortalInspectionsIdRouteImport } from './routes/portal.inspections.$id'
+import { Route as PortalInspectionsIdRouteImport } from './routes/portal.inspections_.$id'
 import { Route as BlogCategoryCategoryRouteImport } from './routes/blog.category.$category'
-import { Route as AdminTeamIdRouteImport } from './routes/admin.team.$id'
-import { Route as AdminPropertiesIdRouteImport } from './routes/admin.properties.$id'
-import { Route as AdminInspectionsIdRouteImport } from './routes/admin.inspections.$id'
-import { Route as AdminClientsIdRouteImport } from './routes/admin.clients.$id'
+import { Route as AdminTeamIdRouteImport } from './routes/admin.team_.$id'
+import { Route as AdminPropertiesIdRouteImport } from './routes/admin.properties_.$id'
+import { Route as AdminInspectionsIdRouteImport } from './routes/admin.inspections_.$id'
+import { Route as AdminClientsIdRouteImport } from './routes/admin.clients_.$id'
 
 const VacantPropertyInspectionsAlgarveRoute =
   VacantPropertyInspectionsAlgarveRouteImport.update({
@@ -298,9 +298,9 @@ const AboutHugoGoncalvesRoute = AboutHugoGoncalvesRouteImport.update({
   getParentRoute: () => AboutRoute,
 } as any)
 const PortalInspectionsIdRoute = PortalInspectionsIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => PortalInspectionsRoute,
+  id: '/inspections_/$id',
+  path: '/inspections/$id',
+  getParentRoute: () => PortalRoute,
 } as any)
 const BlogCategoryCategoryRoute = BlogCategoryCategoryRouteImport.update({
   id: '/blog/category/$category',
@@ -308,24 +308,24 @@ const BlogCategoryCategoryRoute = BlogCategoryCategoryRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminTeamIdRoute = AdminTeamIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => AdminTeamRoute,
+  id: '/team_/$id',
+  path: '/team/$id',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminPropertiesIdRoute = AdminPropertiesIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => AdminPropertiesRoute,
+  id: '/properties_/$id',
+  path: '/properties/$id',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminInspectionsIdRoute = AdminInspectionsIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => AdminInspectionsRoute,
+  id: '/inspections_/$id',
+  path: '/inspections/$id',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminClientsIdRoute = AdminClientsIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => AdminClientsRoute,
+  id: '/clients_/$id',
+  path: '/clients/$id',
+  getParentRoute: () => AdminRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -359,16 +359,16 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/vacant-property-inspections-algarve': typeof VacantPropertyInspectionsAlgarveRoute
   '/about/hugo-goncalves': typeof AboutHugoGoncalvesRoute
-  '/admin/clients': typeof AdminClientsRouteWithChildren
-  '/admin/inspections': typeof AdminInspectionsRouteWithChildren
+  '/admin/clients': typeof AdminClientsRoute
+  '/admin/inspections': typeof AdminInspectionsRoute
   '/admin/login': typeof AdminLoginRoute
-  '/admin/properties': typeof AdminPropertiesRouteWithChildren
-  '/admin/team': typeof AdminTeamRouteWithChildren
+  '/admin/properties': typeof AdminPropertiesRoute
+  '/admin/team': typeof AdminTeamRoute
   '/areas/$area': typeof AreasAreaRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/portal/account': typeof PortalAccountRoute
   '/portal/forgot-password': typeof PortalForgotPasswordRoute
-  '/portal/inspections': typeof PortalInspectionsRouteWithChildren
+  '/portal/inspections': typeof PortalInspectionsRoute
   '/portal/login': typeof PortalLoginRoute
   '/portal/properties': typeof PortalPropertiesRoute
   '/admin/': typeof AdminIndexRoute
@@ -411,16 +411,16 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/vacant-property-inspections-algarve': typeof VacantPropertyInspectionsAlgarveRoute
   '/about/hugo-goncalves': typeof AboutHugoGoncalvesRoute
-  '/admin/clients': typeof AdminClientsRouteWithChildren
-  '/admin/inspections': typeof AdminInspectionsRouteWithChildren
+  '/admin/clients': typeof AdminClientsRoute
+  '/admin/inspections': typeof AdminInspectionsRoute
   '/admin/login': typeof AdminLoginRoute
-  '/admin/properties': typeof AdminPropertiesRouteWithChildren
-  '/admin/team': typeof AdminTeamRouteWithChildren
+  '/admin/properties': typeof AdminPropertiesRoute
+  '/admin/team': typeof AdminTeamRoute
   '/areas/$area': typeof AreasAreaRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/portal/account': typeof PortalAccountRoute
   '/portal/forgot-password': typeof PortalForgotPasswordRoute
-  '/portal/inspections': typeof PortalInspectionsRouteWithChildren
+  '/portal/inspections': typeof PortalInspectionsRoute
   '/portal/login': typeof PortalLoginRoute
   '/portal/properties': typeof PortalPropertiesRoute
   '/admin': typeof AdminIndexRoute
@@ -466,28 +466,28 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/vacant-property-inspections-algarve': typeof VacantPropertyInspectionsAlgarveRoute
   '/about/hugo-goncalves': typeof AboutHugoGoncalvesRoute
-  '/admin/clients': typeof AdminClientsRouteWithChildren
-  '/admin/inspections': typeof AdminInspectionsRouteWithChildren
+  '/admin/clients': typeof AdminClientsRoute
+  '/admin/inspections': typeof AdminInspectionsRoute
   '/admin/login': typeof AdminLoginRoute
-  '/admin/properties': typeof AdminPropertiesRouteWithChildren
-  '/admin/team': typeof AdminTeamRouteWithChildren
+  '/admin/properties': typeof AdminPropertiesRoute
+  '/admin/team': typeof AdminTeamRoute
   '/areas/$area': typeof AreasAreaRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/portal/account': typeof PortalAccountRoute
   '/portal/forgot-password': typeof PortalForgotPasswordRoute
-  '/portal/inspections': typeof PortalInspectionsRouteWithChildren
+  '/portal/inspections': typeof PortalInspectionsRoute
   '/portal/login': typeof PortalLoginRoute
   '/portal/properties': typeof PortalPropertiesRoute
   '/admin/': typeof AdminIndexRoute
   '/areas/': typeof AreasIndexRoute
   '/blog/': typeof BlogIndexRoute
   '/portal/': typeof PortalIndexRoute
-  '/admin/clients/$id': typeof AdminClientsIdRoute
-  '/admin/inspections/$id': typeof AdminInspectionsIdRoute
-  '/admin/properties/$id': typeof AdminPropertiesIdRoute
-  '/admin/team/$id': typeof AdminTeamIdRoute
+  '/admin/clients_/$id': typeof AdminClientsIdRoute
+  '/admin/inspections_/$id': typeof AdminInspectionsIdRoute
+  '/admin/properties_/$id': typeof AdminPropertiesIdRoute
+  '/admin/team_/$id': typeof AdminTeamIdRoute
   '/blog/category/$category': typeof BlogCategoryCategoryRoute
-  '/portal/inspections/$id': typeof PortalInspectionsIdRoute
+  '/portal/inspections_/$id': typeof PortalInspectionsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -644,12 +644,12 @@ export interface FileRouteTypes {
     | '/areas/'
     | '/blog/'
     | '/portal/'
-    | '/admin/clients/$id'
-    | '/admin/inspections/$id'
-    | '/admin/properties/$id'
-    | '/admin/team/$id'
+    | '/admin/clients_/$id'
+    | '/admin/inspections_/$id'
+    | '/admin/properties_/$id'
+    | '/admin/team_/$id'
     | '/blog/category/$category'
-    | '/portal/inspections/$id'
+    | '/portal/inspections_/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -1013,12 +1013,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutHugoGoncalvesRouteImport
       parentRoute: typeof AboutRoute
     }
-    '/portal/inspections/$id': {
-      id: '/portal/inspections/$id'
-      path: '/$id'
+    '/portal/inspections_/$id': {
+      id: '/portal/inspections_/$id'
+      path: '/inspections/$id'
       fullPath: '/portal/inspections/$id'
       preLoaderRoute: typeof PortalInspectionsIdRouteImport
-      parentRoute: typeof PortalInspectionsRoute
+      parentRoute: typeof PortalRoute
     }
     '/blog/category/$category': {
       id: '/blog/category/$category'
@@ -1027,33 +1027,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogCategoryCategoryRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/team/$id': {
-      id: '/admin/team/$id'
-      path: '/$id'
+    '/admin/team_/$id': {
+      id: '/admin/team_/$id'
+      path: '/team/$id'
       fullPath: '/admin/team/$id'
       preLoaderRoute: typeof AdminTeamIdRouteImport
-      parentRoute: typeof AdminTeamRoute
+      parentRoute: typeof AdminRoute
     }
-    '/admin/properties/$id': {
-      id: '/admin/properties/$id'
-      path: '/$id'
+    '/admin/properties_/$id': {
+      id: '/admin/properties_/$id'
+      path: '/properties/$id'
       fullPath: '/admin/properties/$id'
       preLoaderRoute: typeof AdminPropertiesIdRouteImport
-      parentRoute: typeof AdminPropertiesRoute
+      parentRoute: typeof AdminRoute
     }
-    '/admin/inspections/$id': {
-      id: '/admin/inspections/$id'
-      path: '/$id'
+    '/admin/inspections_/$id': {
+      id: '/admin/inspections_/$id'
+      path: '/inspections/$id'
       fullPath: '/admin/inspections/$id'
       preLoaderRoute: typeof AdminInspectionsIdRouteImport
-      parentRoute: typeof AdminInspectionsRoute
+      parentRoute: typeof AdminRoute
     }
-    '/admin/clients/$id': {
-      id: '/admin/clients/$id'
-      path: '/$id'
+    '/admin/clients_/$id': {
+      id: '/admin/clients_/$id'
+      path: '/clients/$id'
       fullPath: '/admin/clients/$id'
       preLoaderRoute: typeof AdminClientsIdRouteImport
-      parentRoute: typeof AdminClientsRoute
+      parentRoute: typeof AdminRoute
     }
   }
 }
@@ -1068,100 +1068,52 @@ const AboutRouteChildren: AboutRouteChildren = {
 
 const AboutRouteWithChildren = AboutRoute._addFileChildren(AboutRouteChildren)
 
-interface AdminClientsRouteChildren {
+interface AdminRouteChildren {
+  AdminClientsRoute: typeof AdminClientsRoute
+  AdminInspectionsRoute: typeof AdminInspectionsRoute
+  AdminLoginRoute: typeof AdminLoginRoute
+  AdminPropertiesRoute: typeof AdminPropertiesRoute
+  AdminTeamRoute: typeof AdminTeamRoute
+  AdminIndexRoute: typeof AdminIndexRoute
   AdminClientsIdRoute: typeof AdminClientsIdRoute
-}
-
-const AdminClientsRouteChildren: AdminClientsRouteChildren = {
-  AdminClientsIdRoute: AdminClientsIdRoute,
-}
-
-const AdminClientsRouteWithChildren = AdminClientsRoute._addFileChildren(
-  AdminClientsRouteChildren,
-)
-
-interface AdminInspectionsRouteChildren {
   AdminInspectionsIdRoute: typeof AdminInspectionsIdRoute
-}
-
-const AdminInspectionsRouteChildren: AdminInspectionsRouteChildren = {
-  AdminInspectionsIdRoute: AdminInspectionsIdRoute,
-}
-
-const AdminInspectionsRouteWithChildren =
-  AdminInspectionsRoute._addFileChildren(AdminInspectionsRouteChildren)
-
-interface AdminPropertiesRouteChildren {
   AdminPropertiesIdRoute: typeof AdminPropertiesIdRoute
-}
-
-const AdminPropertiesRouteChildren: AdminPropertiesRouteChildren = {
-  AdminPropertiesIdRoute: AdminPropertiesIdRoute,
-}
-
-const AdminPropertiesRouteWithChildren = AdminPropertiesRoute._addFileChildren(
-  AdminPropertiesRouteChildren,
-)
-
-interface AdminTeamRouteChildren {
   AdminTeamIdRoute: typeof AdminTeamIdRoute
 }
 
-const AdminTeamRouteChildren: AdminTeamRouteChildren = {
-  AdminTeamIdRoute: AdminTeamIdRoute,
-}
-
-const AdminTeamRouteWithChildren = AdminTeamRoute._addFileChildren(
-  AdminTeamRouteChildren,
-)
-
-interface AdminRouteChildren {
-  AdminClientsRoute: typeof AdminClientsRouteWithChildren
-  AdminInspectionsRoute: typeof AdminInspectionsRouteWithChildren
-  AdminLoginRoute: typeof AdminLoginRoute
-  AdminPropertiesRoute: typeof AdminPropertiesRouteWithChildren
-  AdminTeamRoute: typeof AdminTeamRouteWithChildren
-  AdminIndexRoute: typeof AdminIndexRoute
-}
-
 const AdminRouteChildren: AdminRouteChildren = {
-  AdminClientsRoute: AdminClientsRouteWithChildren,
-  AdminInspectionsRoute: AdminInspectionsRouteWithChildren,
+  AdminClientsRoute: AdminClientsRoute,
+  AdminInspectionsRoute: AdminInspectionsRoute,
   AdminLoginRoute: AdminLoginRoute,
-  AdminPropertiesRoute: AdminPropertiesRouteWithChildren,
-  AdminTeamRoute: AdminTeamRouteWithChildren,
+  AdminPropertiesRoute: AdminPropertiesRoute,
+  AdminTeamRoute: AdminTeamRoute,
   AdminIndexRoute: AdminIndexRoute,
+  AdminClientsIdRoute: AdminClientsIdRoute,
+  AdminInspectionsIdRoute: AdminInspectionsIdRoute,
+  AdminPropertiesIdRoute: AdminPropertiesIdRoute,
+  AdminTeamIdRoute: AdminTeamIdRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
-interface PortalInspectionsRouteChildren {
-  PortalInspectionsIdRoute: typeof PortalInspectionsIdRoute
-}
-
-const PortalInspectionsRouteChildren: PortalInspectionsRouteChildren = {
-  PortalInspectionsIdRoute: PortalInspectionsIdRoute,
-}
-
-const PortalInspectionsRouteWithChildren =
-  PortalInspectionsRoute._addFileChildren(PortalInspectionsRouteChildren)
-
 interface PortalRouteChildren {
   PortalAccountRoute: typeof PortalAccountRoute
   PortalForgotPasswordRoute: typeof PortalForgotPasswordRoute
-  PortalInspectionsRoute: typeof PortalInspectionsRouteWithChildren
+  PortalInspectionsRoute: typeof PortalInspectionsRoute
   PortalLoginRoute: typeof PortalLoginRoute
   PortalPropertiesRoute: typeof PortalPropertiesRoute
   PortalIndexRoute: typeof PortalIndexRoute
+  PortalInspectionsIdRoute: typeof PortalInspectionsIdRoute
 }
 
 const PortalRouteChildren: PortalRouteChildren = {
   PortalAccountRoute: PortalAccountRoute,
   PortalForgotPasswordRoute: PortalForgotPasswordRoute,
-  PortalInspectionsRoute: PortalInspectionsRouteWithChildren,
+  PortalInspectionsRoute: PortalInspectionsRoute,
   PortalLoginRoute: PortalLoginRoute,
   PortalPropertiesRoute: PortalPropertiesRoute,
   PortalIndexRoute: PortalIndexRoute,
+  PortalInspectionsIdRoute: PortalInspectionsIdRoute,
 }
 
 const PortalRouteWithChildren =

@@ -12,7 +12,7 @@ import type { ClientDeletionResult, PortalProfile } from '@/lib/portal/types'
 type ClientDetail = { id: string; firstName: string; lastName: string; email: string; phone: string; taxNumber: string | null; billingAddress: string | null; country: string; internalNotes: string | null; active: boolean }
 type ClientProperty = { id: string; displayName: string; addressLine1: string; locality: string; municipality: string; active: boolean }
 
-export const Route = createFileRoute('/admin/clients/$id')({ component: ClientPage })
+export const Route = createFileRoute('/admin/clients_/$id')({ component: ClientPage })
 
 function ClientPage() {
   return <PrivateGuard area="admin">{(profile) => <ClientDetails profile={profile} />}</PrivateGuard>

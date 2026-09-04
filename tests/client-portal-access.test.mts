@@ -6,7 +6,7 @@ const invitationFunctionPath = new URL('../netlify/functions/portal-invite.mts',
 const portalApiPath = new URL('../netlify/functions/portal-api.mts', import.meta.url)
 const apiClientPath = new URL('../src/lib/portal/api.ts', import.meta.url)
 const componentPath = new URL('../src/components/portal/client-portal-access.tsx', import.meta.url)
-const clientRoutePath = new URL('../src/routes/admin.clients.$id.tsx', import.meta.url)
+const clientRoutePath = new URL('../src/routes/admin.clients_.$id.tsx', import.meta.url)
 const phase2MigrationPath = new URL('../supabase/migrations/20260904120000_create_phase2_inspection_operations.sql', import.meta.url)
 const retentionMigrationPath = new URL('../supabase/migrations/20260904150000_add_customer_inspection_retention.sql', import.meta.url)
 
