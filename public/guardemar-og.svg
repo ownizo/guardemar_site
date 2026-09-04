@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#06275a"/>
+  <circle cx="970" cy="132" r="118" fill="#d9b98c"/>
+  <path d="M610 228h590v402H430V408h180z" fill="#f7f3ea"/>
+  <path d="M785 342h415v288H620V458h165z" fill="#dce8ec"/>
+  <path d="M0 526h1200v104H0z" fill="#0c7897"/>
+  <text x="86" y="178" fill="#fff" font-family="Arial, sans-serif" font-size="68" font-weight="700" letter-spacing="8">GUARDEMAR</text>
+  <text x="91" y="232" fill="#d9e5ec" font-family="Arial, sans-serif" font-size="27" letter-spacing="3">PRIVATE PROPERTY CARE</text>
+  <text x="91" y="386" fill="#fff" font-family="Georgia, serif" font-size="48">Here when you are away.</text>
+  <text x="91" y="448" fill="#d9e5ec" font-family="Arial, sans-serif" font-size="25">Western Algarve · Carvoeiro to Sagres</text>
+</svg>

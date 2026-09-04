@@ -1,17 +1,12 @@
 import { createFileRoute } from '@tanstack/react-router'
 
 import { AssessmentForm } from '@/components/assessment-form'
-import { AnalyticsLink, Breadcrumbs, PageHero } from '@/components/site'
+import { AnalyticsLink, Breadcrumbs, PageHero, TrustSection } from '@/components/site'
 import { business, legalEntity, operationalContact } from '@/config/site'
+import { pageHead } from '@/lib/seo'
 
 export const Route = createFileRoute('/contact')({
-  head: () => ({
-    meta: [
-      { title: 'Request a Property Assessment | Guardemar' },
-      { name: 'description', content: 'Tell Guardemar about your Western Algarve property and request a practical first property care assessment.' },
-    ],
-    links: [{ rel: 'canonical', href: 'https://guardemar.com/contact/' }],
-  }),
+  head: () => pageHead({ title: 'Request a Property Assessment | Guardemar', description: 'Tell Guardemar about your Western Algarve property and request a practical first property care assessment.', path: '/contact/' }),
   component: ContactPage,
 })
 
@@ -23,7 +18,7 @@ function ContactPage() {
       <div>
         <p className="eyebrow">First property assessment</p>
         <h2>Request an assessment</h2>
-        <p>Fields marked by your browser as required must be completed. There is no obligation created by sending an enquiry.</p>
+        <p>Use the short form below for a first conversation. More detailed property information can be gathered during the assessment. There is no obligation created by sending an enquiry.</p>
         <AssessmentForm />
       </div>
       <aside className="contact-card">
@@ -42,5 +37,6 @@ function ContactPage() {
         </div>
       </aside>
     </section>
+    <TrustSection />
   </>
 }

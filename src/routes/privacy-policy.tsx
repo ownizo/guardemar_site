@@ -1,2 +1,3 @@
 import { createFileRoute } from '@tanstack/react-router'; import { StandardPageView } from '@/components/standard-page'
-export const Route=createFileRoute('/privacy-policy')({head:()=>({meta:[{title:'Privacy Policy | Guardemar'},{name:'description',content:'How Guardemar handles personal information for website enquiries and property-care services under the GDPR.'}],links:[{rel:'canonical',href:'https://guardemar.com/privacy-policy/'}]}),component:()=> <StandardPageView pageKey="privacy-policy" legal />})
+import { pageHead } from '@/lib/seo'
+export const Route=createFileRoute('/privacy-policy')({head:()=>pageHead({title:'Privacy Policy | Guardemar',description:'How Guardemar handles personal information for website enquiries and property-care services under the GDPR.',path:'/privacy-policy/'}),component:()=> <StandardPageView pageKey="privacy-policy" legal />})

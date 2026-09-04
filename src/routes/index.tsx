@@ -1,17 +1,12 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { ArrowRight, Check, ClipboardCheck, CloudRain, KeyRound, ShieldCheck } from 'lucide-react'
 
-import { AssessmentCta, ButtonLink, PageIntro, ReportPreview, SectionHeading } from '@/components/site'
+import { AssessmentCta, ButtonLink, PageIntro, ReportPreview, SectionHeading, Testimonials, TrustSection } from '@/components/site'
 import { plans, trustPoints } from '@/config/site'
+import { futureLanguageAlternates, pageHead } from '@/lib/seo'
 
 export const Route = createFileRoute('/')({
-  head: () => ({
-    meta: [
-      { title: "Private Property Care in the Western Algarve | Guardemar" },
-      { name: 'description', content: 'Scheduled home watch inspections, photographic reports and trusted local coordination for holiday homes and second homes from Carvoeiro to Sagres.' },
-    ],
-    links: [{ rel: 'canonical', href: 'https://guardemar.com/' }],
-  }),
+  head: () => pageHead({ title: 'Private Property Care in the Western Algarve | Guardemar', description: 'Scheduled home watch inspections, photographic reports and trusted local coordination for holiday homes and second homes from Carvoeiro to Sagres.', path: '/', alternates: futureLanguageAlternates('/') }),
   component: HomePage,
 })
 
@@ -49,7 +44,7 @@ function HomePage() {
         <div className="editorial-copy">
           <p className="large-copy">A leaking pipe, failed irrigation system or patch of damp can go unnoticed for weeks in an empty property.</p>
           <p>Guardemar visits your home on a scheduled basis, checks its condition and lets you know exactly how things are. A small issue detected today can avoid a significant repair later.</p>
-          <div className="plain-list"><span>No assumptions.</span><span>No relying on neighbours.</span><span>No wondering from another country.</span></div>
+          <div className="plain-list"><span>No assumptions.</span><span>No informal arrangements.</span><span>No wondering from another country.</span></div>
         </div>
       </section>
 
@@ -102,6 +97,8 @@ function HomePage() {
         <ButtonLink to="/how-it-works/" variant="text">See how it works <ArrowRight size={16} /></ButtonLink>
       </section>
 
+      <TrustSection />
+      <Testimonials />
       <AssessmentCta />
     </>
   )

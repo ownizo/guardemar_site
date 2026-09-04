@@ -1,2 +1,3 @@
 import { createFileRoute } from '@tanstack/react-router'; import { StandardPageView } from '@/components/standard-page'
-export const Route=createFileRoute('/home-watch')({head:()=>({meta:[{title:'Home Watch Algarve | Documented Property Inspections'},{name:'description',content:'Structured home watch inspections with photographic digital reports for vacant and second homes across the Western Algarve.'}],links:[{rel:'canonical',href:'https://guardemar.com/home-watch-algarve/'}]}),component:()=> <StandardPageView pageKey="home-watch" />})
+import { pageHead } from '@/lib/seo'
+export const Route=createFileRoute('/home-watch')({head:()=>pageHead({title:'Home Watch Algarve | Documented Property Inspections',description:'Structured home watch inspections with photographic digital reports for vacant and second homes across the Western Algarve.',path:'/home-watch-algarve/'}),component:()=> <StandardPageView pageKey="home-watch" />})

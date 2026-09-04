@@ -1,2 +1,3 @@
 import { createFileRoute } from '@tanstack/react-router'; import { StandardPageView } from '@/components/standard-page'
-export const Route=createFileRoute('/holiday-home-care')({head:()=>({meta:[{title:'Holiday Home Care Algarve | Guardemar'},{name:'description',content:'Practical care and scheduled inspections for privately owned holiday homes across the Western Algarve.'}],links:[{rel:'canonical',href:'https://guardemar.com/holiday-home-care/'}]}),component:()=> <StandardPageView pageKey="holiday-home-care" />})
+import { pageHead } from '@/lib/seo'
+export const Route=createFileRoute('/holiday-home-care')({head:()=>pageHead({title:'Holiday Home Care Algarve | Guardemar',description:'Practical care and scheduled inspections for privately owned holiday homes across the Western Algarve.',path:'/holiday-home-care/'}),component:()=> <StandardPageView pageKey="holiday-home-care" />})
