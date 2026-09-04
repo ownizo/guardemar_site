@@ -484,7 +484,7 @@ async function routeRequest(req: Request, authenticated: AuthenticatedRequest) {
 }
 
 export default async (req: Request, context: Context) => {
-  if (!['GET', 'POST', 'PATCH', 'DELETE'].includes(req.method)) return publicError(405, 'Method not allowed.', 'VALIDATION_ERROR', 'routing')
+  if (!['GET', 'POST', 'PUT', 'PATCH', 'DELETE'].includes(req.method)) return publicError(405, 'Method not allowed.', 'VALIDATION_ERROR', 'routing')
   const authenticated = await authenticate(req)
   if (authenticated instanceof Response) return authenticated
 
