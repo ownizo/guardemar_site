@@ -109,23 +109,3 @@ export const standardPages: Record<string, StandardPage> = {
     ],
   },
 }
-
-export const legalPages: Record<string, StandardPage> = {
-  'privacy-policy': { eyebrow: 'Legal', title: 'Privacy policy', description: 'How Guardemar handles personal information submitted through this website.', aside: 'Last reviewed: 3 September 2026.', sections: [
-    { title: 'Information we collect', paragraphs: ['We collect information you provide in an enquiry, including contact details, property information and the content of your message. Technical hosting logs may also be processed for security and service operation.'] },
-    { title: 'How information is used', paragraphs: ['Information is used to respond to enquiries, prepare service proposals, administer requested services, meet legal obligations and protect the website. We do not sell personal data.'] },
-    { title: 'Storage and sharing', paragraphs: ['Website enquiries are processed through Netlify Forms. Information may be shared with service providers acting on our instructions or where legally required. Property information is only shared with contractors where necessary and authorised.'] },
-    { title: 'Your rights', paragraphs: ['Depending on applicable law, you may request access, correction, deletion, restriction or portability of personal information, or object to certain processing. Contact info@guardemar.com to make a request.'] },
-  ] },
-  'cookie-policy': { eyebrow: 'Legal', title: 'Cookie policy', description: 'A clear explanation of cookies and future measurement tools on this website.', aside: 'No optional marketing IDs are installed unless configured.', sections: [
-    { title: 'Essential technologies', paragraphs: ['The website may use essential storage required for security, form operation and basic preferences. These technologies are not used to build advertising profiles.'] },
-    { title: 'Analytics and advertising', paragraphs: ['Integration points exist for Google Analytics 4, Search Console, Meta Pixel and Google Ads. Tracking scripts are not loaded until valid IDs and an appropriate consent approach are configured.'] },
-    { title: 'Managing cookies', paragraphs: ['You can control cookies through your browser. If optional measurement tools are introduced, this policy and the site consent controls should be updated before activation.'] },
-  ] },
-  terms: { eyebrow: 'Legal', title: 'Website terms', description: 'Terms governing use of the Guardemar website and its general service information.', aside: 'A service proposal and agreement take precedence for contracted work.', sections: [
-    { title: 'Website information', paragraphs: ['Content is general information and does not create a service contract. Plan prices are indicative, may be subject to VAT and depend on a property-specific assessment.'] },
-    { title: 'Inspection limitations', paragraphs: ['Property inspections are visual and non-invasive. They cannot guarantee discovery of concealed defects and do not constitute structural, electrical, plumbing, pool, engineering or other technical certification.'] },
-    { title: 'Third-party services', paragraphs: ['Specialist maintenance and repair work may be coordinated with qualified third parties. Their work, pricing, availability and professional responsibility are separate from Guardemar’s inspection and coordination service unless expressly agreed otherwise.'] },
-    { title: 'Contact', paragraphs: ['Questions about these terms can be sent to info@guardemar.com. Formal commercial terms are confirmed in each client proposal and service agreement.'] },
-  ] },
-}

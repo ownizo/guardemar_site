@@ -92,7 +92,40 @@ Use URL Inspection to confirm the selected canonical, mobile rendering and index
 
 ## Analytics Hooks
 
-`src/lib/analytics.ts` defines events for assessment form start and submit, phone, email, WhatsApp, plan, service, area and blog CTA clicks. Events push to `window.dataLayer` when available and emit the `guardemar:analytics` browser event. No third-party analytics ID is installed by the codebase.
+`src/lib/analytics.ts` defines events for assessment form start and submit, phone, email, WhatsApp, plan, service, area and blog CTA clicks. Events only push to `window.dataLayer` or emit the `guardemar:analytics` browser event when valid Analytics consent exists. No third-party analytics ID is installed by the codebase.
+
+## Privacy and Consent
+
+Legal business data is centralised in `src/config/site.ts`. Keep the legal entity and Lisbon registered office separate from the operational Guardemar contact address in Lagos.
+
+The consent-policy version and visible categories live in `src/config/cookies.ts`. Consent is stored as a first-party local-storage record by `src/lib/consent.ts`, containing only the policy version, category choice and update time. Increment `CONSENT_VERSION` only when a material change to optional purposes or categories requires users to choose again.
+
+The current consent interface exposes Strictly Necessary and Analytics categories. Marketing and non-essential functional categories are deliberately absent because the audited site does not use those technologies. Any future analytics, tag manager, pixel, advertising script or optional embed must:
+
+1. be blocked before the appropriate consent exists;
+2. use the central consent abstraction rather than reading local storage independently;
+3. stop future tracking when consent is withdrawn;
+4. add any removable first-party cookie names to `optionalFirstPartyCookieNames`;
+5. update the Cookie Policy and this audit; and
+6. trigger a consent-version review before deployment.
+
+### Current cookie and script audit — 4 September 2026
+
+- No application-defined cookies were found in the source.
+- One necessary local-storage record, `guardemar_cookie_consent`, stores consent version, Analytics choice and update time.
+- No Google Analytics, Google Tag Manager, Meta Pixel, advertising tags, CRM, payment service or external database integration was found.
+- No YouTube, Google Maps, Instagram, Facebook or other third-party embed was found.
+- Netlify provides hosting, content delivery and Netlify Forms processing.
+- Google Fonts stylesheet and font resources are requested for the existing site typography; this is disclosed in the Privacy and Cookie Policies.
+- Optional analytics events are suppressed before consent and after withdrawal. Accepting Analytics currently loads no provider because none is configured.
+
+Review this list whenever scripts, embeds, forms or infrastructure providers change.
+
+## Legal Review Boundary
+
+The legal pages were drafted for practical GDPR/ePrivacy compliance based on the current Guardemar website and business model. They should be reviewed by Portuguese legal counsel if Guardemar begins online contracting, online payments, automated profiling, marketing automation, large-scale monitoring, processing special-category data or operating outside the current business model.
+
+The current website accepts enquiries and quotation requests only. It does not conclude a property-care contract or accept payment online. Before either capability is launched, review consumer-information, cancellation, e-commerce, complaints-book and any applicable alternative-dispute-resolution requirements. Confirm with Portuguese legal counsel whether additional company, commercial registry or consumer disclosure details are required; do not invent missing identifiers or commercial terms.
 
 ## Author Architecture
 
