@@ -89,7 +89,7 @@ Use URL Inspection to confirm the selected canonical, mobile rendering and index
 
 ## Forms
 
-`src/components/assessment-form.tsx` posts URL-encoded submissions to the Netlify Function at `/api/contact`. The Function performs server-side validation, honeypot and timing checks, applies Netlify rate limiting, and sends the internal notification through Resend. The browser only displays success after the internal notification has been accepted by Resend.
+`src/components/assessment-form.tsx` posts URL-encoded submissions to the Netlify Function at `/api/contact`. The Function performs server-side validation, honeypot and timing checks, applies Netlify rate limiting, and sends the internal notification and customer acknowledgement through Resend. The browser only displays success after both messages have been accepted by Resend.
 
 After successful email delivery, the browser also posts the same payload to `/__forms.html` as a best-effort backup record in Netlify Forms. Every React field name must therefore also exist in `public/__forms.html`, which registers the form during deployment. Do not configure a separate Netlify Forms email notification unless duplicate emails are intentionally required.
 
@@ -99,11 +99,9 @@ Set these variables in the Netlify project environment. Never commit the Resend 
 
 ```text
 RESEND_API_KEY=
-CONTACT_NOTIFICATION_EMAIL=info@guardemar.com
-CONTACT_FROM_EMAIL=website@guardemar.com
 ```
 
-`CONTACT_NOTIFICATION_EMAIL` and `CONTACT_FROM_EMAIL` have the values above as code defaults, but setting them explicitly makes production configuration visible. `RESEND_API_KEY` is required; the form returns an error rather than showing false success when it is missing or when Resend rejects the notification.
+`RESEND_API_KEY` is required and is read only by the server-side Function. The notification recipient and authenticated sender are fixed in the Function so production delivery cannot drift from `info@guardemar.com` and `Guardemar Website <website@guardemar.com>`. The form returns an error rather than showing false success when the key is missing or Resend rejects either message.
 
 ### Resend domain verification
 

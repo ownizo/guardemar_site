@@ -97,7 +97,24 @@ test('returns failure when the notification provider fails', async () => {
   const response = await handler(request(validBody()))
 
   assert.equal(response.status, 502)
-  assert.deepEqual(await response.json(), { error: 'We could not send your enquiry just now.' })
+  assert.deepEqual(await response.json(), {
+    error: "We couldn't send your enquiry just now. Please try again or contact us directly at info@guardemar.com or +351 928 226 570.",
+  })
+})
+
+test('returns failure when the customer acknowledgement provider fails', async () => {
+  const handler = createContactHandler({
+    now: () => now,
+    sendNotification: async () => {},
+    sendConfirmation: async () => { throw new Error('sandbox provider failure') },
+  })
+
+  const response = await handler(request(validBody()))
+
+  assert.equal(response.status, 502)
+  assert.deepEqual(await response.json(), {
+    error: "We couldn't send your enquiry just now. Please try again or contact us directly at info@guardemar.com or +351 928 226 570.",
+  })
 })
 
 test('rejects the honeypot without sending', async () => {
