@@ -1,40 +1,90 @@
--- Run against a disposable Netlify Database branch after migrations.
+-- Apply the Supabase migration first, then run this file with a privileged SQL connection
+-- against a disposable branch of Guardemar project ablktbpledjceddessyg.
 -- The transaction rolls back all fixtures. Any failed assertion aborts the test.
-BEGIN;
+begin;
 
-SELECT set_config('app.user_id', '00000000-0000-4000-8000-000000000001', true);
-SELECT set_config('app.user_email', 'info@guardemar.com', true);
-INSERT INTO profiles (id, role) VALUES ('00000000-0000-4000-8000-000000000001', 'admin');
-INSERT INTO profiles (id, role) VALUES
+set local session_replication_role = replica;
+insert into public.profiles (id, role) values
+  ('00000000-0000-4000-8000-000000000001', 'admin'),
   ('00000000-0000-4000-8000-00000000000a', 'customer'),
   ('00000000-0000-4000-8000-00000000000b', 'customer');
-
-INSERT INTO clients (id, first_name, last_name, email, phone) VALUES
-  ('10000000-0000-4000-8000-00000000000a', 'Customer', 'A', 'a@example.invalid', '+351000000001'),
-  ('10000000-0000-4000-8000-00000000000b', 'Customer', 'B', 'b@example.invalid', '+351000000002');
-INSERT INTO properties (id, client_id, display_name, address_line_1, postal_code, locality, municipality) VALUES
-  ('20000000-0000-4000-8000-00000000000a', '10000000-0000-4000-8000-00000000000a', 'Property A', 'Address A', '0000-001', 'Lagos', 'Lagos'),
-  ('20000000-0000-4000-8000-00000000000b', '10000000-0000-4000-8000-00000000000b', 'Property B', 'Address B', '0000-002', 'Lagos', 'Lagos');
-INSERT INTO client_users (client_id, user_id) VALUES
+insert into public.clients (id, first_name, last_name, email, phone, internal_notes) values
+  ('10000000-0000-4000-8000-00000000000a', 'Customer', 'A', 'a@example.invalid', '+351000000001', 'Private A'),
+  ('10000000-0000-4000-8000-00000000000b', 'Customer', 'B', 'b@example.invalid', '+351000000002', 'Private B');
+insert into public.properties (
+  id, client_id, display_name, address_line_1, postal_code, locality, municipality, access_notes_private, internal_notes
+) values
+  ('20000000-0000-4000-8000-00000000000a', '10000000-0000-4000-8000-00000000000a', 'Property A', 'Address A', '0000-001', 'Lagos', 'Lagos', 'Key A', 'Internal A'),
+  ('20000000-0000-4000-8000-00000000000b', '10000000-0000-4000-8000-00000000000b', 'Property B', 'Address B', '0000-002', 'Lagos', 'Lagos', 'Key B', 'Internal B');
+insert into public.client_users (client_id, user_id) values
   ('10000000-0000-4000-8000-00000000000a', '00000000-0000-4000-8000-00000000000a'),
   ('10000000-0000-4000-8000-00000000000b', '00000000-0000-4000-8000-00000000000b');
-INSERT INTO property_users (property_id, user_id) VALUES
+insert into public.property_users (property_id, user_id) values
   ('20000000-0000-4000-8000-00000000000a', '00000000-0000-4000-8000-00000000000a'),
   ('20000000-0000-4000-8000-00000000000b', '00000000-0000-4000-8000-00000000000b');
+set local session_replication_role = origin;
 
-SELECT set_config('app.user_id', '00000000-0000-4000-8000-00000000000a', true);
-SELECT set_config('app.user_email', 'a@example.invalid', true);
-DO $$
-BEGIN
-  IF (SELECT count(*) FROM properties) <> 1 THEN RAISE EXCEPTION 'Customer A property isolation failed'; END IF;
-  IF EXISTS (SELECT 1 FROM properties WHERE id = '20000000-0000-4000-8000-00000000000b') THEN RAISE EXCEPTION 'Customer A retrieved Property B'; END IF;
-  IF (SELECT count(*) FROM clients) <> 1 THEN RAISE EXCEPTION 'Customer A client isolation failed'; END IF;
-  BEGIN
-    UPDATE profiles SET role = 'admin' WHERE id = '00000000-0000-4000-8000-00000000000a';
-    RAISE EXCEPTION 'Customer A changed role';
-  EXCEPTION WHEN OTHERS THEN
-    IF SQLERRM = 'Customer A changed role' THEN RAISE; END IF;
-  END;
-END $$;
+select set_config('request.jwt.claim.sub', '00000000-0000-4000-8000-00000000000a', true);
+select set_config('request.jwt.claim.role', 'authenticated', true);
+set local role authenticated;
 
-ROLLBACK;
+do $$
+begin
+  if (select count(*) from public.properties) <> 1 then
+    raise exception 'Customer A property isolation failed';
+  end if;
+  if exists (select 1 from public.properties where id = '20000000-0000-4000-8000-00000000000b') then
+    raise exception 'Customer A retrieved or guessed Property B';
+  end if;
+  if (select count(*) from public.clients) <> 1 then
+    raise exception 'Customer A client isolation failed';
+  end if;
+  if has_column_privilege('authenticated', 'public.clients', 'internal_notes', 'select') then
+    raise exception 'Customer can read client internal notes';
+  end if;
+  if has_column_privilege('authenticated', 'public.properties', 'access_notes_private', 'select') then
+    raise exception 'Customer can read access_notes_private';
+  end if;
+  if has_column_privilege('authenticated', 'public.properties', 'internal_notes', 'select') then
+    raise exception 'Customer can read property internal notes';
+  end if;
+  begin
+    update public.profiles set role = 'admin' where id = '00000000-0000-4000-8000-00000000000a';
+    raise exception 'Customer A changed role';
+  exception when insufficient_privilege then
+    null;
+  end;
+end;
+$$;
+
+reset role;
+select set_config('request.jwt.claim.sub', '00000000-0000-4000-8000-000000000001', true);
+select set_config('request.jwt.claim.role', 'authenticated', true);
+set local role authenticated;
+
+do $$
+begin
+  if (select count(*) from public.properties) <> 2 then
+    raise exception 'Admin property access failed';
+  end if;
+  if public.get_admin_property('20000000-0000-4000-8000-00000000000a') ->> 'access_notes_private' <> 'Key A' then
+    raise exception 'Admin private property access failed';
+  end if;
+end;
+$$;
+
+reset role;
+set local role anon;
+do $$
+begin
+  begin
+    perform count(*) from public.properties;
+    raise exception 'Unauthenticated property access succeeded';
+  exception when insufficient_privilege then
+    null;
+  end;
+end;
+$$;
+
+reset role;
+rollback;

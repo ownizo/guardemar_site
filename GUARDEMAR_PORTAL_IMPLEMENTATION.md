@@ -1,80 +1,40 @@
-# GUARDEMAR Portal Implementation
+# Guardemar Portal Phase 1 Implementation
 
-## Environment
+## Current state
 
-Required variable names are documented in `.env.example`:
+Phase 1 now targets the dedicated Guardemar Supabase project `ablktbpledjceddessyg` for authentication and all operational records. Netlify remains the application host and Function runtime. No Phase 2 domain tables or file uploads are implemented.
 
-- `SUPABASE_URL`
-- `SUPABASE_PUBLISHABLE_KEY`
-- `RESEND_API_KEY`
-- `SUPABASE_SERVICE_ROLE_KEY` (reserved for a later trusted invitation function)
+## Required environment
 
-The service-role value must never be exposed to browser code, checked into Git, printed in logs or placed in a public environment variable. It is not required for the Phase 1 implementation.
+- `SUPABASE_URL`: Guardemar project URL; the application verifies the project reference
+- `SUPABASE_PUBLISHABLE_KEY`: browser-safe key used with authenticated JWTs and RLS
+- `RESEND_API_KEY`: server-only transactional email credential
 
-## Deployment
+`SUPABASE_SERVICE_ROLE_KEY` is not required for Phase 1. It may later be required by a server-only user invitation Function that calls the Supabase Admin API, but it must never be exposed to the browser or used for normal customer queries.
 
-Netlify applies migrations from `netlify/database/migrations` during deployment. The application schema is defined in `db/schema.ts`, and `drizzle.config.ts` keeps generated migrations in the Netlify deployment directory.
+## Applying the database correction
 
-Before deployment, confirm that `SUPABASE_URL` still resolves to project reference `ablktbpledjceddessyg`. Runtime functions enforce the same check and fail closed if the reference differs.
+The Supabase migration is `supabase/migrations/20260904090000_create_guardemar_portal_foundation.sql`. Apply it only to project `ablktbpledjceddessyg` using a Supabase CLI session linked to that project or the Guardemar Supabase SQL editor.
 
-In Supabase Auth:
+The current environment does not include a Supabase database connection secret or linked Supabase CLI, so the migration is generated but not applied by this repository change. Do not apply it to Adler or any other project.
 
-1. Keep email and password authentication enabled.
-2. Disable open public sign-up for this private portal.
-3. Add `https://guardemar.com/reset-password` and the relevant deploy-preview equivalent to allowed redirect URLs.
-4. Invite `info@guardemar.com` through a trusted dashboard process if the user does not exist.
-5. Do not create or send a plaintext password.
+After applying it:
 
-## Authentication flow
+1. Confirm `SUPABASE_URL` resolves to project `ablktbpledjceddessyg`.
+2. Ensure the invited `info@guardemar.com` Auth user exists.
+3. Sign in once through `/admin/login` to create the initial admin profile.
+4. Run `tests/portal-rls.sql` on a disposable Guardemar branch or equivalent test project.
+5. Run Supabase Database Linter and Security Advisor, then review RLS, function `search_path`, grants and indexes.
+6. Verify customer and staff routes against real invited test users before considering Phase 1 complete.
 
-The browser creates a PKCE-compatible Supabase client with persistent session refresh. Login uses `signInWithPassword`. Password recovery uses Supabase's reset email and returns to `/reset-password`. Private route guards initialise the database profile, retrieve the stored role and enforce the required area role before rendering.
+## Auth flow
 
-The API independently validates every access token. Frontend route guards improve user experience but are not the security boundary.
+The existing login, password recovery, reset-password and invitation-only account flow remains based on Supabase Auth. Private route guards initialise the Supabase profile, fetch `profiles.role` and enforce customer or staff/admin route access.
 
-## Administrator bootstrap
-
-The first successful login by the verified `info@guardemar.com` Supabase identity may insert the first administrator profile. The database policy additionally checks that no administrator already exists. Once created, all admin access is based on the stored role.
-
-If another administrator already exists, the email address receives no special runtime authority. Further staff and admin role assignments require an existing administrator.
-
-## CRM and properties
-
-The backoffice supports:
-
-- Operational dashboard counts and useful empty states
-- Client listing, search and creation
-- Client contact, billing, tax, property and staff-only note views
-- Property listing and creation
-- Property features, address, ownership and staff-only access notes
-- Property detail with inspection and request empty states ready for later phases
-
-The customer portal returns an explicit safe property projection. It never selects `access_notes_private`, `internal_notes` or alarm information.
-
-## Customer invitations
-
-Automated in-app invitation is deliberately not implemented without a privileged server credential. Supabase's administrative invite operation requires a server-only service-role key because a publishable key and ordinary user JWT cannot securely create another Auth user.
-
-When invitation automation is added:
-
-1. Configure `SUPABASE_SERVICE_ROLE_KEY` only in Netlify's server environment.
-2. Add a staff/admin-only Function that calls Supabase `inviteUserByEmail`.
-3. Never return or log the service-role value.
-4. Create `client_users` and selected `property_users` rows only after the Auth user ID is known.
-5. Record an audit event and send only the Supabase password-setup invitation.
-
-Manual trusted dashboard invitations remain possible without adding the key to this application.
+The portal Function forwards the caller's bearer token through Supabase JS. Customer property reads use direct table queries protected by RLS. Staff CRM reads and transactional creates use authenticated RPCs that check `profiles.role`; they do not use service-role or direct database credentials.
 
 ## Validation
 
-- `pnpm typecheck` validates TypeScript.
-- `pnpm test` runs contact and portal security tests.
-- `tests/portal-security.test.mts` checks forced RLS, property relationship policies, role protection, safe customer projections and absence of service-role use in client code.
-- `tests/portal-rls.sql` is a transactional isolation suite for a disposable database branch. It proves authorised property access, guessed-UUID denial, client isolation and role immutability.
+`tests/portal-security.test.mts` statically checks the migration and application wiring. `tests/portal-rls.sql` verifies customer property isolation, UUID guessing resistance, client isolation, protected columns, role immutability, staff access and anonymous denial after the migration has been applied.
 
-The SQL isolation suite must be run after the migration is applied to a disposable branch. It is a release blocker before real customer data is introduced.
-
-## Known Phase 1 boundary
-
-No operational migration was applied to Supabase Postgres. Supabase is used for authentication only; the platform-required operational datastore is Netlify Database. No migration was applied to any Adler or insurance database.
-
-Private file storage, inspections, tickets, documents, quotes and invoices remain intentionally outside this Phase 1 change. Their schema and authorisation approach are defined in the architecture document for the next implementation phase.
+The Supabase SQL test and security advisors cannot produce live results until the owner applies the migration to a disposable Guardemar database target with a privileged SQL connection.

@@ -1,115 +1,63 @@
-# GUARDEMAR Portal Architecture
+# Guardemar Private Application Architecture
 
-## Scope
+## Platform boundary
 
-The private application extends the existing TanStack Start website without replacing the public marketing routes. Supabase Auth provides invited-user identity. Netlify Functions validate every bearer token against the Guardemar Supabase project before setting an authenticated request context for Netlify Database. Operational records live in managed Postgres and are protected by forced row-level security.
+The private application extends the existing TanStack Start website without replacing public marketing routes. Netlify provides hosting, deployment, environment variables and server Functions. Resend remains the transactional email provider.
 
-The configured Supabase URL was verified on 4 September 2026. Its project reference is `ablktbpledjceddessyg`. Both authentication functions also reject configuration for any other project reference.
+Supabase project `ablktbpledjceddessyg` is the single system of record for Guardemar operational data. It provides Supabase Auth, PostgreSQL, Row Level Security and, in later phases, private Supabase Storage buckets. The Function configuration rejects any Supabase URL whose project reference is not `ablktbpledjceddessyg`.
 
-## Existing stack
+## Authentication and database access
 
-- TanStack Start and TanStack Router file-based routes
-- React 19 and TypeScript
-- Tailwind CSS 4 plus the existing Guardemar CSS design tokens
-- Netlify hosting, Functions, Forms and managed Postgres
-- Resend in a server-only Netlify Function
-- Content Collections for editorial Markdown
-- Vitest is not installed; tests use Node's built-in test runner
+The browser receives only `SUPABASE_URL` and `SUPABASE_PUBLISHABLE_KEY` from `/api/portal-config`. It manages the Supabase Auth session and sends the access token to `/api/portal/*`.
 
-## Runtime boundaries
+`portal-api.mts` creates a Supabase client with that bearer token attached to every database request. PostgreSQL therefore receives the caller's authenticated JWT and evaluates policies with native `auth.uid()`. The Function validates the token with Supabase Auth, but it does not create a second identity context, accept a browser-supplied user ID, open a privileged PostgreSQL connection or use a service-role key.
 
-### Browser
-
-The browser receives only the Supabase URL and publishable key from `/api/portal-config`. It manages the Supabase Auth session and sends the short-lived access token to `/api/portal/*`. It never receives database credentials, Resend credentials or a service-role key.
-
-### Netlify Functions
-
-`portal-api.mts` validates the access token by calling Supabase Auth. After validation, it starts a database transaction and sets transaction-local `app.user_id` and `app.user_email` values. Database policies derive identity and role exclusively from this trusted context. Browser-provided user, client and property identifiers do not establish authorisation.
-
-### Database
-
-`db/schema.ts` is the typed Drizzle source of truth. Versioned SQL is stored in `netlify/database/migrations`. The first migration enables and forces RLS on every Phase 1 table, creates safe helper functions, updated-at triggers, indexes and role protection.
+Drizzle and `@netlify/database` were removed. Supabase JS is the clearer query layer for this phase because it preserves the authenticated user context automatically and makes RLS the final authority for every normal request.
 
 ## Phase 1 schema
 
-- `profiles`: Supabase user UUID, immutable application role, personal details
-- `clients`: CRM customer and billing record; internal notes are staff-only
-- `client_users`: many-to-many relationship between CRM clients and authenticated users
-- `properties`: property record, features and staff-only access/internal notes
-- `property_users`: explicit user-to-property authorisation; central to customer RLS
-- `staff_profiles`: operational staff identity and display information
-- `audit_events`: important security and operational actions
+The versioned Supabase migration creates:
 
-Supabase Auth passwords remain exclusively in Supabase Auth. A cross-database foreign key to `auth.users` is not possible because identity and operational records are intentionally in separate managed services; UUIDs are validated against Supabase before database context is established.
+- `profiles`: application role and user details, keyed directly to `auth.users.id`
+- `clients`: CRM and billing records, with internal notes protected from direct authenticated reads
+- `client_users`: authenticated-user to CRM-client relationships
+- `properties`: property records, with alarm, access and internal notes protected from direct authenticated reads
+- `property_users`: the authoritative user-to-property relationship used by customer RLS
+- `staff_profiles`: operational staff details
+- `audit_events`: security and operational audit records
+
+Future operational tables, including inspections, tickets, documents, quotes and invoices, belong in the same Supabase PostgreSQL project. Phase 2 tables are not included in this correction.
 
 ## Roles and bootstrap
 
-Roles are `customer`, `staff` and `admin`. Roles are stored in `profiles`, are not sourced from email during normal authorisation, and may only be changed by a database-backed administrator.
+Roles are `customer`, `staff` and `admin` and are stored in `profiles.role`. Normal authorisation resolves the current profile by `auth.uid()` and never compares email addresses.
 
-The one-time bootstrap permits the verified Supabase identity `info@guardemar.com` to create the first `admin` profile only when no administrator exists. Subsequent requests use the stored role. No public form can choose a role.
+The authenticated `initialise_profile()` function creates a missing customer profile. The sole bootstrap exception assigns `admin` to the verified Supabase identity `info@guardemar.com` only when no admin profile exists. The resulting role is stored in Supabase PostgreSQL; subsequent access uses only `profiles.role`. A trigger prevents non-admin callers from changing any profile role.
 
-If that Supabase user does not exist, invite or create it through the trusted Supabase dashboard without setting or emailing a plaintext password. After password setup, sign in at `/admin/login`; the first authenticated request completes the database bootstrap.
+## Row Level Security
 
-## RLS strategy
+RLS is enabled on all seven Phase 1 tables. Policies implement these rules:
 
-- Customers select only their own profile.
-- Customers select a CRM client only through `client_users`.
-- Customers select a property only through `property_users`.
-- Staff and administrators can manage operational CRM and property records.
-- Only administrators can alter application roles or delete core records.
-- Customer-facing API queries select explicit safe columns and omit alarm flags, access notes and internal notes.
-- Every Phase 1 sensitive table uses both `ENABLE ROW LEVEL SECURITY` and `FORCE ROW LEVEL SECURITY`.
+- `profiles`: users select and update their own profile; staff can select profiles; admins can update profiles and roles
+- `clients`: customers select only rows linked through `client_users.user_id = auth.uid()`; staff can manage rows; only admins can delete
+- `client_users`: customers select only their own relationship rows; staff can manage relationships
+- `properties`: customers select only rows linked through `property_users.user_id = auth.uid()`; staff can manage rows; only admins can delete
+- `property_users`: customers select only their own relationship rows; staff can manage relationships
+- `staff_profiles`: staff can select; admins can create, update and delete
+- `audit_events`: staff can select and can insert events only with `actor_user_id = auth.uid()`
 
-Phase 2 policies must preserve the same rule: a published inspection is visible only when its property is authorised through `property_users`. Draft, in-progress and completed-but-unpublished inspections remain staff-only.
+Direct authenticated column grants exclude `clients.internal_notes`, `properties.has_alarm`, `properties.access_notes_private` and `properties.internal_notes`. Staff-only SECURITY DEFINER RPCs expose those fields only after checking the stored role. Every such function has an empty `search_path`, explicit execution grants and no anonymous access.
 
-## Routes
+## Netlify Database retirement
 
-### Public
-
-- Existing marketing and editorial routes remain unchanged.
-- A quiet `Client Login` link points to `/portal/login` in the main navigation and footer.
-
-### Customer
-
-- `/portal/login`
-- `/portal/forgot-password`
-- `/reset-password`
-- `/portal`
-- `/portal/properties`
-- `/portal/account`
-
-### Operations
-
-- `/admin/login`
-- `/admin`
-- `/admin/clients`
-- `/admin/clients/:id`
-- `/admin/properties`
-- `/admin/properties/:id`
-
-Unimplemented navigation sections are hidden rather than shown as broken placeholders.
-
-## Phase 2 inspection design
-
-The next migration should add `inspection_templates`, `inspection_template_items`, `inspections`, `inspection_items` and `inspection_photos`. Starting an inspection copies template rows into immutable inspection item snapshots. Workflow states are `draft`, `in_progress`, `completed` and `published`; `published_at` is written only by an explicit publish action.
-
-The mobile workflow should use debounced draft saves, large status controls with text and icons, direct camera uploads, review and explicit publication. Customer reads must filter to `published` in both RLS and server projections.
+The applied Netlify migration `20260904070446_create_portal_foundation` remains unchanged because applied migrations are immutable. A forward-only retirement migration drops its Guardemar tables, functions and enum types. No application code or package depends on Netlify Database after the correction.
 
 ## Storage strategy
 
-Private files should use Netlify Blobs under server-authorised UUID paths because the project platform requires Netlify persistence primitives. Proposed stores are `inspection-photos`, `ticket-attachments` and `property-documents`. Browser access should pass through authenticated Functions that verify the same property relationship before returning a short-lived download response. Original images must not be loaded on dashboard pages.
+Private Guardemar files belong in Supabase Storage, not Netlify Blobs. Later phases should create private buckets named `inspection-photos`, `ticket-attachments` and `property-documents` in project `ablktbpledjceddessyg`.
 
-No public bucket or public asset URL is acceptable for private-home photographs or documents.
+Storage object paths must include the owning property UUID, and Storage policies must resolve access from the authenticated `auth.uid()` through `property_users`. Inspection photographs and property documents must never use public buckets or permanent public URLs. Clients should use authenticated downloads or short-lived signed URLs after authorisation.
 
-## Notifications
+## Phase 2 boundary
 
-Resend remains server-only. Phase 2 and later notifications should contain minimal information and link recipients back to authenticated portal routes. Inspection photographs, access information, alarm details and internal notes must never be attached or copied into email.
-
-## Later phases
-
-1. Inspection templates, mobile draft workflow, publication and private photographs
-2. Tickets, public messages, database-enforced internal notes and attachments
-3. Property documents, quotes, decisions, invoices and intervention lifecycle
-4. Expanded audit coverage, notification templates, print reports and hardening
-
-Each phase requires versioned migrations, RLS tests, storage isolation tests, mobile checks, accessibility review and production validation before release.
+No inspection, ticket, document, quote or invoice tables are introduced here. Phase 2 starts only after the Supabase migration is applied, the RLS test script passes with real Auth identities or a disposable branch, and Supabase security advisors have been reviewed.
