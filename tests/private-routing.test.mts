@@ -46,18 +46,24 @@ test('every Phase 1 private route uses the matching shared guard', async () => {
     '../src/routes/admin.clients.$id.tsx',
     '../src/routes/admin.properties.tsx',
     '../src/routes/admin.properties.$id.tsx',
+    '../src/routes/admin.inspections.tsx',
+    '../src/routes/admin.inspections.$id.tsx',
+    '../src/routes/admin.team.tsx',
+    '../src/routes/admin.team.$id.tsx',
   ]
   const portalRoutes = [
     '../src/routes/portal.index.tsx',
     '../src/routes/portal.account.tsx',
     '../src/routes/portal.properties.tsx',
+    '../src/routes/portal.inspections.tsx',
+    '../src/routes/portal.inspections.$id.tsx',
   ]
 
   for (const route of adminRoutes) assert.match(await source(route), /<PrivateGuard area="admin">/)
   for (const route of portalRoutes) assert.match(await source(route), /<PrivateGuard area="portal">/)
 })
 
-test('admin identity and navigation remain operational and distinct', async () => {
+test('admin identity and Phase 2 navigation remain operational and distinct', async () => {
   const shell = await source('../src/components/portal/shell.tsx')
   const styles = await source('../src/styles.css')
   assert.match(shell, /area === 'admin' \? 'Guardemar' : 'Guardemar client'/)
@@ -65,7 +71,9 @@ test('admin identity and navigation remain operational and distinct', async () =
   assert.match(shell, /label: 'Dashboard'/)
   assert.match(shell, /label: 'Clients'/)
   assert.match(shell, /label: 'Properties'/)
-  assert.doesNotMatch(shell, /Inspections|Reports|Requests/)
+  assert.match(shell, /label: 'Inspections'/)
+  assert.match(shell, /label: 'Team'/)
+  assert.doesNotMatch(shell, /label: 'Reports'|label: 'Requests'/)
   assert.match(styles, /\.private-app-admin/)
 })
 

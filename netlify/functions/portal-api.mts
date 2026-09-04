@@ -35,10 +35,41 @@ const propertyInput = z.object({
   internalNotes: z.string().trim().max(4000).optional().or(z.literal('')),
 })
 
+const staffInput = z.object({
+  firstName: z.string().trim().min(1).max(100),
+  lastName: z.string().trim().min(1).max(100),
+  displayName: z.string().trim().min(1).max(160),
+  roleTitle: z.string().trim().min(1).max(160),
+  email: z.string().trim().email().max(254).optional().or(z.literal('')),
+  phone: z.string().trim().max(50).optional().or(z.literal('')),
+  active: z.boolean().default(true),
+  showOnClientReports: z.boolean().default(true),
+  internalNotes: z.string().trim().max(4000).optional().or(z.literal('')),
+  profilePhotoPath: z.string().trim().max(500).optional().or(z.literal('')),
+})
+const staffPatchInput = staffInput.partial().extend({ active: z.boolean().optional(), showOnClientReports: z.boolean().optional() })
+
+const areaInput = z.object({
+  id: z.string().uuid().optional(), propertyId: z.string().uuid(), areaType: z.string().trim().min(1).max(80),
+  customLabel: z.string().trim().min(1).max(160), displayOrder: z.number().int().min(0).max(1000).default(0),
+  active: z.boolean().optional(), internalNotes: z.string().trim().max(4000).optional().or(z.literal('')),
+})
+
+const inspectionInput = z.object({
+  propertyId: z.string().uuid(), templateId: z.string().uuid(), inspectorStaffId: z.string().uuid(),
+  scheduledFor: z.string().datetime(), idempotencyKey: z.string().uuid(),
+})
+
+const resultStatus = z.enum(['good', 'attention', 'urgent', 'not_checked', 'not_applicable'])
+const reviewContent = z.object({
+  status: resultStatus.optional(), observation: z.string().max(6000).optional(), recommendation: z.string().max(6000).optional(),
+  observationClientVisible: z.boolean().optional(), recommendationClientVisible: z.boolean().optional(),
+})
+
 type ApplicationRole = 'customer' | 'staff' | 'admin'
 type PortalProfile = { id: string; role: ApplicationRole; firstName: string | null; lastName: string | null; phone: string | null }
 type AuthenticatedRequest = { user: User; supabase: SupabaseClient }
-type PortalErrorCode = 'VALIDATION_ERROR' | 'AUTHENTICATION_ERROR' | 'AUTHORIZATION_ERROR' | 'CREATE_RPC_ERROR' | 'POST_CREATE_REFRESH_ERROR' | 'NAVIGATION_ERROR' | 'NETWORK_ERROR'
+type PortalErrorCode = 'VALIDATION_ERROR' | 'AUTHENTICATION_ERROR' | 'AUTHORIZATION_ERROR' | 'DATABASE_ERROR' | 'STORAGE_ERROR' | 'UPLOAD_ERROR' | 'AUTOSAVE_ERROR' | 'CREATE_RPC_ERROR' | 'POST_CREATE_REFRESH_ERROR' | 'NAVIGATION_ERROR' | 'NETWORK_ERROR'
 type SupabaseError = { message: string; code?: string; details?: string; hint?: string }
 type SupabaseResult<T> = { data: T | null; error: SupabaseError | null; status?: number }
 
@@ -151,6 +182,17 @@ async function routeRequest(req: Request, authenticated: AuthenticatedRequest) {
     })) })
   }
 
+  if (req.method === 'GET' && pathname === 'inspections') {
+    const inspections = requireData(await authenticated.supabase.rpc('list_customer_inspections'))
+    return json({ inspections })
+  }
+
+  if (req.method === 'GET' && segments[0] === 'inspections' && segments[1]) {
+    const inspection = requireData(await authenticated.supabase.rpc('get_customer_inspection', { inspection_uuid: z.string().uuid().parse(segments[1]) }))
+    if (!inspection) return publicError(404, 'Inspection report not found.', 'VALIDATION_ERROR', 'inspection_lookup')
+    return json({ inspection })
+  }
+
   if (segments[0] === 'admin') {
     await requireStaff(authenticated)
 
@@ -206,7 +248,127 @@ async function routeRequest(req: Request, authenticated: AuthenticatedRequest) {
       return json({ property }, { status: 201 })
     }
 
-    if (req.method === 'GET' && segments[1] === 'properties' && segments[2]) {
+    if (req.method === 'GET' && segments[1] === 'properties' && segments[2] && segments[3] === 'operations') {
+      const operations = requireData(await authenticated.supabase.rpc('get_property_inspection_operations', { property_uuid: z.string().uuid().parse(segments[2]) }))
+      return json(operations)
+    }
+
+    if (req.method === 'POST' && segments[1] === 'properties' && segments[2] && segments[3] === 'areas') {
+      await requireAdmin(authenticated)
+      const input = areaInput.parse({ ...(await req.json()), propertyId: segments[2] })
+      const area = requireData(await authenticated.supabase.rpc('save_property_area', { area_data: input }), 'DATABASE_ERROR', 'property_area_create')
+      return json({ area }, { status: 201 })
+    }
+
+    if (req.method === 'PATCH' && segments[1] === 'properties' && segments[2] && segments[3] === 'areas' && segments[4]) {
+      await requireAdmin(authenticated)
+      const input = areaInput.parse({ ...(await req.json()), id: segments[4], propertyId: segments[2] })
+      const area = requireData(await authenticated.supabase.rpc('save_property_area', { area_data: input }), 'DATABASE_ERROR', 'property_area_update')
+      return json({ area })
+    }
+
+    if (req.method === 'POST' && segments[1] === 'properties' && segments[2] && segments[3] === 'areas-reorder') {
+      await requireAdmin(authenticated)
+      const input = z.object({ areaIds: z.array(z.string().uuid()).max(200) }).parse(await req.json())
+      requireData(await authenticated.supabase.rpc('reorder_property_areas', { property_uuid: segments[2], ordered_ids: input.areaIds }))
+      return json({ reordered: true })
+    }
+
+    if (req.method === 'GET' && pathname === 'admin/team') {
+      const team = requireData(await authenticated.supabase.rpc('list_admin_team'))
+      return json({ team })
+    }
+
+    if (req.method === 'POST' && pathname === 'admin/team') {
+      await requireAdmin(authenticated)
+      const member = requireData(await authenticated.supabase.rpc('create_staff_profile', { staff_data: staffInput.parse(await req.json()) }), 'DATABASE_ERROR', 'staff_create')
+      return json({ member }, { status: 201 })
+    }
+
+    if (req.method === 'GET' && segments[1] === 'team' && segments[2]) {
+      const member = requireData(await authenticated.supabase.rpc('get_admin_team_member', { staff_uuid: z.string().uuid().parse(segments[2]) }))
+      if (!member) return publicError(404, 'Team member not found.', 'VALIDATION_ERROR', 'staff_lookup')
+      return json({ member })
+    }
+
+    if (req.method === 'PATCH' && segments[1] === 'team' && segments[2]) {
+      await requireAdmin(authenticated)
+      const member = requireData(await authenticated.supabase.rpc('update_staff_profile', { staff_uuid: z.string().uuid().parse(segments[2]), staff_data: staffPatchInput.parse(await req.json()) }), 'DATABASE_ERROR', 'staff_update')
+      return json({ member })
+    }
+
+    if (req.method === 'GET' && pathname === 'admin/inspection-options') {
+      const [templates, team, properties] = await Promise.all([
+        authenticated.supabase.rpc('list_inspection_templates'), authenticated.supabase.rpc('list_admin_team'), authenticated.supabase.rpc('list_admin_properties'),
+      ])
+      return json({ templates: requireData(templates), team: requireData(team), properties: requireData(properties) })
+    }
+
+    if (req.method === 'GET' && pathname === 'admin/inspections') {
+      const url = new URL(req.url)
+      const filters = Object.fromEntries(['status', 'propertyId', 'inspectorStaffId', 'dateFrom', 'dateTo'].map((key) => [key, url.searchParams.get(key) ?? '']))
+      const inspections = requireData(await authenticated.supabase.rpc('list_admin_inspections', { filters }))
+      return json({ inspections })
+    }
+
+    if (req.method === 'POST' && pathname === 'admin/inspections') {
+      const inspection = requireData(await authenticated.supabase.rpc('create_inspection', { inspection_data: inspectionInput.parse(await req.json()) }), 'DATABASE_ERROR', 'inspection_create')
+      return json({ inspection }, { status: 201 })
+    }
+
+    if (req.method === 'GET' && segments[1] === 'inspections' && segments[2] && segments.length === 3) {
+      const inspection = requireData(await authenticated.supabase.rpc('get_admin_inspection', { inspection_uuid: z.string().uuid().parse(segments[2]) }))
+      if (!inspection) return publicError(404, 'Inspection not found.', 'VALIDATION_ERROR', 'inspection_lookup')
+      return json(inspection)
+    }
+
+    if (req.method === 'POST' && segments[1] === 'inspections' && segments[2] && segments[3] === 'link') {
+      await requireAdmin(authenticated)
+      const input = z.object({ tokenHash: z.string().regex(/^[a-f0-9]{64}$/), expiresAt: z.string().datetime() }).parse(await req.json())
+      const tokenId = requireData(await authenticated.supabase.rpc('generate_inspection_access', { inspection_uuid: segments[2], token_hash_hex: input.tokenHash, expiry: input.expiresAt }), 'DATABASE_ERROR', 'token_create')
+      return json({ tokenId }, { status: 201 })
+    }
+
+    if (req.method === 'DELETE' && segments[1] === 'inspections' && segments[2] && segments[3] === 'link') {
+      await requireAdmin(authenticated)
+      requireData(await authenticated.supabase.rpc('revoke_inspection_access', { inspection_uuid: segments[2] }))
+      return json({ revoked: true })
+    }
+
+    if (req.method === 'PATCH' && segments[1] === 'inspections' && segments[2] && segments[3] === 'areas' && segments[4]) {
+      const area = requireData(await authenticated.supabase.rpc('update_admin_inspection_area', { area_uuid: segments[4], area_data: reviewContent.parse(await req.json()) }), 'DATABASE_ERROR', 'review_area')
+      return json({ area })
+    }
+
+    if (req.method === 'PATCH' && segments[1] === 'inspections' && segments[2] && segments[3] === 'items' && segments[4]) {
+      const item = requireData(await authenticated.supabase.rpc('update_admin_inspection_item', { item_uuid: segments[4], item_data: reviewContent.parse(await req.json()) }), 'DATABASE_ERROR', 'review_item')
+      return json({ item })
+    }
+
+    if (req.method === 'PATCH' && segments[1] === 'inspections' && segments[2] && segments[3] === 'photos' && segments[4]) {
+      const input = z.object({ caption: z.string().max(500).optional(), displayOrder: z.number().int().min(0).max(1000).optional(), clientVisible: z.boolean().optional(), rejected: z.boolean().optional() }).parse(await req.json())
+      const photo = requireData(await authenticated.supabase.rpc('update_inspection_photo', { photo_uuid: segments[4], photo_data: input }), 'DATABASE_ERROR', 'review_photo')
+      return json({ photo })
+    }
+
+    if (req.method === 'PATCH' && segments[1] === 'inspections' && segments[2] && segments[3] === 'review') {
+      const input = z.object({ finalCondition: z.enum(['good', 'attention', 'urgent']).optional(), clientSummary: z.string().max(10000).optional(), internalReviewNotes: z.string().max(10000).optional() }).parse(await req.json())
+      const inspection = requireData(await authenticated.supabase.rpc('update_admin_inspection_review', { inspection_uuid: segments[2], review_data: input }), 'DATABASE_ERROR', 'review_save')
+      return json({ inspection })
+    }
+
+    if (req.method === 'GET' && segments[1] === 'inspections' && segments[2] && segments[3] === 'preview') {
+      const inspection = requireData(await authenticated.supabase.rpc('preview_admin_inspection', { inspection_uuid: segments[2] }))
+      return json({ inspection })
+    }
+
+    if (req.method === 'POST' && segments[1] === 'inspections' && segments[2] && segments[3] === 'publish') {
+      await requireAdmin(authenticated)
+      const inspection = requireData(await authenticated.supabase.rpc('publish_admin_inspection', { inspection_uuid: segments[2] }), 'DATABASE_ERROR', 'inspection_publish')
+      return json({ inspection })
+    }
+
+    if (req.method === 'GET' && segments[1] === 'properties' && segments[2] && segments.length === 3) {
       const property = requireData(await authenticated.supabase.rpc('get_admin_property', { property_uuid: segments[2] }))
       if (!property) return publicError(404, 'Property not found.', 'VALIDATION_ERROR', 'property_lookup')
       return json({ property })

@@ -61,3 +61,37 @@ Storage object paths must include the owning property UUID, and Storage policies
 ## Phase 2 boundary
 
 No inspection, ticket, document, quote or invoice tables are introduced here. Phase 2 starts only after the Supabase migration is applied, the RLS test script passes with real Auth identities or a disposable branch, and Supabase security advisors have been reviewed.
+
+## Phase 2 inspection operations
+
+Phase 2 remains inside the dedicated Guardemar Supabase project `ablktbpledjceddessyg`. Netlify hosts the TanStack application and authenticated Functions, while Supabase Auth, PostgreSQL RLS and private Storage remain the operational system of record. The retired Netlify database is not reactivated.
+
+### Relational model
+
+Operational collaborators continue to use `staff_profiles`, now with optional `user_id`, separate first/last/display names, optional contact details, report visibility, internal notes and a private Storage path. This lets Guardemar assign an inspector who does not have login credentials.
+
+`property_areas` stores the reusable generic `area_type` separately from the free-text `custom_label`. Duplicate area types are intentionally allowed, and `display_order` defines the field walking order. Archiving preserves inspection history.
+
+`inspection_templates` and `inspection_template_items` define what is normally checked. Creating an inspection copies active property areas and matching template items into `inspection_areas` and `inspection_items`. These relational snapshots retain historical labels, order, guidance and checklist content when later configuration changes.
+
+`inspections` owns scheduling, assigned `inspector_staff_id`, lifecycle timestamps, suggested/final condition, internal review notes, client summary and a frozen `published_snapshot`. `inspection_photos` links private objects to an inspection area and optional item. `inspection_access_tokens` contains only SHA-256 token hashes, expiry, revocation and use timestamps.
+
+### Authorization and publication
+
+Customers resolve access through `auth.uid()` → `property_users` → property → inspection. RLS permits customer reads only for `published` inspections. Draft, scheduled, in-progress, completed, awaiting-review and cancelled records remain invisible. The publication RPC is admin-only, records `published_at` and `published_by`, and freezes the exact client projection used by preview and the portal.
+
+Staff can perform operational reads and review edits. Team management, property-area configuration, mobile-link generation/revocation and publishing default to administrators. Authorization uses stored roles, never email addresses or browser-supplied user IDs.
+
+### Token-only field access
+
+Field links use a random 256-bit token carried in the URL fragment (`/i#token`) so the credential is not sent in HTTP request paths or normal access logs. The browser removes the fragment immediately and keeps the credential only in session storage. Netlify Functions hash it before calling narrowly scoped SECURITY DEFINER RPCs. Those RPCs can read or update only the linked scheduled/in-progress inspection and cannot list inspections, access CRM data, reassign inspectors or publish.
+
+For direct private Storage upload, the Function can mint a one-hour custom Supabase JWT containing only the verified `inspection_access_id`. Storage RLS rechecks the underlying token row for expiry/revocation and limits paths to the linked inspection. This requires `SUPABASE_JWT_SECRET`; no service-role key is used.
+
+### Storage
+
+`inspection-photos` is private, limited to supported image MIME types and 10 MB objects. Customer download requires a published authorised inspection plus approved photo metadata. Field access requires an active token for the exact inspection. `staff-photos` is also private; administrators upload, staff can view, and customers can view a report-enabled photograph only when it belongs to an inspector on one of their published inspections.
+
+### Review workflow
+
+Field completion records `completed_at`, moves directly to `awaiting_review`, revokes the mobile token and never publishes. Review supports area/item statuses, observations, recommendations and explicit client-visible controls, plus photo approval and final/internal summaries. “Preview as client” uses the same projection as publication. “Share with client” is a separate confirmed administrator action.
