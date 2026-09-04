@@ -38,18 +38,21 @@ const propertyInput = z.object({
 type ApplicationRole = 'customer' | 'staff' | 'admin'
 type PortalProfile = { id: string; role: ApplicationRole; firstName: string | null; lastName: string | null; phone: string | null }
 type AuthenticatedRequest = { user: User; supabase: SupabaseClient }
+type PortalErrorCode = 'VALIDATION_ERROR' | 'AUTHENTICATION_ERROR' | 'AUTHORIZATION_ERROR' | 'CREATE_RPC_ERROR' | 'POST_CREATE_REFRESH_ERROR' | 'NAVIGATION_ERROR' | 'NETWORK_ERROR'
+type SupabaseError = { message: string; code?: string; details?: string; hint?: string }
+type SupabaseResult<T> = { data: T | null; error: SupabaseError | null; status?: number }
 
 function json(data: unknown, init?: ResponseInit) {
   return Response.json(data, { ...init, headers: { 'Cache-Control': 'no-store', ...init?.headers } })
 }
 
-function publicError(status: number, message: string) {
-  return json({ error: message }, { status })
+function publicError(status: number, message: string, code: PortalErrorCode, stage: string, diagnostics?: { details?: string; hint?: string }) {
+  return json({ error: { code, message, stage, status, ...diagnostics } }, { status })
 }
 
-function requireData<T>(result: { data: T | null; error: { message: string; code?: string } | null }): T {
-  if (result.error) throw new SupabaseQueryError(result.error.message, result.error.code)
-  if (result.data === null) throw new SupabaseQueryError('The database returned no data.')
+function requireData<T>(result: SupabaseResult<T>, code: PortalErrorCode = 'NETWORK_ERROR', stage = 'database'): T {
+  if (result.error) throw new PortalRequestError(result.error.message, code, stage, result.status, result.error.code, result.error.details, result.error.hint)
+  if (result.data === null) throw new PortalRequestError('The database returned no data.', code, stage, result.status)
   return result.data
 }
 
@@ -58,15 +61,15 @@ async function authenticate(req: Request): Promise<AuthenticatedRequest | Respon
   const url = Netlify.env.get('SUPABASE_URL')
   const publishableKey = Netlify.env.get('SUPABASE_PUBLISHABLE_KEY')
 
-  if (!token || !url || !publishableKey) return publicError(401, 'Your session has expired. Please sign in again.')
-  if (new URL(url).hostname.split('.')[0] !== EXPECTED_SUPABASE_REF) return publicError(503, 'Portal authentication configuration is unavailable.')
+  if (!token || !url || !publishableKey) return publicError(401, 'Your session has expired. Please sign in again.', 'AUTHENTICATION_ERROR', 'authentication')
+  if (new URL(url).hostname.split('.')[0] !== EXPECTED_SUPABASE_REF) return publicError(503, 'Portal authentication configuration is unavailable.', 'NETWORK_ERROR', 'configuration')
 
   const supabase = createClient(url, publishableKey, {
     global: { headers: { Authorization: `Bearer ${token}` } },
     auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
   })
   const { data, error } = await supabase.auth.getUser(token)
-  if (error || !data.user || !data.user.email) return publicError(401, 'Your session has expired. Please sign in again.')
+  if (error || !data.user || !data.user.email) return publicError(401, 'Your session has expired. Please sign in again.', 'AUTHENTICATION_ERROR', 'authentication')
 
   return { user: data.user, supabase }
 }
@@ -94,9 +97,23 @@ async function requireStaff(authenticated: AuthenticatedRequest) {
   return profile
 }
 
+async function requireAdmin(authenticated: AuthenticatedRequest) {
+  const profile = await getProfile(authenticated)
+  if (!profile || profile.role !== 'admin') throw new AccessError('Administrator access is required.')
+  return profile
+}
+
 class AccessError extends Error {}
-class SupabaseQueryError extends Error {
-  constructor(message: string, public code?: string) {
+class PortalRequestError extends Error {
+  constructor(
+    message: string,
+    public portalCode: PortalErrorCode,
+    public stage: string,
+    public status?: number,
+    public supabaseCode?: string,
+    public details?: string,
+    public hint?: string,
+  ) {
     super(message)
   }
 }
@@ -112,7 +129,7 @@ async function routeRequest(req: Request, authenticated: AuthenticatedRequest) {
 
   if (req.method === 'GET' && pathname === 'session') {
     const profile = await getProfile(authenticated)
-    if (!profile) return publicError(409, 'Your portal profile has not been initialised.')
+    if (!profile) return publicError(409, 'Your portal profile has not been initialised.', 'AUTHENTICATION_ERROR', 'profile')
     return json({ profile, email: authenticated.user.email?.toLowerCase() })
   }
 
@@ -150,13 +167,27 @@ async function routeRequest(req: Request, authenticated: AuthenticatedRequest) {
 
     if (req.method === 'POST' && pathname === 'admin/clients') {
       const input = clientInput.parse(await req.json())
-      const client = requireData(await authenticated.supabase.rpc('create_admin_client', { client_data: input }))
+      const client = requireData(await authenticated.supabase.rpc('create_admin_client', { client_data: input }), 'CREATE_RPC_ERROR', 'create_rpc')
       return json({ client }, { status: 201 })
+    }
+
+    if (req.method === 'POST' && pathname === 'admin/clients/bulk-delete') {
+      await requireAdmin(authenticated)
+      const input = z.object({ clientIds: z.array(z.string().uuid()).min(1).max(100) }).parse(await req.json())
+      const result = requireData(await authenticated.supabase.rpc('delete_admin_clients', { client_uuids: input.clientIds }), 'NETWORK_ERROR', 'delete_rpc')
+      return json(result)
+    }
+
+    if (req.method === 'DELETE' && segments[1] === 'clients' && segments[2]) {
+      await requireAdmin(authenticated)
+      const clientId = z.string().uuid().parse(segments[2])
+      const result = requireData(await authenticated.supabase.rpc('delete_admin_client', { client_uuid: clientId }), 'NETWORK_ERROR', 'delete_rpc')
+      return json(result)
     }
 
     if (req.method === 'GET' && segments[1] === 'clients' && segments[2]) {
       const client = requireData(await authenticated.supabase.rpc('get_admin_client', { client_uuid: segments[2] }))
-      if (!client) return publicError(404, 'Client not found.')
+      if (!client) return publicError(404, 'Client not found.', 'VALIDATION_ERROR', 'client_lookup')
       const record = client as Record<string, unknown> & { properties?: unknown[] }
       const properties = record.properties ?? []
       const clientRecord: Record<string, unknown> = { ...record }
@@ -177,28 +208,44 @@ async function routeRequest(req: Request, authenticated: AuthenticatedRequest) {
 
     if (req.method === 'GET' && segments[1] === 'properties' && segments[2]) {
       const property = requireData(await authenticated.supabase.rpc('get_admin_property', { property_uuid: segments[2] }))
-      if (!property) return publicError(404, 'Property not found.')
+      if (!property) return publicError(404, 'Property not found.', 'VALIDATION_ERROR', 'property_lookup')
       return json({ property })
     }
   }
 
-  return publicError(404, 'Not found.')
+  return publicError(404, 'Not found.', 'VALIDATION_ERROR', 'routing')
 }
 
 export default async (req: Request, context: Context) => {
-  if (!['GET', 'POST', 'PATCH'].includes(req.method)) return publicError(405, 'Method not allowed.')
+  if (!['GET', 'POST', 'PATCH', 'DELETE'].includes(req.method)) return publicError(405, 'Method not allowed.', 'VALIDATION_ERROR', 'routing')
   const authenticated = await authenticate(req)
   if (authenticated instanceof Response) return authenticated
 
   try {
     return await routeRequest(req, authenticated)
   } catch (error) {
-    if (error instanceof AccessError || (error instanceof SupabaseQueryError && error.code === '42501')) {
-      return publicError(403, 'You do not have permission to access this area.')
+    if (error instanceof AccessError) {
+      return publicError(403, error.message || 'You do not have permission to access this area.', 'AUTHORIZATION_ERROR', 'authorization')
     }
-    if (error instanceof z.ZodError) return publicError(400, 'Please check the information provided.')
-    console.error('Portal API request failed', { requestId: context.requestId, path: new URL(req.url).pathname })
-    return publicError(500, 'The portal is temporarily unavailable. Please try again.')
+    if (error instanceof z.ZodError) return publicError(400, 'Please check the information provided.', 'VALIDATION_ERROR', 'validation', { details: error.issues.map((issue) => issue.path.join('.')).filter(Boolean).join(', ') })
+    if (error instanceof PortalRequestError) {
+      const authorizationError = error.supabaseCode === '42501'
+      const status = authorizationError ? 403 : error.status && error.status >= 400 ? error.status : 400
+      console.error('Portal request failed', {
+        requestId: context.requestId,
+        path: new URL(req.url).pathname,
+        code: authorizationError ? 'AUTHORIZATION_ERROR' : error.portalCode,
+        supabaseCode: error.supabaseCode,
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+        status,
+        stage: error.stage,
+      })
+      return publicError(status, authorizationError ? 'You do not have permission to complete this request.' : 'The portal could not complete this request.', authorizationError ? 'AUTHORIZATION_ERROR' : error.portalCode, error.stage, { details: error.details, hint: error.hint })
+    }
+    console.error('Portal API request failed', { requestId: context.requestId, path: new URL(req.url).pathname, message: error instanceof Error ? error.message : 'Unknown error', stage: 'request' })
+    return publicError(500, 'The portal is temporarily unavailable. Please try again.', 'NETWORK_ERROR', 'request')
   }
 }
 

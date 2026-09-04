@@ -31,6 +31,22 @@ export type AdminClient = {
   propertyCount: number
 }
 
+export type ClientDeletionItem = {
+  id: string
+  name: string
+  reason?: 'linked_properties' | 'linked_portal_users' | 'protected_relationship' | 'not_found'
+  dependencyCount?: number
+}
+
+export type ClientDeletionResult = ClientDeletionItem & {
+  deleted: boolean
+}
+
+export type BulkClientDeletionResult = {
+  deleted: ClientDeletionItem[]
+  blocked: ClientDeletionItem[]
+}
+
 export type AdminProperty = {
   id: string
   displayName: string
