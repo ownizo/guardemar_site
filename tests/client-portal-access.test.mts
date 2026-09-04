@@ -6,6 +6,7 @@ const invitationFunctionPath = new URL('../netlify/functions/portal-invite.mts',
 const portalApiPath = new URL('../netlify/functions/portal-api.mts', import.meta.url)
 const apiClientPath = new URL('../src/lib/portal/api.ts', import.meta.url)
 const componentPath = new URL('../src/components/portal/client-portal-access.tsx', import.meta.url)
+const authComponentPath = new URL('../src/components/portal/auth.tsx', import.meta.url)
 const clientRoutePath = new URL('../src/routes/admin.clients_.$id.tsx', import.meta.url)
 const phase2MigrationPath = new URL('../supabase/migrations/20260904120000_create_phase2_inspection_operations.sql', import.meta.url)
 const retentionMigrationPath = new URL('../supabase/migrations/20260904150000_add_customer_inspection_retention.sql', import.meta.url)
@@ -75,13 +76,24 @@ test('invite, link, property, and refresh failures remain distinct and recoverab
   assert.match(component, /void retryLink\(\)/)
 })
 
+test('customer sign-in distinguishes credentials from portal initialisation and navigation failures', async () => {
+  const source = await readFile(authComponentPath, 'utf8')
+  for (const code of ['AUTH_CREDENTIAL_ERROR', 'PROFILE_INITIALISATION_ERROR', 'PORTAL_ACCESS_ERROR', 'NAVIGATION_ERROR']) assert.match(source, new RegExp(code))
+  assert.match(source, /Your sign-in was successful, but your Guardemar portal access could not be opened\. Please contact Guardemar\./)
+  assert.match(source, /signInWithPassword[\s\S]*The email or password was not recognised\./)
+  assert.match(source, /session\/initialise/)
+  assert.match(source, /canAccessPrivateArea\(profile\.role, area\)/)
+  assert.match(source, /NAVIGATION_ERROR[\s\S]*await navigate/)
+})
+
 test('customer inspection visibility remains RLS-backed, published-only, and limited to 180 days', async () => {
-  const [phase2, retention] = await Promise.all([readFile(phase2MigrationPath, 'utf8'), readFile(retentionMigrationPath, 'utf8')])
+  const [phase2, retention, api] = await Promise.all([readFile(phase2MigrationPath, 'utf8'), readFile(retentionMigrationPath, 'utf8'), readFile(portalApiPath, 'utf8')])
   assert.match(phase2, /property_users pu[\s\S]*pu\.user_id = auth\.uid\(\)/)
   assert.match(retention, /create function public\.list_customer_inspections\(\)/)
   assert.match(retention, /create or replace function public\.get_customer_inspection\(inspection_uuid uuid\)/)
   assert.match(retention, /inspection\.status = 'published'/)
   assert.match(retention, /published_at \+ interval '4320 hours'/)
+  assert.match(api, /rpc\('get_customer_inspection'[\s\S]*if \(!result\.data\) return publicError\(404,[\s\S]*'inspection_lookup'/)
 })
 
 test('portal access integration does not recreate the already-applied production RPCs', async () => {

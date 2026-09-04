@@ -43,6 +43,12 @@ test('published snapshot contains client fields and omits internal fields', asyn
   assert.match(snapshot, /photo\.client_visible and photo\.rejected_at is null/)
 })
 
+test('client reports use the projected area status without requiring suggested status', async () => {
+  const source = await readFile(reportComponentPath, 'utf8')
+  assert.match(source, /<StatusMark status=\{area\.status\}/)
+  assert.doesNotMatch(source, /area\.suggested_status/)
+})
+
 test('PDF, photo and ZIP routes share server-side customer authorisation', async () => {
   const source = await readFile(filesFunctionPath, 'utf8')
   assert.match(source, /profile\.role !== 'customer'/)
