@@ -42,11 +42,14 @@ import { Route as PortalIndexRouteImport } from './routes/portal.index'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as AreasIndexRouteImport } from './routes/areas.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as LocaleIndexRouteImport } from './routes/$locale.index'
 import { Route as PortalPropertiesRouteImport } from './routes/portal.properties'
 import { Route as PortalLoginRouteImport } from './routes/portal.login'
 import { Route as PortalInspectionsRouteImport } from './routes/portal.inspections'
 import { Route as PortalForgotPasswordRouteImport } from './routes/portal.forgot-password'
 import { Route as PortalAccountRouteImport } from './routes/portal.account'
+import { Route as ContactThankYouRouteImport } from './routes/contact.thank-you'
+import { Route as ContactPropertyAssessmentRouteImport } from './routes/contact.property-assessment'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AreasAreaRouteImport } from './routes/areas.$area'
 import { Route as AdminTeamRouteImport } from './routes/admin.team'
@@ -55,6 +58,8 @@ import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminInspectionsRouteImport } from './routes/admin.inspections'
 import { Route as AdminClientsRouteImport } from './routes/admin.clients'
 import { Route as AboutHugoGoncalvesRouteImport } from './routes/about.hugo-goncalves'
+import { Route as LocalePlansRouteImport } from './routes/$locale.plans'
+import { Route as LocaleHomeWatchAlgarveRouteImport } from './routes/$locale.home-watch-algarve'
 import { Route as PortalInspectionsIdRouteImport } from './routes/portal.inspections_.$id'
 import { Route as BlogCategoryCategoryRouteImport } from './routes/blog.category.$category'
 import { Route as AdminTeamIdRouteImport } from './routes/admin.team_.$id'
@@ -232,6 +237,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRoute,
 } as any)
+const LocaleIndexRoute = LocaleIndexRouteImport.update({
+  id: '/$locale/',
+  path: '/$locale/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PortalPropertiesRoute = PortalPropertiesRouteImport.update({
   id: '/properties',
   path: '/properties',
@@ -257,6 +267,17 @@ const PortalAccountRoute = PortalAccountRouteImport.update({
   path: '/account',
   getParentRoute: () => PortalRoute,
 } as any)
+const ContactThankYouRoute = ContactThankYouRouteImport.update({
+  id: '/thank-you',
+  path: '/thank-you',
+  getParentRoute: () => ContactRoute,
+} as any)
+const ContactPropertyAssessmentRoute =
+  ContactPropertyAssessmentRouteImport.update({
+    id: '/property-assessment',
+    path: '/property-assessment',
+    getParentRoute: () => ContactRoute,
+  } as any)
 const BlogSlugRoute = BlogSlugRouteImport.update({
   id: '/blog/$slug',
   path: '/blog/$slug',
@@ -297,6 +318,16 @@ const AboutHugoGoncalvesRoute = AboutHugoGoncalvesRouteImport.update({
   path: '/hugo-goncalves',
   getParentRoute: () => AboutRoute,
 } as any)
+const LocalePlansRoute = LocalePlansRouteImport.update({
+  id: '/$locale/plans',
+  path: '/$locale/plans',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LocaleHomeWatchAlgarveRoute = LocaleHomeWatchAlgarveRouteImport.update({
+  id: '/$locale/home-watch-algarve',
+  path: '/$locale/home-watch-algarve',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PortalInspectionsIdRoute = PortalInspectionsIdRouteImport.update({
   id: '/inspections_/$id',
   path: '/inspections/$id',
@@ -334,7 +365,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRouteWithChildren
   '/arrival-preparation': typeof ArrivalPreparationRoute
   '/arrival-preparation-algarve': typeof ArrivalPreparationAlgarveRoute
-  '/contact': typeof ContactRoute
+  '/contact': typeof ContactRouteWithChildren
   '/contractor-access-algarve': typeof ContractorAccessAlgarveRoute
   '/cookie-policy': typeof CookiePolicyRoute
   '/holiday-home-care': typeof HolidayHomeCareRoute
@@ -358,6 +389,8 @@ export interface FileRoutesByFullPath {
   '/storm-property-checks-algarve': typeof StormPropertyChecksAlgarveRoute
   '/terms': typeof TermsRoute
   '/vacant-property-inspections-algarve': typeof VacantPropertyInspectionsAlgarveRoute
+  '/$locale/home-watch-algarve': typeof LocaleHomeWatchAlgarveRoute
+  '/$locale/plans': typeof LocalePlansRoute
   '/about/hugo-goncalves': typeof AboutHugoGoncalvesRoute
   '/admin/clients': typeof AdminClientsRoute
   '/admin/inspections': typeof AdminInspectionsRoute
@@ -366,11 +399,14 @@ export interface FileRoutesByFullPath {
   '/admin/team': typeof AdminTeamRoute
   '/areas/$area': typeof AreasAreaRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/contact/property-assessment': typeof ContactPropertyAssessmentRoute
+  '/contact/thank-you': typeof ContactThankYouRoute
   '/portal/account': typeof PortalAccountRoute
   '/portal/forgot-password': typeof PortalForgotPasswordRoute
   '/portal/inspections': typeof PortalInspectionsRoute
   '/portal/login': typeof PortalLoginRoute
   '/portal/properties': typeof PortalPropertiesRoute
+  '/$locale/': typeof LocaleIndexRoute
   '/admin/': typeof AdminIndexRoute
   '/areas/': typeof AreasIndexRoute
   '/blog/': typeof BlogIndexRoute
@@ -387,7 +423,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRouteWithChildren
   '/arrival-preparation': typeof ArrivalPreparationRoute
   '/arrival-preparation-algarve': typeof ArrivalPreparationAlgarveRoute
-  '/contact': typeof ContactRoute
+  '/contact': typeof ContactRouteWithChildren
   '/contractor-access-algarve': typeof ContractorAccessAlgarveRoute
   '/cookie-policy': typeof CookiePolicyRoute
   '/holiday-home-care': typeof HolidayHomeCareRoute
@@ -410,6 +446,8 @@ export interface FileRoutesByTo {
   '/storm-property-checks-algarve': typeof StormPropertyChecksAlgarveRoute
   '/terms': typeof TermsRoute
   '/vacant-property-inspections-algarve': typeof VacantPropertyInspectionsAlgarveRoute
+  '/$locale/home-watch-algarve': typeof LocaleHomeWatchAlgarveRoute
+  '/$locale/plans': typeof LocalePlansRoute
   '/about/hugo-goncalves': typeof AboutHugoGoncalvesRoute
   '/admin/clients': typeof AdminClientsRoute
   '/admin/inspections': typeof AdminInspectionsRoute
@@ -418,11 +456,14 @@ export interface FileRoutesByTo {
   '/admin/team': typeof AdminTeamRoute
   '/areas/$area': typeof AreasAreaRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/contact/property-assessment': typeof ContactPropertyAssessmentRoute
+  '/contact/thank-you': typeof ContactThankYouRoute
   '/portal/account': typeof PortalAccountRoute
   '/portal/forgot-password': typeof PortalForgotPasswordRoute
   '/portal/inspections': typeof PortalInspectionsRoute
   '/portal/login': typeof PortalLoginRoute
   '/portal/properties': typeof PortalPropertiesRoute
+  '/$locale': typeof LocaleIndexRoute
   '/admin': typeof AdminIndexRoute
   '/areas': typeof AreasIndexRoute
   '/blog': typeof BlogIndexRoute
@@ -441,7 +482,7 @@ export interface FileRoutesById {
   '/admin': typeof AdminRouteWithChildren
   '/arrival-preparation': typeof ArrivalPreparationRoute
   '/arrival-preparation-algarve': typeof ArrivalPreparationAlgarveRoute
-  '/contact': typeof ContactRoute
+  '/contact': typeof ContactRouteWithChildren
   '/contractor-access-algarve': typeof ContractorAccessAlgarveRoute
   '/cookie-policy': typeof CookiePolicyRoute
   '/holiday-home-care': typeof HolidayHomeCareRoute
@@ -465,6 +506,8 @@ export interface FileRoutesById {
   '/storm-property-checks-algarve': typeof StormPropertyChecksAlgarveRoute
   '/terms': typeof TermsRoute
   '/vacant-property-inspections-algarve': typeof VacantPropertyInspectionsAlgarveRoute
+  '/$locale/home-watch-algarve': typeof LocaleHomeWatchAlgarveRoute
+  '/$locale/plans': typeof LocalePlansRoute
   '/about/hugo-goncalves': typeof AboutHugoGoncalvesRoute
   '/admin/clients': typeof AdminClientsRoute
   '/admin/inspections': typeof AdminInspectionsRoute
@@ -473,11 +516,14 @@ export interface FileRoutesById {
   '/admin/team': typeof AdminTeamRoute
   '/areas/$area': typeof AreasAreaRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/contact/property-assessment': typeof ContactPropertyAssessmentRoute
+  '/contact/thank-you': typeof ContactThankYouRoute
   '/portal/account': typeof PortalAccountRoute
   '/portal/forgot-password': typeof PortalForgotPasswordRoute
   '/portal/inspections': typeof PortalInspectionsRoute
   '/portal/login': typeof PortalLoginRoute
   '/portal/properties': typeof PortalPropertiesRoute
+  '/$locale/': typeof LocaleIndexRoute
   '/admin/': typeof AdminIndexRoute
   '/areas/': typeof AreasIndexRoute
   '/blog/': typeof BlogIndexRoute
@@ -521,6 +567,8 @@ export interface FileRouteTypes {
     | '/storm-property-checks-algarve'
     | '/terms'
     | '/vacant-property-inspections-algarve'
+    | '/$locale/home-watch-algarve'
+    | '/$locale/plans'
     | '/about/hugo-goncalves'
     | '/admin/clients'
     | '/admin/inspections'
@@ -529,11 +577,14 @@ export interface FileRouteTypes {
     | '/admin/team'
     | '/areas/$area'
     | '/blog/$slug'
+    | '/contact/property-assessment'
+    | '/contact/thank-you'
     | '/portal/account'
     | '/portal/forgot-password'
     | '/portal/inspections'
     | '/portal/login'
     | '/portal/properties'
+    | '/$locale/'
     | '/admin/'
     | '/areas/'
     | '/blog/'
@@ -573,6 +624,8 @@ export interface FileRouteTypes {
     | '/storm-property-checks-algarve'
     | '/terms'
     | '/vacant-property-inspections-algarve'
+    | '/$locale/home-watch-algarve'
+    | '/$locale/plans'
     | '/about/hugo-goncalves'
     | '/admin/clients'
     | '/admin/inspections'
@@ -581,11 +634,14 @@ export interface FileRouteTypes {
     | '/admin/team'
     | '/areas/$area'
     | '/blog/$slug'
+    | '/contact/property-assessment'
+    | '/contact/thank-you'
     | '/portal/account'
     | '/portal/forgot-password'
     | '/portal/inspections'
     | '/portal/login'
     | '/portal/properties'
+    | '/$locale'
     | '/admin'
     | '/areas'
     | '/blog'
@@ -627,6 +683,8 @@ export interface FileRouteTypes {
     | '/storm-property-checks-algarve'
     | '/terms'
     | '/vacant-property-inspections-algarve'
+    | '/$locale/home-watch-algarve'
+    | '/$locale/plans'
     | '/about/hugo-goncalves'
     | '/admin/clients'
     | '/admin/inspections'
@@ -635,11 +693,14 @@ export interface FileRouteTypes {
     | '/admin/team'
     | '/areas/$area'
     | '/blog/$slug'
+    | '/contact/property-assessment'
+    | '/contact/thank-you'
     | '/portal/account'
     | '/portal/forgot-password'
     | '/portal/inspections'
     | '/portal/login'
     | '/portal/properties'
+    | '/$locale/'
     | '/admin/'
     | '/areas/'
     | '/blog/'
@@ -658,7 +719,7 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRouteWithChildren
   ArrivalPreparationRoute: typeof ArrivalPreparationRoute
   ArrivalPreparationAlgarveRoute: typeof ArrivalPreparationAlgarveRoute
-  ContactRoute: typeof ContactRoute
+  ContactRoute: typeof ContactRouteWithChildren
   ContractorAccessAlgarveRoute: typeof ContractorAccessAlgarveRoute
   CookiePolicyRoute: typeof CookiePolicyRoute
   HolidayHomeCareRoute: typeof HolidayHomeCareRoute
@@ -682,8 +743,11 @@ export interface RootRouteChildren {
   StormPropertyChecksAlgarveRoute: typeof StormPropertyChecksAlgarveRoute
   TermsRoute: typeof TermsRoute
   VacantPropertyInspectionsAlgarveRoute: typeof VacantPropertyInspectionsAlgarveRoute
+  LocaleHomeWatchAlgarveRoute: typeof LocaleHomeWatchAlgarveRoute
+  LocalePlansRoute: typeof LocalePlansRoute
   AreasAreaRoute: typeof AreasAreaRoute
   BlogSlugRoute: typeof BlogSlugRoute
+  LocaleIndexRoute: typeof LocaleIndexRoute
   AreasIndexRoute: typeof AreasIndexRoute
   BlogIndexRoute: typeof BlogIndexRoute
   BlogCategoryCategoryRoute: typeof BlogCategoryCategoryRoute
@@ -922,6 +986,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/$locale/': {
+      id: '/$locale/'
+      path: '/$locale'
+      fullPath: '/$locale/'
+      preLoaderRoute: typeof LocaleIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/portal/properties': {
       id: '/portal/properties'
       path: '/properties'
@@ -956,6 +1027,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/portal/account'
       preLoaderRoute: typeof PortalAccountRouteImport
       parentRoute: typeof PortalRoute
+    }
+    '/contact/thank-you': {
+      id: '/contact/thank-you'
+      path: '/thank-you'
+      fullPath: '/contact/thank-you'
+      preLoaderRoute: typeof ContactThankYouRouteImport
+      parentRoute: typeof ContactRoute
+    }
+    '/contact/property-assessment': {
+      id: '/contact/property-assessment'
+      path: '/property-assessment'
+      fullPath: '/contact/property-assessment'
+      preLoaderRoute: typeof ContactPropertyAssessmentRouteImport
+      parentRoute: typeof ContactRoute
     }
     '/blog/$slug': {
       id: '/blog/$slug'
@@ -1012,6 +1097,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/about/hugo-goncalves'
       preLoaderRoute: typeof AboutHugoGoncalvesRouteImport
       parentRoute: typeof AboutRoute
+    }
+    '/$locale/plans': {
+      id: '/$locale/plans'
+      path: '/$locale/plans'
+      fullPath: '/$locale/plans'
+      preLoaderRoute: typeof LocalePlansRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/$locale/home-watch-algarve': {
+      id: '/$locale/home-watch-algarve'
+      path: '/$locale/home-watch-algarve'
+      fullPath: '/$locale/home-watch-algarve'
+      preLoaderRoute: typeof LocaleHomeWatchAlgarveRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/portal/inspections_/$id': {
       id: '/portal/inspections_/$id'
@@ -1096,6 +1195,19 @@ const AdminRouteChildren: AdminRouteChildren = {
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
+interface ContactRouteChildren {
+  ContactPropertyAssessmentRoute: typeof ContactPropertyAssessmentRoute
+  ContactThankYouRoute: typeof ContactThankYouRoute
+}
+
+const ContactRouteChildren: ContactRouteChildren = {
+  ContactPropertyAssessmentRoute: ContactPropertyAssessmentRoute,
+  ContactThankYouRoute: ContactThankYouRoute,
+}
+
+const ContactRouteWithChildren =
+  ContactRoute._addFileChildren(ContactRouteChildren)
+
 interface PortalRouteChildren {
   PortalAccountRoute: typeof PortalAccountRoute
   PortalForgotPasswordRoute: typeof PortalForgotPasswordRoute
@@ -1125,7 +1237,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRouteWithChildren,
   ArrivalPreparationRoute: ArrivalPreparationRoute,
   ArrivalPreparationAlgarveRoute: ArrivalPreparationAlgarveRoute,
-  ContactRoute: ContactRoute,
+  ContactRoute: ContactRouteWithChildren,
   ContractorAccessAlgarveRoute: ContractorAccessAlgarveRoute,
   CookiePolicyRoute: CookiePolicyRoute,
   HolidayHomeCareRoute: HolidayHomeCareRoute,
@@ -1149,8 +1261,11 @@ const rootRouteChildren: RootRouteChildren = {
   StormPropertyChecksAlgarveRoute: StormPropertyChecksAlgarveRoute,
   TermsRoute: TermsRoute,
   VacantPropertyInspectionsAlgarveRoute: VacantPropertyInspectionsAlgarveRoute,
+  LocaleHomeWatchAlgarveRoute: LocaleHomeWatchAlgarveRoute,
+  LocalePlansRoute: LocalePlansRoute,
   AreasAreaRoute: AreasAreaRoute,
   BlogSlugRoute: BlogSlugRoute,
+  LocaleIndexRoute: LocaleIndexRoute,
   AreasIndexRoute: AreasIndexRoute,
   BlogIndexRoute: BlogIndexRoute,
   BlogCategoryCategoryRoute: BlogCategoryCategoryRoute,

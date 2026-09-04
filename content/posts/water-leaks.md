@@ -24,3 +24,5 @@ Owners should decide who may turn off water where safe, when a plumber can be ca
 Photographs help an owner and contractor understand the initial condition. A follow-up visit can then document whether the visible issue has stopped or further work is needed.
 
 The [Guardemar inspection checklist](/inspection-checklist/) includes water and moisture categories, whilst qualified plumbers remain responsible for diagnosis and repair.
+
+For a separate explanation of vacancy conditions and evidence, read [Unoccupied Property Clauses: Why Documented Inspections Matter to Your Insurer](/blog/unoccupied-property-clauses-documented-inspections/).

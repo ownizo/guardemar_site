@@ -26,3 +26,5 @@ Irrigation can fail in either direction: plants may receive no water, or a damag
 A single visit provides a snapshot. Repeated [property inspections](/inspection-checklist/) create context. The person checking the home can compare a new ceiling mark, changed pool level or dry garden area with the previous report.
 
 For owners away for long periods, a [weekly, fortnightly or monthly plan](/plans/) creates a documented routine and one route for coordinating action.
+
+The related guide [Unoccupied Property Clauses: Why Documented Inspections Matter to Your Insurer](/blog/unoccupied-property-clauses-documented-inspections/) explains why owners should understand their own policy wording and keep dated inspection records.

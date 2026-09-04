@@ -40,7 +40,7 @@ export const business = {
   addressLines: operationalContact.address.addressLines,
   territory: 'Western Algarve — from Carvoeiro to Sagres.',
   schema: { '@context': 'https://schema.org', '@graph': [
-    { '@type': ['LocalBusiness', 'Organization'], '@id': 'https://guardemar.com/#business', name: 'GUARDEMAR', legalName: legalEntity.legalName, taxID: legalEntity.taxId, brand: { '@type': 'Brand', name: legalEntity.tradingName }, description: 'Private property care and home watch services for holiday homes and second homes in the Western Algarve, Portugal.', url: 'https://guardemar.com', telephone: legalEntity.phone, email: legalEntity.contactEmail, address: { '@type': 'PostalAddress', streetAddress: `${operationalContact.address.street}, ${operationalContact.address.unit}`, addressLocality: operationalContact.address.city, addressCountry: 'PT' }, areaServed: ['Carvoeiro', 'Ferragudo', 'Portimão', 'Alvor', 'Lagos', 'Praia da Luz', 'Burgau', 'Salema', 'Vila do Bispo', 'Sagres', 'Western Algarve', 'Portugal'].map((name) => ({ '@type': 'Place', name })) },
+    { '@type': ['ProfessionalService', 'LocalBusiness', 'Organization'], '@id': 'https://guardemar.com/#business', name: 'GUARDEMAR', legalName: legalEntity.legalName, taxID: legalEntity.taxId, brand: { '@type': 'Brand', name: legalEntity.tradingName }, description: 'Private property care and home watch services for holiday homes and second homes in the Western Algarve, Portugal.', url: 'https://guardemar.com/', logo: 'https://guardemar.com/guardemar-logo.svg', priceRange: '€69–€179 per month', telephone: legalEntity.phone, email: legalEntity.contactEmail, address: { '@type': 'PostalAddress', streetAddress: `${operationalContact.address.street}, ${operationalContact.address.unit}`, addressLocality: operationalContact.address.city, addressCountry: 'PT' }, areaServed: ['Carvoeiro', 'Ferragudo', 'Portimão', 'Alvor', 'Lagos', 'Praia da Luz', 'Burgau', 'Salema', 'Vila do Bispo', 'Sagres'].map((name) => ({ '@type': 'Place', name })) },
     { '@type': 'WebSite', '@id': 'https://guardemar.com/#website', url: 'https://guardemar.com', name: 'GUARDEMAR', publisher: { '@id': 'https://guardemar.com/#business' }, inLanguage: 'en-GB' },
   ] },
 }
@@ -64,7 +64,7 @@ export const founder = {
 } as const
 
 export const navigation = [
-  { label: 'Property Care', href: '/property-care/' }, { label: 'Services', href: '/services/' },
+  { label: 'Home Watch', href: '/home-watch-algarve/' }, { label: 'Property Care', href: '/property-care/' }, { label: 'Services', href: '/services/' },
   { label: 'Plans', href: '/plans/' }, { label: 'Areas', href: '/areas/' },
   { label: 'How It Works', href: '/how-it-works/' }, { label: 'Insights', href: '/blog/' },
   { label: 'About', href: '/about/' }, { label: 'Contact', href: '/contact/' },
@@ -100,6 +100,16 @@ export const faqs = [
   ['Can you work with my existing gardener or pool company?', 'Yes. Guardemar can coordinate access and communication with existing providers, subject to clear owner instructions and authorisation.'],
   ['What happens in an emergency?', 'We assess what can safely be observed, contact the owner and coordinate the appropriate emergency or specialist service where authorised. Response depends on availability and is not represented as 24/7 cover.'],
   ['Do I have to sign a long-term contract?', 'Commercial terms are confirmed with each proposal. Ask us about the current options during your property assessment.'],
+] as const
+
+export const planFaqs = [
+  ...faqs,
+  ['Who actually enters my property?', 'Access is limited to Guardemar and any person specifically authorised under the agreed service arrangements. [CONFIRM: named staff and substitute-access procedure].'],
+  ['What happens if you are ill or away?', '[CONFIRM: service-continuity arrangement]. Any approved cover must use the property instructions, access controls and reporting process agreed with the owner.'],
+  ['Are you insured?', '[CONFIRM: insurer, policy type and cover level]. Guardemar does not sell insurance or provide insurance advice.'],
+  ['How are my keys stored and who can authorise access?', 'Keys are coded rather than labelled with a full property address and stored securely. Access is limited to authorised purposes; the owner defines who may be admitted and under what circumstances.'],
+  ['What happens if something is damaged during a visit?', 'The condition is documented, the owner is informed and the circumstances are reviewed promptly. Any responsibility, repair or insurance process depends on the facts and the applicable service and policy terms.'],
+  ['Is there a minimum contract term?', '[CONFIRM: minimum contract term and cancellation notice]. These terms must be stated in the quotation and service agreement before an owner commits.'],
 ] as const
 
 export const areas = {

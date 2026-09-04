@@ -8,13 +8,13 @@ export type StandardPage = {
 
 export const standardPages: Record<string, StandardPage> = {
   'property-care': {
-    eyebrow: 'Property Care', title: 'Your eyes, hands and trusted local presence in Portugal.',
-    description: 'Guardemar looks after privately owned holiday homes and second homes while their owners are abroad. We check, document, report and coordinate — with the property itself as the priority.',
-    aside: 'Preventive property care for owners who want one accountable person on the ground.',
+    eyebrow: 'Property Care', title: 'The wider care framework around a regularly inspected home.',
+    description: 'Property care combines the core home watch inspection with authorised access, issue coordination and practical support before, during and after an owner’s absence.',
+    aside: 'Start with Home Watch Algarve for the primary inspection service, then add support that fits the property.',
     sections: [
-      { title: 'Property care, not rental management', paragraphs: ['Traditional property management often focuses on guests and bookings. Guardemar focuses on the property itself. We do not need to operate your home as a holiday rental to provide valuable oversight.', 'Our role is to know the property, visit it consistently and give you a reliable account of its condition.'] },
-      { title: 'What a visit can prevent', paragraphs: ['Vacant homes can conceal developing problems. Leaks, humidity, mould, electrical faults, failed irrigation, pest activity, storm damage and security concerns are easier to address when noticed early.'], bullets: ['Scheduled physical inspections', 'Property-specific checklist', 'Photographic digital report', 'Clear issue priority', 'Owner notification', 'Qualified contractor coordination where authorised'] },
-      { title: 'A practical local point of contact', paragraphs: ['Property ownership abroad can otherwise mean fragmented messages between neighbours, cleaners, gardeners and tradespeople. Guardemar provides a clear point of coordination without pretending to replace specialist professionals.'] },
+      { title: 'The core service is home watch', paragraphs: ['Scheduled inspections provide the recurring record of visible property condition. The Home Watch Algarve page explains the inspection method, reporting and escalation process in detail.'] },
+      { title: 'Property care adds practical continuity', paragraphs: ['Around that inspection routine, Guardemar can hold keys, coordinate approved contractor access, check the home before an arrival and record visible follow-up after agreed work.'], bullets: ['Secure key handling', 'Authorised property access', 'Arrival and departure support', 'Issue and contractor coordination', 'Property-specific records', 'Owner communication'] },
+      { title: 'A supporting role, not technical replacement', paragraphs: ['Guardemar provides visual oversight and coordination. Cleaning, gardening, pool maintenance and regulated or technical work remain the responsibility of suitable third-party professionals.'] },
     ],
   },
   'home-watch': {
@@ -29,12 +29,12 @@ export const standardPages: Record<string, StandardPage> = {
     ],
   },
   services: {
-    eyebrow: 'Services', title: 'Property care built around the home, not a booking calendar.',
-    description: 'Scheduled inspections form the core service. Practical extras help overseas owners coordinate access, arrivals, handovers, maintenance and unexpected events.',
-    aside: 'Specialist work is coordinated with suitable third-party professionals where required.',
+    eyebrow: 'Service Directory', title: 'Specific support around the core home watch routine.',
+    description: 'Use this directory to review key holding, contractor access, arrival preparation, property handover and post-weather visual checks.',
+    aside: 'Home Watch Algarve remains the primary commercial service. These guides explain individual supporting tasks.',
     sections: [
-      { title: 'Scheduled property care', paragraphs: ['Regular visits create continuity. Guardemar becomes familiar with the property, its normal condition, key systems and owner instructions. Changes are easier to recognise and report.'], bullets: ['Monthly, fortnightly or weekly scheduled inspections', 'Secure key holding', 'Digital visit reports', 'Issue prioritisation', 'Mail checks', 'Contractor access and coordination'] },
-      { title: 'Support when something needs to happen', paragraphs: ['Owners can request additional visits for a delivery, trade appointment, meter reading, post-departure check or weather-related concern. Availability and fees are confirmed before attendance.'] },
+      { title: 'Begin with the inspection service', paragraphs: ['The recurring relationship is defined on the Home Watch Algarve page. This directory avoids repeating that full explanation and instead sets out the scope of additional services.'] },
+      { title: 'Support when something needs to happen', paragraphs: ['Owners can review a focused guide for a delivery, trade appointment, meter reading, post-departure check, handover or weather-related concern. Availability and fees are confirmed before attendance.'] },
       { title: 'Qualified work stays with qualified people', paragraphs: ['Guardemar coordinates cleaning, gardening, pool maintenance, air-conditioning service, plumbing, electrical work, pest control, painting and other services. Regulated or technical work is assigned to appropriately qualified third parties.'] },
     ],
   },
