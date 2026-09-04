@@ -54,6 +54,41 @@ begin
   exception when insufficient_privilege then
     null;
   end;
+  begin
+    perform public.get_admin_dashboard();
+    raise exception 'Customer A called get_admin_dashboard';
+  exception when insufficient_privilege then null;
+  end;
+  begin
+    perform public.list_admin_clients('');
+    raise exception 'Customer A called list_admin_clients';
+  exception when insufficient_privilege then null;
+  end;
+  begin
+    perform public.get_admin_client('10000000-0000-4000-8000-00000000000a');
+    raise exception 'Customer A called get_admin_client';
+  exception when insufficient_privilege then null;
+  end;
+  begin
+    perform public.list_admin_properties();
+    raise exception 'Customer A called list_admin_properties';
+  exception when insufficient_privilege then null;
+  end;
+  begin
+    perform public.get_admin_property('20000000-0000-4000-8000-00000000000a');
+    raise exception 'Customer A called get_admin_property';
+  exception when insufficient_privilege then null;
+  end;
+  begin
+    perform public.create_admin_client('{}'::jsonb);
+    raise exception 'Customer A called create_admin_client';
+  exception when insufficient_privilege then null;
+  end;
+  begin
+    perform public.create_admin_property('{}'::jsonb);
+    raise exception 'Customer A called create_admin_property';
+  exception when insufficient_privilege then null;
+  end;
 end;
 $$;
 
@@ -77,6 +112,16 @@ reset role;
 set local role anon;
 do $$
 begin
+  if has_function_privilege('anon', 'public.initialise_profile()', 'execute')
+    or has_function_privilege('anon', 'public.get_admin_dashboard()', 'execute')
+    or has_function_privilege('anon', 'public.list_admin_clients(text)', 'execute')
+    or has_function_privilege('anon', 'public.get_admin_client(uuid)', 'execute')
+    or has_function_privilege('anon', 'public.list_admin_properties()', 'execute')
+    or has_function_privilege('anon', 'public.get_admin_property(uuid)', 'execute')
+    or has_function_privilege('anon', 'public.create_admin_client(jsonb)', 'execute')
+    or has_function_privilege('anon', 'public.create_admin_property(jsonb)', 'execute') then
+    raise exception 'Anonymous RPC execution privilege detected';
+  end if;
   begin
     perform count(*) from public.properties;
     raise exception 'Unauthenticated property access succeeded';

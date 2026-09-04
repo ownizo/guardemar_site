@@ -2,9 +2,18 @@ import assert from 'node:assert/strict'
 import { readFile } from 'node:fs/promises'
 import test from 'node:test'
 
-const migrationPath = new URL('../supabase/migrations/20260904090000_create_guardemar_portal_foundation.sql', import.meta.url)
+const migrationPath = new URL('../supabase/migrations/20260904074341_create_guardemar_portal_foundation.sql', import.meta.url)
 const legacyMigrationPath = new URL('../netlify/database/migrations/20260904070446_create_portal_foundation/migration.sql', import.meta.url)
 const sensitiveTables = ['profiles', 'clients', 'client_users', 'properties', 'property_users', 'staff_profiles', 'audit_events']
+const privilegedRpcs = [
+  'get_admin_dashboard()',
+  'list_admin_clients(text)',
+  'get_admin_client(uuid)',
+  'list_admin_properties()',
+  'get_admin_property(uuid)',
+  'create_admin_client(jsonb)',
+  'create_admin_property(jsonb)',
+]
 
 test('all Phase 1 operational tables are created in the Supabase migration', async () => {
   const migration = await readFile(migrationPath, 'utf8')
@@ -27,6 +36,40 @@ test('normal role checks use profiles rather than email', async () => {
   )
   assert.match(roleFunction, /from public\.profiles where id = \(select auth\.uid\(\)\)/)
   assert.doesNotMatch(roleFunction, /email/i)
+})
+
+test('privileged RPCs fail closed through the stored staff role', async () => {
+  const migration = await readFile(migrationPath, 'utf8')
+  for (const signature of privilegedRpcs) {
+    const name = signature.slice(0, signature.indexOf('('))
+    const start = migration.indexOf(`create function public.${name}`)
+    const end = migration.indexOf('\n$$;', start) + 4
+    const definition = migration.slice(start, end)
+    assert.notEqual(start, -1, `${name} definition is missing`)
+    assert.match(definition, /security definer[\s\S]*set search_path = ''/i)
+    assert.match(definition, /perform private\.require_staff\(\)/i)
+  }
+})
+
+test('RPC execution grants exclude anonymous users', async () => {
+  const migration = await readFile(migrationPath, 'utf8')
+  for (const signature of ['initialise_profile()', ...privilegedRpcs]) {
+    const escaped = signature.replace(/[()]/g, '\\$&')
+    assert.match(migration, new RegExp(`revoke all on function public\\.${escaped} from public, anon;`, 'i'))
+    assert.match(migration, new RegExp(`grant execute on function public\\.${escaped} to authenticated;`, 'i'))
+  }
+})
+
+test('initial profile bootstrap cannot accept a caller-selected role', async () => {
+  const migration = await readFile(migrationPath, 'utf8')
+  const start = migration.indexOf('create function public.initialise_profile()')
+  const end = migration.indexOf('\n$$;', start) + 4
+  const definition = migration.slice(start, end)
+  assert.match(definition, /current_user_id uuid := auth\.uid\(\)/)
+  assert.match(definition, /current_email text := lower\(coalesce\(auth\.jwt\(\) ->> 'email', ''\)\)/)
+  assert.match(definition, /current_email = 'info@guardemar\.com'[\s\S]*not exists \(select 1 from public\.profiles where role = 'admin'\)/)
+  assert.match(definition, /requested_role public\.application_role := 'customer'/)
+  assert.doesNotMatch(definition, /requested_role\s*:=\s*\([^)]*->>/i)
 })
 
 test('private client and property columns are not granted for direct reads', async () => {
