@@ -3,6 +3,7 @@ import { readFile } from 'node:fs/promises'
 import test from 'node:test'
 
 const migrationPath = new URL('../supabase/migrations/20260904120000_create_phase2_inspection_operations.sql', import.meta.url)
+const photoHardeningMigrationPath = new URL('../supabase/migrations/20260904170000_harden_field_photo_registration.sql', import.meta.url)
 const fieldApiPath = new URL('../netlify/functions/inspection-api.mts', import.meta.url)
 const adminRoutePath = new URL('../src/routes/admin.inspections_.$id.tsx', import.meta.url)
 
@@ -32,7 +33,6 @@ test('field credentials are hashed, scoped, expiring and revocable', async () =>
   assert.match(migration, /inspection\.status in \('scheduled', 'in_progress'\)/)
   assert.match(fieldApi, /createHash\('sha256'\)\.update\(rawToken\)\.digest\('hex'\)/)
   assert.doesNotMatch(fieldApi, /console\.(log|error)\([^\n]*rawToken/)
-  assert.doesNotMatch(fieldApi, /SERVICE_ROLE/)
 })
 
 test('mobile links keep plaintext tokens out of request paths', async () => {
@@ -64,11 +64,22 @@ test('private buckets and storage policies protect unpublished content', async (
   assert.match(migration, /inspection_storage_field_insert[\s\S]*field_access_allows/)
 })
 
-test('normal Phase 2 operations do not use a service-role credential', async () => {
-  const files = await Promise.all([
-    readFile(fieldApiPath, 'utf8'),
+test('service-role use is isolated to signed field upload authorisation and cleanup', async () => {
+  const fieldApi = await readFile(fieldApiPath, 'utf8')
+  const normalOperations = await Promise.all([
     readFile(new URL('../netlify/functions/portal-api.mts', import.meta.url), 'utf8'),
     readFile(new URL('../src/lib/portal/supabase.ts', import.meta.url), 'utf8'),
   ])
-  assert.doesNotMatch(files.join('\n'), /SUPABASE_SERVICE_ROLE_KEY/)
+  assert.match(fieldApi, /createSignedUploadUrl\(storagePath, \{ upsert: false \}\)/)
+  assert.match(fieldApi, /SUPABASE_SERVICE_ROLE_KEY/)
+  assert.doesNotMatch(normalOperations.join('\n'), /SUPABASE_SERVICE_ROLE_KEY/)
+  assert.doesNotMatch(fieldApi, /SUPABASE_JWT_SECRET|issueStorageJwt|storageToken/)
+})
+
+test('photo registration requires the uploaded object and exact area-item relationship', async () => {
+  const migration = await readFile(photoHardeningMigrationPath, 'utf8')
+  assert.match(migration, /item\.inspection_area_id = area_uuid/)
+  assert.match(migration, /object\.bucket_id = 'inspection-photos' and object\.name = storage_path/)
+  assert.match(migration, /property_uuid::text \|\| '\/' \|\| inspection_uuid::text \|\| '\/' \|\| area_uuid::text/)
+  assert.match(migration, /\(jpg\|png\|webp\)/)
 })
