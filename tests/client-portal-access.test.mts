@@ -45,6 +45,17 @@ test('admin portal access routes call the production RPC contract', async () => 
   assert.match(source, /segments\.length === 3[\s\S]*delete_admin_client/)
 })
 
+test('PUT property access is accepted and reaches the existing property-access handler', async () => {
+  const source = await readFile(portalApiPath, 'utf8')
+  const whitelist = source.indexOf("['GET', 'POST', 'PUT', 'PATCH', 'DELETE'].includes(req.method)")
+  const propertyAccessRoute = source.indexOf("segments[5] === 'properties' && req.method === 'PUT'")
+  const propertyAccessRpc = source.indexOf("rpc('set_client_portal_property_access'", propertyAccessRoute)
+
+  assert.notEqual(whitelist, -1)
+  assert.notEqual(propertyAccessRoute, -1)
+  assert.ok(propertyAccessRpc > propertyAccessRoute)
+})
+
 test('client detail supports multiple users, property selection, and confirmed revocation', async () => {
   const [component, route] = await Promise.all([readFile(componentPath, 'utf8'), readFile(clientRoutePath, 'utf8')])
   assert.match(route, /profile\.role === 'admin'[\s\S]*<ClientPortalAccess/)
