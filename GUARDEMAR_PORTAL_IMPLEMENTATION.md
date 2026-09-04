@@ -31,6 +31,10 @@ After applying it:
 
 The existing login, password recovery, reset-password and invitation-only account flow remains based on Supabase Auth. Private route guards initialise the Supabase profile, fetch `profiles.role` and enforce customer or staff/admin route access.
 
+Supabase Auth URL Configuration must use `https://guardemar.com` as the production Site URL. The production redirect allow-list must include `https://guardemar.com/reset-password`, `https://guardemar.com/admin/login` and `https://guardemar.com/portal/login`. Localhost equivalents may remain allow-listed for local development only. Password-reset requests derive their redirect origin from the active browser, so production mail returns to Guardemar while local development continues to use its local origin.
+
+Public user registration must remain disabled in the Supabase Auth provider settings. Users are created only through Guardemar's invitation process; the browser application contains no sign-up or OTP registration call. The public `/auth/v1/settings` response should report `disable_signup: true` before production invitation testing is signed off.
+
 The portal Function forwards the caller's bearer token through Supabase JS. Customer property reads use direct table queries protected by RLS. Staff CRM reads and transactional creates use authenticated RPCs that check `profiles.role`; they do not use service-role or direct database credentials.
 
 ## Validation

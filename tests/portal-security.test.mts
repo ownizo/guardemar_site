@@ -103,6 +103,27 @@ test('service-role credentials are not required by Phase 1 code', async () => {
   for (const file of files) assert.doesNotMatch(await readFile(file, 'utf8'), /SUPABASE_SERVICE_ROLE_KEY/)
 })
 
+test('browser auth redirects use the active origin and the dedicated reset route', async () => {
+  const auth = await readFile(new URL('../src/components/portal/auth.tsx', import.meta.url), 'utf8')
+  assert.match(auth, /const origin = window\.location\.origin/)
+  assert.match(auth, /resetPasswordForEmail\(email, \{ redirectTo: `\$\{origin\}\/reset-password` \}\)/)
+  assert.doesNotMatch(auth, /localhost(?::\d+)?/i)
+})
+
+test('password recovery validates the callback and removes auth parameters', async () => {
+  const auth = await readFile(new URL('../src/components/portal/auth.tsx', import.meta.url), 'utf8')
+  assert.match(auth, /event === 'PASSWORD_RECOVERY'/)
+  assert.match(auth, /setRecoveryState\('invalid'\)/)
+  assert.match(auth, /clearAuthCallbackParameters\(\)/)
+  assert.match(auth, /to="\/portal\/forgot-password">Request a new reset link/)
+})
+
+test('invitation-only authentication exposes no public signup flow', async () => {
+  const auth = await readFile(new URL('../src/components/portal/auth.tsx', import.meta.url), 'utf8')
+  assert.doesNotMatch(auth, /\.auth\.signUp|signInWithOtp/)
+  assert.match(auth, /Access is by invitation only\./)
+})
+
 test('the immutable applied Netlify migration remains present', async () => {
   const migration = await readFile(legacyMigrationPath, 'utf8')
   assert.match(migration, /CREATE TABLE "profiles"/)
