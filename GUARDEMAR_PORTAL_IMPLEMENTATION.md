@@ -62,3 +62,35 @@ The forward-only migration is `supabase/migrations/20260904120000_create_phase2_
 Mobile notes and status changes are debounced, marked Saving/Saved/Connection problem, protected by per-record revisions so stale responses cannot mark newer edits saved, and retained in session storage for refresh recovery. Image uploads are resized in-browser where supported, remain private and are registered relationally only after Storage succeeds.
 
 Initial templates are conservative and editable at the database level. A dedicated template-management screen remains a future enhancement; checklist content is not hard-coded into the application runtime.
+
+## Phase 2 customer inspection retention and downloads
+
+### 180-day customer availability
+
+Published customer reports remain eligible for portal access for exactly 4,320 elapsed hours from `published_at`, equivalent to 180 24-hour days. PostgreSQL `timestamptz` is authoritative. Access is allowed only while `now() < published_at + interval '4320 hours'`; at the exact expiry timestamp it is denied. The portal displays the calculated `available_until` date and shows a quiet remaining-days reminder during the final 30 days.
+
+The inspection list retains a lightweight historical entry after expiry, including the inspection date, frozen property name and an “Inspection report expired” label. It does not expose the published report body or media. Direct report requests show a calm expired state and link back to inspection history.
+
+This is a customer-portal access rule, not an internal destruction policy. Expiry is enforced in customer RPCs, inspection/area/item/photo RLS policies and private Storage policies. Staff and administrator access continues under the existing internal role rules. Database metadata and source photographs remain retained internally in this phase; no destructive job, automatic object deletion or permanent public archive was introduced.
+
+### PDF architecture and authorisation
+
+`inspection-files.mts` is an authenticated Netlify Function dedicated to customer report files. Every PDF, photograph and ZIP request validates the Supabase session, requires the stored `customer` role, and calls `get_customer_inspection`. That database function returns data only when the customer has a `property_users` relationship, the inspection is published and the 180-day window remains open. Browser-supplied UUIDs and Storage paths are never treated as authorisation.
+
+The PDF renderer consumes only the immutable `published_snapshot`. It does not query raw inspection review tables and therefore cannot include internal notes, hidden photographs, unapproved observations, access tokens, auth identifiers or system metadata. Future snapshots include frozen property location, timing, inspector presentation, area/item order and photo-to-item relationships. Existing snapshots remain unchanged, so historical property and room names are not silently regenerated from later configuration.
+
+PDFs are produced on demand with Guardemar branding, contact details from `src/config/site.ts`, overall and per-area statuses, approved observations and recommendations, client-approved photographs, report ID, page numbering and concise visual-inspection wording. No duplicate PDF is stored. Images are auto-rotated, resized to a maximum 1,200 × 900 report resolution and compressed as quality-appropriate JPEGs before embedding.
+
+### Gallery and photograph downloads
+
+The customer report presents optimised 520 × 390 thumbnails and an authenticated 1,800 × 1,350 display variant instead of loading original phone images into the page. The accessible lightbox provides area and checklist context, captions, photo numbering, visible previous/next/download/close controls and Escape/arrow-key navigation. It adapts to desktop, tablet and mobile layouts.
+
+Individual downloads return the retained customer-quality source object with a sanitised property/date/area filename. “Download all photos” creates a private ZIP on demand from only the photo IDs frozen into the client-visible snapshot. Neither ZIPs nor photo variants are permanently stored.
+
+Customer media responses are delivered through the authenticated Function with `private, no-store`; no customer signed Storage URL is exposed. Internal administration continues to use 15-minute signed previews where already implemented. The earlier field-upload credential remains a separate one-hour, inspection-scoped operational token and does not grant customer report access.
+
+### Validation and future retention
+
+Automated tests cover day 1, day 179, the exact day-180 timestamp and post-expiry behaviour; report, photograph, PDF and ZIP authorisation; cross-customer and unpublished denial; immutable snapshot fields; approved/hidden field projection; PDF image optimisation and exclusions; and accessible gallery controls. `tests/phase2-rls.sql` additionally verifies that expired customer rows and photo metadata are denied while lightweight history and internal administrator retention remain available.
+
+A future internal retention policy may define an archival storage tier and eventual physical deletion schedule after considering contractual, legal, operational, incident, insurance and audit requirements. No physical deletion should be implemented until Guardemar approves that separate policy and its recovery/audit implications.

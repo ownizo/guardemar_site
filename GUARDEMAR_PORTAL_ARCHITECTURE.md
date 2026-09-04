@@ -92,6 +92,10 @@ For direct private Storage upload, the Function can mint a one-hour custom Supab
 
 `inspection-photos` is private, limited to supported image MIME types and 10 MB objects. Customer download requires a published authorised inspection plus approved photo metadata. Field access requires an active token for the exact inspection. `staff-photos` is also private; administrators upload, staff can view, and customers can view a report-enabled photograph only when it belongs to an inspector on one of their published inspections.
 
+Customer report eligibility ends at the exact instant `published_at + 4,320 hours`. Report RPCs, relational RLS and Storage RLS enforce the same boundary. Expired reports remain visible only as lightweight history returned by a narrow SECURITY DEFINER list function; the frozen report body and media paths are not customer-readable after expiry.
+
+Customer PDFs, display variants, original photo downloads and ZIP archives are generated or streamed on demand by an authenticated Netlify Function. The Function begins with the frozen client snapshot and validates customer role, property relationship, publication and current eligibility before touching private Storage. It does not issue customer-facing Storage signed URLs or persist generated artifacts.
+
 ### Review workflow
 
 Field completion records `completed_at`, moves directly to `awaiting_review`, revokes the mobile token and never publishes. Review supports area/item statuses, observations, recommendations and explicit client-visible controls, plus photo approval and final/internal summaries. “Preview as client” uses the same projection as publication. “Share with client” is a separate confirmed administrator action.
