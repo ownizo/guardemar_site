@@ -4,7 +4,7 @@ title: "Buying a Holiday Home in Portugal: Your Post-Completion Property Checkli
 summary: "The practical information and records to organise immediately after receiving the keys."
 categories: ["Buying", "Guides"]
 slug: "buying-holiday-home-portugal-post-completion-checklist"
-author: "Guardemar"
+author: "Hugo Gonçalves"
 ---
 
 Completion is a legal milestone, but it is also the point at which practical responsibility for the property becomes yours. Before returning abroad, create a usable record of the home.
@@ -27,4 +27,4 @@ Keep condominium, alarm, insurance, pool, garden and trusted technical contacts 
 
 ## Put care in place before leaving
 
-Choose an inspection schedule, document how systems should be left and arrange the first visit. Guardemar’s [property handover service](/property-handover/) starts from €149 and can lead directly into ongoing [private property care](/property-care/).
+Choose an inspection schedule, document how systems should be left and arrange the first visit. Guardemar’s [property handover service](/property-handover-algarve/) can lead directly into ongoing [private property care](/property-care/).

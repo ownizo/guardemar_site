@@ -4,7 +4,7 @@ title: "How Often Should an Empty Property in Portugal Be Inspected?"
 summary: "A sensible way to choose between monthly, fortnightly and weekly property inspections."
 categories: ["Inspections", "Ownership"]
 slug: "how-often-inspect-empty-property-portugal"
-author: "Guardemar"
+author: "Hugo Gonçalves"
 ---
 
 There is no single correct inspection frequency for every empty property. The right schedule reflects the home’s complexity, vacancy period, season and the owner’s tolerance for time passing before a problem is noticed.

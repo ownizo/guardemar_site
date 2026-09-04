@@ -70,7 +70,7 @@ function HomePage() {
         <div>
           <SectionHeading eyebrow="Digital reporting" title="No vague updates. A documented inspection after every visit." />
           <p className="section-text">Owners receive a clear digital record with the visit date, checklist status, observations, photographs, issues detected and recommended next steps.</p>
-          <ButtonLink to="/home-watch/" variant="outline">See how Home Watch works</ButtonLink>
+          <ButtonLink to="/home-watch-algarve/" variant="outline">See how Home Watch works</ButtonLink>
         </div>
         <ReportPreview />
       </section>

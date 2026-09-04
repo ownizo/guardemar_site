@@ -4,7 +4,7 @@ title: "A Preventive Maintenance Calendar for an Algarve Second Home"
 summary: "How to organise recurring property tasks without confusing inspections with specialist maintenance."
 categories: ["Maintenance", "Ownership"]
 slug: "preventive-maintenance-calendar-algarve-second-home"
-author: "Guardemar"
+author: "Hugo Gonçalves"
 ---
 
 Preventive care is easier when recurring tasks are visible in one calendar. The aim is not to create unnecessary work, but to avoid discovering that servicing, cleaning or renewal was missed because each provider assumed someone else was tracking it.

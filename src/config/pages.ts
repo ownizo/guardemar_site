@@ -83,7 +83,7 @@ export const standardPages: Record<string, StandardPage> = {
   'property-handover': {
     eyebrow: 'Guardemar Property Handover', title: 'Start your ownership with a documented property baseline.',
     description: 'A practical handover service for owners who have recently completed a purchase and need an organised record of the home before spending time abroad.',
-    aside: 'Indicative fee from €149, subject to property size, systems and assessment.',
+    aside: 'Scope and pricing are confirmed after reviewing the property, access and required records.',
     sections: [
       { title: 'A useful starting record', paragraphs: ['The handover creates a clear visual reference and gathers practical information that can otherwise remain scattered between agents, sellers and contractors.'], bullets: ['Property condition photography', 'Key inventory', 'Utility meter readings', 'Visible equipment inventory', 'Alarm and Wi-Fi details where provided', 'Air-conditioning, pool and irrigation overview', 'Visible defects', 'Important contractor and contact details', 'Basic owner property file'] },
       { title: 'Continue with monthly care', paragraphs: ['The documented baseline naturally supports ongoing Guardemar Care. Future visits can be compared against the established property profile and owner instructions.'] },
