@@ -7,7 +7,8 @@ Production website for GUARDEMAR, serving overseas owners of holiday homes and s
 - TanStack Start, TanStack Router, React 19 and TypeScript
 - Tailwind CSS 4 with the editorial design system in `src/styles.css`
 - Content Collections for Markdown articles
-- Netlify Forms for property assessment enquiries
+- Netlify Forms for backup property assessment records
+- Netlify Functions and Resend for enquiry email delivery
 - Netlify deployment adapter and redirect rules
 
 ## Local Development
@@ -88,7 +89,29 @@ Use URL Inspection to confirm the selected canonical, mobile rendering and index
 
 ## Forms
 
-`src/components/assessment-form.tsx` posts URL-encoded submissions to `/__forms.html`. Every React field name must also exist in `public/__forms.html`, which registers the form with Netlify during deployment.
+`src/components/assessment-form.tsx` posts URL-encoded submissions to the Netlify Function at `/api/contact`. The Function performs server-side validation, honeypot and timing checks, applies Netlify rate limiting, and sends the internal notification through Resend. The browser only displays success after the internal notification has been accepted by Resend.
+
+After successful email delivery, the browser also posts the same payload to `/__forms.html` as a best-effort backup record in Netlify Forms. Every React field name must therefore also exist in `public/__forms.html`, which registers the form during deployment. Do not configure a separate Netlify Forms email notification unless duplicate emails are intentionally required.
+
+### Required environment variables
+
+Set these variables in the Netlify project environment. Never commit the Resend API key.
+
+```text
+RESEND_API_KEY=
+CONTACT_NOTIFICATION_EMAIL=info@guardemar.com
+CONTACT_FROM_EMAIL=website@guardemar.com
+```
+
+`CONTACT_NOTIFICATION_EMAIL` and `CONTACT_FROM_EMAIL` have the values above as code defaults, but setting them explicitly makes production configuration visible. `RESEND_API_KEY` is required; the form returns an error rather than showing false success when it is missing or when Resend rejects the notification.
+
+### Resend domain verification
+
+Add and verify `guardemar.com` in the Resend Domains dashboard before production use. Resend generates the current DNS records for the domain; copy the generated DKIM TXT record and the SPF MX and TXT records for Resend's sending subdomain exactly as displayed, wait for DNS propagation, and confirm the domain shows **Verified**. The names and values are account/domain-specific, so they are deliberately not hard-coded here. Resend's guide is at `https://resend.com/docs/dashboard/domains/introduction`.
+
+Do not replace or remove the existing MX records used by the `info@guardemar.com` mailbox. Mailbox receiving records and Resend's transactional-sending authentication records serve separate purposes. Once verification is complete, the Function sends from `Guardemar Website <website@guardemar.com>`, sends notifications to `info@guardemar.com`, and sets Reply-To to the customer's validated address.
+
+For a production smoke test, submit one genuine test enquiry after deployment and confirm the notification, Reply-To address, customer acknowledgement and Netlify Forms backup record. Automated tests use mocked email senders and do not send live messages.
 
 ## Analytics Hooks
 
@@ -115,7 +138,8 @@ The current consent interface exposes Strictly Necessary and Analytics categorie
 - One necessary local-storage record, `guardemar_cookie_consent`, stores consent version, Analytics choice and update time.
 - No Google Analytics, Google Tag Manager, Meta Pixel, advertising tags, CRM, payment service or external database integration was found.
 - No YouTube, Google Maps, Instagram, Facebook or other third-party embed was found.
-- Netlify provides hosting, content delivery and Netlify Forms processing.
+- Netlify provides hosting, content delivery, Functions and backup form processing.
+- Resend provides transactional delivery for enquiry notifications and customer acknowledgements.
 - Google Fonts stylesheet and font resources are requested for the existing site typography; this is disclosed in the Privacy and Cookie Policies.
 - Optional analytics events are suppressed before consent and after withdrawal. Accepting Analytics currently loads no provider because none is configured.
 

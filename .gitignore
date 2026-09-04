@@ -1,0 +1,6 @@
+node_modules/
+dist/
+.netlify/*
+!.netlify/features/
+!.netlify/features/netlify-forms
+!.netlify/results.md

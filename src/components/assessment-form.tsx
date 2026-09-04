@@ -8,10 +8,13 @@ const serviceOptions = ['Scheduled inspections', 'Key holding', 'Arrival prepara
 export function AssessmentForm() {
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
   const started = useRef(false)
+  const startedAt = useRef<number | null>(null)
+  const submissionId = useRef<string | null>(null)
 
   function noteStart() {
     if (!started.current) {
       started.current = true
+      startedAt.current = Date.now()
       trackEvent('assessment_form_start')
     }
   }
@@ -20,16 +23,38 @@ export function AssessmentForm() {
     event.preventDefault()
     setStatus('sending')
     const form = event.currentTarget
+    const formData = new FormData(form)
+    const currentUrl = new URL(window.location.href)
+    submissionId.current ||= crypto.randomUUID()
+    startedAt.current ||= Date.now()
+    formData.set('submission_id', submissionId.current)
+    formData.set('started_at', String(startedAt.current))
+    formData.set('source_page', currentUrl.href)
+    formData.set('referrer', document.referrer)
+    for (const field of ['source', 'medium', 'campaign', 'content', 'term']) {
+      formData.set(`utm_${field}`, currentUrl.searchParams.get(`utm_${field}`) ?? '')
+    }
+    const body = new URLSearchParams(formData as never).toString()
+
     try {
-      const response = await fetch('/__forms.html', {
+      const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(new FormData(form) as never).toString(),
+        body,
       })
       if (!response.ok) throw new Error()
       setStatus('success')
       trackEvent('assessment_form_submit')
       form.reset()
+      started.current = false
+      startedAt.current = null
+      submissionId.current = null
+
+      fetch('/__forms.html', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body,
+      }).catch(() => console.warn('Netlify form backup storage failed.'))
     } catch {
       setStatus('error')
     }
@@ -38,6 +63,15 @@ export function AssessmentForm() {
   return <form className="assessment-form" name="property-assessment" method="POST" data-netlify="true" netlify-honeypot="bot-field" onSubmit={submit} onFocus={noteStart}>
     <input type="hidden" name="form-name" value="property-assessment" />
     <input type="hidden" name="subject" value="New Guardemar property assessment enquiry" />
+    <input type="hidden" name="submission_id" />
+    <input type="hidden" name="started_at" />
+    <input type="hidden" name="source_page" />
+    <input type="hidden" name="referrer" />
+    <input type="hidden" name="utm_source" />
+    <input type="hidden" name="utm_medium" />
+    <input type="hidden" name="utm_campaign" />
+    <input type="hidden" name="utm_content" />
+    <input type="hidden" name="utm_term" />
     <p className="honeypot"><label>Leave this empty<input name="bot-field" /></label></p>
     <div className="form-grid">
       <label>First name<input name="first_name" required autoComplete="given-name" /></label>
@@ -60,6 +94,6 @@ export function AssessmentForm() {
     <label>Message<textarea name="message" rows={5} placeholder="Tell us about the property and what would help." /></label>
     <p className="form-privacy-notice">By submitting this form, you ask Guardemar to contact you about your enquiry. Your information is handled in accordance with our <a href="/privacy-policy/">Privacy Policy</a>.</p>
     <button className="button primary" disabled={status === 'sending'}>{status === 'sending' ? 'Sending…' : <>Request my assessment <Send size={16} /></>}</button>
-    <div aria-live="polite">{status === 'success' && <p className="form-success">Thank you. Your property assessment request has been received. Guardemar will contact you using the details provided.</p>}{status === 'error' && <p className="form-error">The form could not be sent. Please email info@guardemar.com or message us on WhatsApp.</p>}</div>
+    <div aria-live="polite">{status === 'success' && <div className="form-success"><p>Thank you. Your enquiry has been sent to Guardemar.</p><p>We'll review the information and get back to you shortly.</p></div>}{status === 'error' && <p className="form-error">We couldn't send your enquiry just now. Please try again or contact us directly at <a href="mailto:info@guardemar.com">info@guardemar.com</a> or <a href="tel:+351928226570">+351 928 226 570</a>.</p>}</div>
   </form>
 }
