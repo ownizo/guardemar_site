@@ -31,6 +31,29 @@ export type AdminClient = {
   propertyCount: number
 }
 
+export type PortalAccessStatus = 'not_activated' | 'invitation_pending' | 'active'
+
+export type AdminClientPortalUser = {
+  userId: string
+  email: string
+  displayName: string | null
+  relationshipLabel: string | null
+  status: PortalAccessStatus
+  propertyIds: string[]
+}
+
+export type AdminClientPortalAccess = {
+  users: AdminClientPortalUser[]
+}
+
+export type InvitedPortalUser = {
+  userId: string
+  email: string
+  displayName: string
+  status: 'invitation_pending'
+  invitedAt: string
+}
+
 export type ClientDeletionItem = {
   id: string
   name: string

@@ -1,6 +1,6 @@
 import { getPortalSupabase } from './supabase'
 
-export type PortalErrorCode = 'VALIDATION_ERROR' | 'AUTHENTICATION_ERROR' | 'AUTHORIZATION_ERROR' | 'DATABASE_ERROR' | 'STORAGE_ERROR' | 'UPLOAD_ERROR' | 'AUTOSAVE_ERROR' | 'CREATE_RPC_ERROR' | 'POST_CREATE_REFRESH_ERROR' | 'NAVIGATION_ERROR' | 'NETWORK_ERROR'
+export type PortalErrorCode = 'VALIDATION_ERROR' | 'AUTHENTICATION_ERROR' | 'AUTHORIZATION_ERROR' | 'AUTH_INVITE_ERROR' | 'CLIENT_LINK_ERROR' | 'PROPERTY_ACCESS_ERROR' | 'DATABASE_ERROR' | 'STORAGE_ERROR' | 'UPLOAD_ERROR' | 'AUTOSAVE_ERROR' | 'CREATE_RPC_ERROR' | 'POST_CREATE_REFRESH_ERROR' | 'POST_SAVE_REFRESH_ERROR' | 'NAVIGATION_ERROR' | 'NETWORK_ERROR'
 
 export class PortalApiError extends Error {
   constructor(
@@ -40,6 +40,30 @@ export async function portalApi<T>(path: string, init?: RequestInit): Promise<T>
   } catch (error) {
     if (error instanceof PortalApiError) throw error
     throw new PortalApiError('The portal could not connect. Please try again.', 0, 'NETWORK_ERROR', 'network')
+  }
+}
+
+export async function portalInviteApi<T>(input: { email: string; firstName: string; lastName: string }): Promise<T> {
+  const supabase = await getPortalSupabase()
+  const { data } = await supabase.auth.getSession()
+  const token = data.session?.access_token
+  if (!token) throw new PortalApiError('Your session has expired. Please sign in again.', 401, 'AUTHENTICATION_ERROR', 'authentication')
+
+  try {
+    const response = await fetch('/api/portal-invite', {
+      method: 'POST',
+      headers: { Accept: 'application/json', Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify(input),
+    })
+    const body = await response.json().catch(() => ({})) as { error?: string | { code?: PortalErrorCode; message?: string; stage?: string; details?: string; hint?: string } }
+    if (!response.ok) {
+      const error = typeof body.error === 'object' ? body.error : undefined
+      throw new PortalApiError(error?.message ?? (typeof body.error === 'string' ? body.error : 'The invitation could not be sent.'), response.status, error?.code ?? 'AUTH_INVITE_ERROR', error?.stage ?? 'auth_invite', error?.details, error?.hint)
+    }
+    return body as T
+  } catch (error) {
+    if (error instanceof PortalApiError) throw error
+    throw new PortalApiError('The invitation service could not connect. Please try again.', 0, 'AUTH_INVITE_ERROR', 'network')
   }
 }
 

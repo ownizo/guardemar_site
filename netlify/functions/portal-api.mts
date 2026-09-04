@@ -69,7 +69,7 @@ const reviewContent = z.object({
 type ApplicationRole = 'customer' | 'staff' | 'admin'
 type PortalProfile = { id: string; role: ApplicationRole; firstName: string | null; lastName: string | null; phone: string | null }
 type AuthenticatedRequest = { user: User; supabase: SupabaseClient }
-type PortalErrorCode = 'VALIDATION_ERROR' | 'AUTHENTICATION_ERROR' | 'AUTHORIZATION_ERROR' | 'DATABASE_ERROR' | 'STORAGE_ERROR' | 'UPLOAD_ERROR' | 'AUTOSAVE_ERROR' | 'CREATE_RPC_ERROR' | 'POST_CREATE_REFRESH_ERROR' | 'NAVIGATION_ERROR' | 'NETWORK_ERROR'
+type PortalErrorCode = 'VALIDATION_ERROR' | 'AUTHENTICATION_ERROR' | 'AUTHORIZATION_ERROR' | 'AUTH_INVITE_ERROR' | 'CLIENT_LINK_ERROR' | 'PROPERTY_ACCESS_ERROR' | 'DATABASE_ERROR' | 'STORAGE_ERROR' | 'UPLOAD_ERROR' | 'AUTOSAVE_ERROR' | 'CREATE_RPC_ERROR' | 'POST_CREATE_REFRESH_ERROR' | 'POST_SAVE_REFRESH_ERROR' | 'NAVIGATION_ERROR' | 'NETWORK_ERROR'
 type SupabaseError = { message: string; code?: string; details?: string; hint?: string }
 type SupabaseResult<T> = { data: T | null; error: SupabaseError | null; status?: number }
 
@@ -85,6 +85,65 @@ function requireData<T>(result: SupabaseResult<T>, code: PortalErrorCode = 'NETW
   if (result.error) throw new PortalRequestError(result.error.message, code, stage, result.status, result.error.code, result.error.details, result.error.hint)
   if (result.data === null) throw new PortalRequestError('The database returned no data.', code, stage, result.status)
   return result.data
+}
+
+function recordValue(record: Record<string, unknown>, keys: string[]) {
+  for (const key of keys) if (record[key] !== undefined && record[key] !== null) return record[key]
+  return undefined
+}
+
+function stringValue(record: Record<string, unknown>, keys: string[]) {
+  const value = recordValue(record, keys)
+  return typeof value === 'string' && value.trim() ? value.trim() : null
+}
+
+function normalisePropertyIds(value: unknown) {
+  if (!Array.isArray(value)) return []
+  return value.flatMap((item) => {
+    if (typeof item === 'string') return [item]
+    if (!item || typeof item !== 'object') return []
+    const record = item as Record<string, unknown>
+    const id = stringValue(record, ['id', 'property_id', 'propertyId', 'property_uuid', 'propertyUuid'])
+    return id ? [id] : []
+  })
+}
+
+function normalisePortalAccess(value: unknown) {
+  const root = value && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, unknown> : null
+  const candidateUsers = Array.isArray(value)
+    ? value
+    : recordValue(root ?? {}, ['portalUsers', 'portal_users', 'users', 'linkedUsers', 'linked_users'])
+  const rawUsers = Array.isArray(candidateUsers) ? candidateUsers : root && stringValue(root, ['user_id', 'userId', 'auth_user_id', 'authUserId']) ? [root] : []
+
+  return {
+    users: rawUsers.flatMap((item) => {
+      if (!item || typeof item !== 'object') return []
+      const record = item as Record<string, unknown>
+      const authRecord = recordValue(record, ['authUser', 'auth_user', 'user'])
+      const authUser = authRecord && typeof authRecord === 'object' && !Array.isArray(authRecord) ? authRecord as Record<string, unknown> : {}
+      const metadataValue = recordValue(authUser, ['user_metadata']) ?? recordValue(record, ['user_metadata', 'metadata'])
+      const metadata = metadataValue && typeof metadataValue === 'object' && !Array.isArray(metadataValue) ? metadataValue as Record<string, unknown> : {}
+      const merged = { ...metadata, ...authUser, ...record }
+      const userId = stringValue(merged, ['user_id', 'userId', 'auth_user_id', 'authUserId', 'id'])
+      if (!userId) return []
+      const firstName = stringValue(merged, ['first_name', 'firstName'])
+      const lastName = stringValue(merged, ['last_name', 'lastName'])
+      const displayName = stringValue(merged, ['display_name', 'displayName', 'full_name', 'fullName', 'name']) ?? ([firstName, lastName].filter(Boolean).join(' ') || null)
+      const rawStatus = stringValue(merged, ['status', 'invite_status', 'inviteStatus'])?.toLowerCase()
+      const active = Boolean(stringValue(merged, ['last_sign_in_at', 'lastSignInAt', 'email_confirmed_at', 'emailConfirmedAt', 'confirmed_at', 'confirmedAt']))
+      const pending = Boolean(stringValue(merged, ['invited_at', 'invitedAt', 'confirmation_sent_at', 'confirmationSentAt']))
+      const status = rawStatus === 'active' || active ? 'active' : rawStatus?.includes('pending') || pending ? 'invitation_pending' : 'not_activated'
+      const propertyValue = recordValue(merged, ['property_ids', 'propertyIds', 'property_uuids', 'propertyUuids', 'properties', 'property_access', 'propertyAccess'])
+      return [{
+        userId,
+        email: stringValue(merged, ['email']) ?? '',
+        displayName,
+        relationshipLabel: stringValue(merged, ['relationship_label', 'relationshipLabel']),
+        status,
+        propertyIds: normalisePropertyIds(propertyValue),
+      }]
+    }),
+  }
 }
 
 async function authenticate(req: Request): Promise<AuthenticatedRequest | Response> {
@@ -220,11 +279,57 @@ async function routeRequest(req: Request, authenticated: AuthenticatedRequest) {
       return json(result)
     }
 
-    if (req.method === 'DELETE' && segments[1] === 'clients' && segments[2]) {
+    if (req.method === 'DELETE' && segments[1] === 'clients' && segments[2] && segments.length === 3) {
       await requireAdmin(authenticated)
       const clientId = z.string().uuid().parse(segments[2])
       const result = requireData(await authenticated.supabase.rpc('delete_admin_client', { client_uuid: clientId }), 'NETWORK_ERROR', 'delete_rpc')
       return json(result)
+    }
+
+    if (segments[1] === 'clients' && segments[2] && segments[3] === 'portal-access' && segments.length === 4 && req.method === 'GET') {
+      await requireAdmin(authenticated)
+      const clientId = z.string().uuid().parse(segments[2])
+      const result = await authenticated.supabase.rpc('get_admin_client_portal_access', { client_uuid: clientId })
+      if (result.error) throw new PortalRequestError(result.error.message, 'POST_SAVE_REFRESH_ERROR', 'portal_access_lookup', result.status, result.error.code, result.error.details, result.error.hint)
+      return json({ portalAccess: normalisePortalAccess(result.data) })
+    }
+
+    if (segments[1] === 'clients' && segments[2] && segments[3] === 'portal-users' && segments[4] === 'link' && req.method === 'POST') {
+      await requireAdmin(authenticated)
+      const clientId = z.string().uuid().parse(segments[2])
+      const input = z.object({ userId: z.string().uuid(), relationshipLabel: z.string().trim().max(120).optional().or(z.literal('')) }).parse(await req.json())
+      const linkedUser = requireData(await authenticated.supabase.rpc('link_client_portal_user', {
+        client_uuid: clientId,
+        user_uuid: input.userId,
+        relationship_label: input.relationshipLabel || null,
+      }), 'CLIENT_LINK_ERROR', 'client_link')
+      return json({ linkedUser })
+    }
+
+    if (segments[1] === 'clients' && segments[2] && segments[3] === 'portal-users' && segments[4] && segments[5] === 'properties' && req.method === 'PUT') {
+      await requireAdmin(authenticated)
+      const clientId = z.string().uuid().parse(segments[2])
+      const userId = z.string().uuid().parse(segments[4])
+      const input = z.object({ propertyIds: z.array(z.string().uuid()).max(250) }).parse(await req.json())
+      const client = requireData(await authenticated.supabase.rpc('get_admin_client', { client_uuid: clientId }), 'PROPERTY_ACCESS_ERROR', 'property_scope_lookup') as Record<string, unknown>
+      const allowedPropertyIds = new Set(normalisePropertyIds(recordValue(client, ['properties'])))
+      if (input.propertyIds.some((propertyId) => !allowedPropertyIds.has(propertyId))) {
+        return publicError(400, 'Property access can only be assigned from this client’s property list.', 'PROPERTY_ACCESS_ERROR', 'property_scope_validation')
+      }
+      const propertyAccess = requireData(await authenticated.supabase.rpc('set_client_portal_property_access', {
+        client_uuid: clientId,
+        user_uuid: userId,
+        property_uuids: input.propertyIds,
+      }), 'PROPERTY_ACCESS_ERROR', 'property_access_save')
+      return json({ propertyAccess })
+    }
+
+    if (segments[1] === 'clients' && segments[2] && segments[3] === 'portal-users' && segments[4] && segments.length === 5 && req.method === 'DELETE') {
+      await requireAdmin(authenticated)
+      const clientId = z.string().uuid().parse(segments[2])
+      const userId = z.string().uuid().parse(segments[4])
+      const revoked = requireData(await authenticated.supabase.rpc('revoke_client_portal_access', { client_uuid: clientId, user_uuid: userId }), 'PROPERTY_ACCESS_ERROR', 'portal_access_revoke')
+      return json({ revoked })
     }
 
     if (req.method === 'GET' && segments[1] === 'clients' && segments[2]) {
