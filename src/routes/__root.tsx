@@ -41,7 +41,7 @@ function Header() {
     <header className="site-header">
       <div className="shell header-inner">
         <Link to="/" className="wordmark" aria-label="Guardemar home">
-          <img src="/guardemar-logo.png" alt="GUARDEMAR — Private Property Care" width="180" height="42" />
+          <img src="/guardemar-logo.svg" alt="GUARDEMAR — Private Property Care" width="180" height="42" />
         </Link>
         <nav className={open ? 'main-nav open' : 'main-nav'} aria-label="Primary navigation">
           {navigation.map((item) => <Link key={item.href} to={item.href} onClick={() => setOpen(false)} activeProps={{ className: 'active' }}>{item.label}</Link>)}
