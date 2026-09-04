@@ -46,6 +46,9 @@ export default async (req: Request, context: Context) => {
       const response = data as Record<string, unknown>
       const accessId = z.string().uuid().parse(response.access_id)
       delete response.access_id
+      const areas = Array.isArray(response.areas) ? response.areas : []
+      response.areas = areas
+      response.inspection_setup_complete = response.inspection_setup_complete !== false && areas.length > 0
       const jwtSecret = Netlify.env.get('SUPABASE_JWT_SECRET')
       return json({ ...response, storageToken: jwtSecret ? issueStorageJwt(accessId, jwtSecret) : null })
     }

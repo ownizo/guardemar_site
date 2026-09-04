@@ -80,6 +80,7 @@ export type AdminProperty = {
   active: boolean
   clientId: string
   clientName: string
+  activeAreaCount: number
 }
 
 export type InspectionResultStatus = 'good' | 'attention' | 'urgent' | 'not_checked' | 'not_applicable'
