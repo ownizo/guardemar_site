@@ -4,7 +4,7 @@ title: "Why Small Water Leaks Are a Major Risk in Vacant Homes"
 summary: "The reason detection time matters when no one is living in the property."
 categories: ["Property Risks", "Vacant Homes"]
 slug: "small-water-leaks-vacant-homes"
-author: "Guardemar"
+author: "Hugo Gonçalves"
 ---
 
 A small leak in an occupied home is often noticed through sound, smell, a damp cupboard or a change underfoot. In a vacant home, the same warning can remain unseen.

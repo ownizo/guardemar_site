@@ -7,6 +7,42 @@
   port = 8888
 
 [[redirects]]
+  from = "https://www.guardemar.com/*"
+  to = "https://guardemar.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/home-watch"
+  to = "/home-watch-algarve/"
+  status = 301
+
+[[redirects]]
+  from = "/home-watch/"
+  to = "/home-watch-algarve/"
+  status = 301
+
+[[redirects]]
+  from = "/property-handover"
+  to = "/property-handover-algarve/"
+  status = 301
+
+[[redirects]]
+  from = "/property-handover/"
+  to = "/property-handover-algarve/"
+  status = 301
+
+[[redirects]]
+  from = "/arrival-preparation"
+  to = "/arrival-preparation-algarve/"
+  status = 301
+
+[[redirects]]
+  from = "/arrival-preparation/"
+  to = "/arrival-preparation-algarve/"
+  status = 301
+
+[[redirects]]
   from = "/posts/:slug"
   to = "/blog/:slug"
   status = 301

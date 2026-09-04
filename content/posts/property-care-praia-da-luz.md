@@ -4,7 +4,7 @@ title: "Property Care in Praia da Luz: A Guide for Overseas Owners"
 summary: "How regular inspections support villas, townhouses and apartments left empty in Praia da Luz."
 categories: ["Local Guides", "Property Care"]
 slug: "property-care-praia-da-luz-guide"
-author: "Guardemar"
+author: "Hugo Gonçalves"
 ---
 
 Praia da Luz has long attracted international owners, with apartments, townhouses and villas used for part of the year. That pattern makes continuity between visits particularly important.

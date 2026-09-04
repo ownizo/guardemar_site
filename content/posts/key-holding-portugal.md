@@ -4,7 +4,7 @@ title: "Key Holding in Portugal: What Overseas Property Owners Should Know"
 summary: "Good practice for coding, storing, authorising and recording access to a second home."
 categories: ["Security", "Ownership"]
 slug: "key-holding-portugal-overseas-owners"
-author: "Guardemar"
+author: "Hugo Gonçalves"
 ---
 
 Key holding is valuable because it makes an authorised local response possible. It also creates a responsibility to manage access carefully.

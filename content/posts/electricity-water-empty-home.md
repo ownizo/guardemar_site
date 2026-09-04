@@ -4,7 +4,7 @@ title: "Should You Leave Electricity and Water On in an Empty Holiday Home?"
 summary: "Why the answer depends on appliances, safety systems, insurance, season and the individual property."
 categories: ["Property Risks", "Ownership"]
 slug: "electricity-water-empty-holiday-home"
-author: "Guardemar"
+author: "Hugo Gonçalves"
 ---
 
 There is no universal instruction for leaving water and electricity on or off. A sensible decision considers the property’s equipment, security systems, insurance requirements and the practical consequences of each choice.

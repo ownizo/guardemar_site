@@ -1,4 +1,4 @@
-export type AnalyticsEvent = 'assessment_form_start' | 'assessment_form_submit' | 'phone_click' | 'email_click' | 'whatsapp_click' | 'plan_cta_click' | 'area_page_cta' | 'blog_cta'
+export type AnalyticsEvent = 'assessment_form_start' | 'assessment_form_submit' | 'phone_click' | 'email_click' | 'whatsapp_click' | 'plan_cta_click' | 'service_cta_click' | 'area_page_cta' | 'blog_cta'
 
 export function trackEvent(event: AnalyticsEvent, parameters: Record<string, string> = {}) {
   if (typeof window === 'undefined') return

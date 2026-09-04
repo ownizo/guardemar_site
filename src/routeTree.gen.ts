@@ -9,20 +9,28 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as VacantPropertyInspectionsAlgarveRouteImport } from './routes/vacant-property-inspections-algarve'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as StormPropertyChecksAlgarveRouteImport } from './routes/storm-property-checks-algarve'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as SecondHomeCareAlgarveRouteImport } from './routes/second-home-care-algarve'
 import { Route as PropertyManagementAlgarveRouteImport } from './routes/property-management-algarve'
+import { Route as PropertyHandoverAlgarveRouteImport } from './routes/property-handover-algarve'
 import { Route as PropertyHandoverRouteImport } from './routes/property-handover'
 import { Route as PropertyCareRouteImport } from './routes/property-care'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as PlansRouteImport } from './routes/plans'
+import { Route as KeyHoldingAlgarveRouteImport } from './routes/key-holding-algarve'
 import { Route as InspectionChecklistRouteImport } from './routes/inspection-checklist'
 import { Route as HowItWorksRouteImport } from './routes/how-it-works'
+import { Route as HomeWatchAlgarveRouteImport } from './routes/home-watch-algarve'
 import { Route as HomeWatchRouteImport } from './routes/home-watch'
+import { Route as HolidayHomeChecksAlgarveRouteImport } from './routes/holiday-home-checks-algarve'
 import { Route as HolidayHomeCareRouteImport } from './routes/holiday-home-care'
 import { Route as CookiePolicyRouteImport } from './routes/cookie-policy'
+import { Route as ContractorAccessAlgarveRouteImport } from './routes/contractor-access-algarve'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as ArrivalPreparationAlgarveRouteImport } from './routes/arrival-preparation-algarve'
 import { Route as ArrivalPreparationRouteImport } from './routes/arrival-preparation'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
@@ -30,13 +38,26 @@ import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as AreasIndexRouteImport } from './routes/areas.index'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AreasAreaRouteImport } from './routes/areas.$area'
+import { Route as AboutHugoGoncalvesRouteImport } from './routes/about.hugo-goncalves'
 import { Route as BlogCategoryCategoryRouteImport } from './routes/blog.category.$category'
 
+const VacantPropertyInspectionsAlgarveRoute =
+  VacantPropertyInspectionsAlgarveRouteImport.update({
+    id: '/vacant-property-inspections-algarve',
+    path: '/vacant-property-inspections-algarve',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StormPropertyChecksAlgarveRoute =
+  StormPropertyChecksAlgarveRouteImport.update({
+    id: '/storm-property-checks-algarve',
+    path: '/storm-property-checks-algarve',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ServicesRoute = ServicesRouteImport.update({
   id: '/services',
   path: '/services',
@@ -53,6 +74,11 @@ const PropertyManagementAlgarveRoute =
     path: '/property-management-algarve',
     getParentRoute: () => rootRouteImport,
   } as any)
+const PropertyHandoverAlgarveRoute = PropertyHandoverAlgarveRouteImport.update({
+  id: '/property-handover-algarve',
+  path: '/property-handover-algarve',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PropertyHandoverRoute = PropertyHandoverRouteImport.update({
   id: '/property-handover',
   path: '/property-handover',
@@ -73,6 +99,11 @@ const PlansRoute = PlansRouteImport.update({
   path: '/plans',
   getParentRoute: () => rootRouteImport,
 } as any)
+const KeyHoldingAlgarveRoute = KeyHoldingAlgarveRouteImport.update({
+  id: '/key-holding-algarve',
+  path: '/key-holding-algarve',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const InspectionChecklistRoute = InspectionChecklistRouteImport.update({
   id: '/inspection-checklist',
   path: '/inspection-checklist',
@@ -83,11 +114,22 @@ const HowItWorksRoute = HowItWorksRouteImport.update({
   path: '/how-it-works',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HomeWatchAlgarveRoute = HomeWatchAlgarveRouteImport.update({
+  id: '/home-watch-algarve',
+  path: '/home-watch-algarve',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HomeWatchRoute = HomeWatchRouteImport.update({
   id: '/home-watch',
   path: '/home-watch',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HolidayHomeChecksAlgarveRoute =
+  HolidayHomeChecksAlgarveRouteImport.update({
+    id: '/holiday-home-checks-algarve',
+    path: '/holiday-home-checks-algarve',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const HolidayHomeCareRoute = HolidayHomeCareRouteImport.update({
   id: '/holiday-home-care',
   path: '/holiday-home-care',
@@ -98,11 +140,22 @@ const CookiePolicyRoute = CookiePolicyRouteImport.update({
   path: '/cookie-policy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ContractorAccessAlgarveRoute = ContractorAccessAlgarveRouteImport.update({
+  id: '/contractor-access-algarve',
+  path: '/contractor-access-algarve',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ArrivalPreparationAlgarveRoute =
+  ArrivalPreparationAlgarveRouteImport.update({
+    id: '/arrival-preparation-algarve',
+    path: '/arrival-preparation-algarve',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ArrivalPreparationRoute = ArrivalPreparationRouteImport.update({
   id: '/arrival-preparation',
   path: '/arrival-preparation',
@@ -138,6 +191,11 @@ const AreasAreaRoute = AreasAreaRouteImport.update({
   path: '/areas/$area',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutHugoGoncalvesRoute = AboutHugoGoncalvesRouteImport.update({
+  id: '/hugo-goncalves',
+  path: '/hugo-goncalves',
+  getParentRoute: () => AboutRoute,
+} as any)
 const BlogCategoryCategoryRoute = BlogCategoryCategoryRouteImport.update({
   id: '/blog/category/$category',
   path: '/blog/category/$category',
@@ -146,22 +204,31 @@ const BlogCategoryCategoryRoute = BlogCategoryCategoryRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/about': typeof AboutRouteWithChildren
   '/arrival-preparation': typeof ArrivalPreparationRoute
+  '/arrival-preparation-algarve': typeof ArrivalPreparationAlgarveRoute
   '/contact': typeof ContactRoute
+  '/contractor-access-algarve': typeof ContractorAccessAlgarveRoute
   '/cookie-policy': typeof CookiePolicyRoute
   '/holiday-home-care': typeof HolidayHomeCareRoute
+  '/holiday-home-checks-algarve': typeof HolidayHomeChecksAlgarveRoute
   '/home-watch': typeof HomeWatchRoute
+  '/home-watch-algarve': typeof HomeWatchAlgarveRoute
   '/how-it-works': typeof HowItWorksRoute
   '/inspection-checklist': typeof InspectionChecklistRoute
+  '/key-holding-algarve': typeof KeyHoldingAlgarveRoute
   '/plans': typeof PlansRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/property-care': typeof PropertyCareRoute
   '/property-handover': typeof PropertyHandoverRoute
+  '/property-handover-algarve': typeof PropertyHandoverAlgarveRoute
   '/property-management-algarve': typeof PropertyManagementAlgarveRoute
   '/second-home-care-algarve': typeof SecondHomeCareAlgarveRoute
   '/services': typeof ServicesRoute
+  '/storm-property-checks-algarve': typeof StormPropertyChecksAlgarveRoute
   '/terms': typeof TermsRoute
+  '/vacant-property-inspections-algarve': typeof VacantPropertyInspectionsAlgarveRoute
+  '/about/hugo-goncalves': typeof AboutHugoGoncalvesRoute
   '/areas/$area': typeof AreasAreaRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/areas/': typeof AreasIndexRoute
@@ -170,22 +237,31 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/about': typeof AboutRouteWithChildren
   '/arrival-preparation': typeof ArrivalPreparationRoute
+  '/arrival-preparation-algarve': typeof ArrivalPreparationAlgarveRoute
   '/contact': typeof ContactRoute
+  '/contractor-access-algarve': typeof ContractorAccessAlgarveRoute
   '/cookie-policy': typeof CookiePolicyRoute
   '/holiday-home-care': typeof HolidayHomeCareRoute
+  '/holiday-home-checks-algarve': typeof HolidayHomeChecksAlgarveRoute
   '/home-watch': typeof HomeWatchRoute
+  '/home-watch-algarve': typeof HomeWatchAlgarveRoute
   '/how-it-works': typeof HowItWorksRoute
   '/inspection-checklist': typeof InspectionChecklistRoute
+  '/key-holding-algarve': typeof KeyHoldingAlgarveRoute
   '/plans': typeof PlansRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/property-care': typeof PropertyCareRoute
   '/property-handover': typeof PropertyHandoverRoute
+  '/property-handover-algarve': typeof PropertyHandoverAlgarveRoute
   '/property-management-algarve': typeof PropertyManagementAlgarveRoute
   '/second-home-care-algarve': typeof SecondHomeCareAlgarveRoute
   '/services': typeof ServicesRoute
+  '/storm-property-checks-algarve': typeof StormPropertyChecksAlgarveRoute
   '/terms': typeof TermsRoute
+  '/vacant-property-inspections-algarve': typeof VacantPropertyInspectionsAlgarveRoute
+  '/about/hugo-goncalves': typeof AboutHugoGoncalvesRoute
   '/areas/$area': typeof AreasAreaRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/areas': typeof AreasIndexRoute
@@ -195,22 +271,31 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/about': typeof AboutRouteWithChildren
   '/arrival-preparation': typeof ArrivalPreparationRoute
+  '/arrival-preparation-algarve': typeof ArrivalPreparationAlgarveRoute
   '/contact': typeof ContactRoute
+  '/contractor-access-algarve': typeof ContractorAccessAlgarveRoute
   '/cookie-policy': typeof CookiePolicyRoute
   '/holiday-home-care': typeof HolidayHomeCareRoute
+  '/holiday-home-checks-algarve': typeof HolidayHomeChecksAlgarveRoute
   '/home-watch': typeof HomeWatchRoute
+  '/home-watch-algarve': typeof HomeWatchAlgarveRoute
   '/how-it-works': typeof HowItWorksRoute
   '/inspection-checklist': typeof InspectionChecklistRoute
+  '/key-holding-algarve': typeof KeyHoldingAlgarveRoute
   '/plans': typeof PlansRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/property-care': typeof PropertyCareRoute
   '/property-handover': typeof PropertyHandoverRoute
+  '/property-handover-algarve': typeof PropertyHandoverAlgarveRoute
   '/property-management-algarve': typeof PropertyManagementAlgarveRoute
   '/second-home-care-algarve': typeof SecondHomeCareAlgarveRoute
   '/services': typeof ServicesRoute
+  '/storm-property-checks-algarve': typeof StormPropertyChecksAlgarveRoute
   '/terms': typeof TermsRoute
+  '/vacant-property-inspections-algarve': typeof VacantPropertyInspectionsAlgarveRoute
+  '/about/hugo-goncalves': typeof AboutHugoGoncalvesRoute
   '/areas/$area': typeof AreasAreaRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/areas/': typeof AreasIndexRoute
@@ -223,20 +308,29 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/arrival-preparation'
+    | '/arrival-preparation-algarve'
     | '/contact'
+    | '/contractor-access-algarve'
     | '/cookie-policy'
     | '/holiday-home-care'
+    | '/holiday-home-checks-algarve'
     | '/home-watch'
+    | '/home-watch-algarve'
     | '/how-it-works'
     | '/inspection-checklist'
+    | '/key-holding-algarve'
     | '/plans'
     | '/privacy-policy'
     | '/property-care'
     | '/property-handover'
+    | '/property-handover-algarve'
     | '/property-management-algarve'
     | '/second-home-care-algarve'
     | '/services'
+    | '/storm-property-checks-algarve'
     | '/terms'
+    | '/vacant-property-inspections-algarve'
+    | '/about/hugo-goncalves'
     | '/areas/$area'
     | '/blog/$slug'
     | '/areas/'
@@ -247,20 +341,29 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/arrival-preparation'
+    | '/arrival-preparation-algarve'
     | '/contact'
+    | '/contractor-access-algarve'
     | '/cookie-policy'
     | '/holiday-home-care'
+    | '/holiday-home-checks-algarve'
     | '/home-watch'
+    | '/home-watch-algarve'
     | '/how-it-works'
     | '/inspection-checklist'
+    | '/key-holding-algarve'
     | '/plans'
     | '/privacy-policy'
     | '/property-care'
     | '/property-handover'
+    | '/property-handover-algarve'
     | '/property-management-algarve'
     | '/second-home-care-algarve'
     | '/services'
+    | '/storm-property-checks-algarve'
     | '/terms'
+    | '/vacant-property-inspections-algarve'
+    | '/about/hugo-goncalves'
     | '/areas/$area'
     | '/blog/$slug'
     | '/areas'
@@ -271,20 +374,29 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/arrival-preparation'
+    | '/arrival-preparation-algarve'
     | '/contact'
+    | '/contractor-access-algarve'
     | '/cookie-policy'
     | '/holiday-home-care'
+    | '/holiday-home-checks-algarve'
     | '/home-watch'
+    | '/home-watch-algarve'
     | '/how-it-works'
     | '/inspection-checklist'
+    | '/key-holding-algarve'
     | '/plans'
     | '/privacy-policy'
     | '/property-care'
     | '/property-handover'
+    | '/property-handover-algarve'
     | '/property-management-algarve'
     | '/second-home-care-algarve'
     | '/services'
+    | '/storm-property-checks-algarve'
     | '/terms'
+    | '/vacant-property-inspections-algarve'
+    | '/about/hugo-goncalves'
     | '/areas/$area'
     | '/blog/$slug'
     | '/areas/'
@@ -294,22 +406,30 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
+  AboutRoute: typeof AboutRouteWithChildren
   ArrivalPreparationRoute: typeof ArrivalPreparationRoute
+  ArrivalPreparationAlgarveRoute: typeof ArrivalPreparationAlgarveRoute
   ContactRoute: typeof ContactRoute
+  ContractorAccessAlgarveRoute: typeof ContractorAccessAlgarveRoute
   CookiePolicyRoute: typeof CookiePolicyRoute
   HolidayHomeCareRoute: typeof HolidayHomeCareRoute
+  HolidayHomeChecksAlgarveRoute: typeof HolidayHomeChecksAlgarveRoute
   HomeWatchRoute: typeof HomeWatchRoute
+  HomeWatchAlgarveRoute: typeof HomeWatchAlgarveRoute
   HowItWorksRoute: typeof HowItWorksRoute
   InspectionChecklistRoute: typeof InspectionChecklistRoute
+  KeyHoldingAlgarveRoute: typeof KeyHoldingAlgarveRoute
   PlansRoute: typeof PlansRoute
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   PropertyCareRoute: typeof PropertyCareRoute
   PropertyHandoverRoute: typeof PropertyHandoverRoute
+  PropertyHandoverAlgarveRoute: typeof PropertyHandoverAlgarveRoute
   PropertyManagementAlgarveRoute: typeof PropertyManagementAlgarveRoute
   SecondHomeCareAlgarveRoute: typeof SecondHomeCareAlgarveRoute
   ServicesRoute: typeof ServicesRoute
+  StormPropertyChecksAlgarveRoute: typeof StormPropertyChecksAlgarveRoute
   TermsRoute: typeof TermsRoute
+  VacantPropertyInspectionsAlgarveRoute: typeof VacantPropertyInspectionsAlgarveRoute
   AreasAreaRoute: typeof AreasAreaRoute
   BlogSlugRoute: typeof BlogSlugRoute
   AreasIndexRoute: typeof AreasIndexRoute
@@ -319,11 +439,25 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/vacant-property-inspections-algarve': {
+      id: '/vacant-property-inspections-algarve'
+      path: '/vacant-property-inspections-algarve'
+      fullPath: '/vacant-property-inspections-algarve'
+      preLoaderRoute: typeof VacantPropertyInspectionsAlgarveRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/terms': {
       id: '/terms'
       path: '/terms'
       fullPath: '/terms'
       preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/storm-property-checks-algarve': {
+      id: '/storm-property-checks-algarve'
+      path: '/storm-property-checks-algarve'
+      fullPath: '/storm-property-checks-algarve'
+      preLoaderRoute: typeof StormPropertyChecksAlgarveRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/services': {
@@ -345,6 +479,13 @@ declare module '@tanstack/react-router' {
       path: '/property-management-algarve'
       fullPath: '/property-management-algarve'
       preLoaderRoute: typeof PropertyManagementAlgarveRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/property-handover-algarve': {
+      id: '/property-handover-algarve'
+      path: '/property-handover-algarve'
+      fullPath: '/property-handover-algarve'
+      preLoaderRoute: typeof PropertyHandoverAlgarveRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/property-handover': {
@@ -375,6 +516,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlansRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/key-holding-algarve': {
+      id: '/key-holding-algarve'
+      path: '/key-holding-algarve'
+      fullPath: '/key-holding-algarve'
+      preLoaderRoute: typeof KeyHoldingAlgarveRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/inspection-checklist': {
       id: '/inspection-checklist'
       path: '/inspection-checklist'
@@ -389,11 +537,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HowItWorksRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/home-watch-algarve': {
+      id: '/home-watch-algarve'
+      path: '/home-watch-algarve'
+      fullPath: '/home-watch-algarve'
+      preLoaderRoute: typeof HomeWatchAlgarveRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/home-watch': {
       id: '/home-watch'
       path: '/home-watch'
       fullPath: '/home-watch'
       preLoaderRoute: typeof HomeWatchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/holiday-home-checks-algarve': {
+      id: '/holiday-home-checks-algarve'
+      path: '/holiday-home-checks-algarve'
+      fullPath: '/holiday-home-checks-algarve'
+      preLoaderRoute: typeof HolidayHomeChecksAlgarveRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/holiday-home-care': {
@@ -410,11 +572,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CookiePolicyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/contractor-access-algarve': {
+      id: '/contractor-access-algarve'
+      path: '/contractor-access-algarve'
+      fullPath: '/contractor-access-algarve'
+      preLoaderRoute: typeof ContractorAccessAlgarveRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contact': {
       id: '/contact'
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/arrival-preparation-algarve': {
+      id: '/arrival-preparation-algarve'
+      path: '/arrival-preparation-algarve'
+      fullPath: '/arrival-preparation-algarve'
+      preLoaderRoute: typeof ArrivalPreparationAlgarveRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/arrival-preparation': {
@@ -466,6 +642,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AreasAreaRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about/hugo-goncalves': {
+      id: '/about/hugo-goncalves'
+      path: '/hugo-goncalves'
+      fullPath: '/about/hugo-goncalves'
+      preLoaderRoute: typeof AboutHugoGoncalvesRouteImport
+      parentRoute: typeof AboutRoute
+    }
     '/blog/category/$category': {
       id: '/blog/category/$category'
       path: '/blog/category/$category'
@@ -476,24 +659,42 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AboutRouteChildren {
+  AboutHugoGoncalvesRoute: typeof AboutHugoGoncalvesRoute
+}
+
+const AboutRouteChildren: AboutRouteChildren = {
+  AboutHugoGoncalvesRoute: AboutHugoGoncalvesRoute,
+}
+
+const AboutRouteWithChildren = AboutRoute._addFileChildren(AboutRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
+  AboutRoute: AboutRouteWithChildren,
   ArrivalPreparationRoute: ArrivalPreparationRoute,
+  ArrivalPreparationAlgarveRoute: ArrivalPreparationAlgarveRoute,
   ContactRoute: ContactRoute,
+  ContractorAccessAlgarveRoute: ContractorAccessAlgarveRoute,
   CookiePolicyRoute: CookiePolicyRoute,
   HolidayHomeCareRoute: HolidayHomeCareRoute,
+  HolidayHomeChecksAlgarveRoute: HolidayHomeChecksAlgarveRoute,
   HomeWatchRoute: HomeWatchRoute,
+  HomeWatchAlgarveRoute: HomeWatchAlgarveRoute,
   HowItWorksRoute: HowItWorksRoute,
   InspectionChecklistRoute: InspectionChecklistRoute,
+  KeyHoldingAlgarveRoute: KeyHoldingAlgarveRoute,
   PlansRoute: PlansRoute,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
   PropertyCareRoute: PropertyCareRoute,
   PropertyHandoverRoute: PropertyHandoverRoute,
+  PropertyHandoverAlgarveRoute: PropertyHandoverAlgarveRoute,
   PropertyManagementAlgarveRoute: PropertyManagementAlgarveRoute,
   SecondHomeCareAlgarveRoute: SecondHomeCareAlgarveRoute,
   ServicesRoute: ServicesRoute,
+  StormPropertyChecksAlgarveRoute: StormPropertyChecksAlgarveRoute,
   TermsRoute: TermsRoute,
+  VacantPropertyInspectionsAlgarveRoute: VacantPropertyInspectionsAlgarveRoute,
   AreasAreaRoute: AreasAreaRoute,
   BlogSlugRoute: BlogSlugRoute,
   AreasIndexRoute: AreasIndexRoute,
@@ -503,12 +704,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}

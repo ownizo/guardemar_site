@@ -4,7 +4,7 @@ title: "What to Check After a Storm in the Algarve"
 summary: "A safe, visual post-weather checklist for owners concerned about an empty property."
 categories: ["Weather", "Property Risks"]
 slug: "what-check-after-storm-algarve"
-author: "Guardemar"
+author: "Hugo Gonçalves"
 ---
 
 After significant wind or rain, overseas owners often want confirmation that a property is accessible and shows no obvious damage. The first rule is safety: inspection should wait until local conditions and access are suitable.
@@ -25,4 +25,4 @@ Look for water staining, damp patches, debris near openings, power interruption 
 
 Send photographs, location and priority to the owner. If immediate specialist action is sensible, follow the agreed authorisation process.
 
-Post-weather visits depend on conditions, safe access, plan and operational availability. No responsible property care service can guarantee inspection after every weather event. Learn about [home watch and storm checks](/home-watch/) or review [Guardemar plans](/plans/).
+Post-weather visits depend on conditions, safe access, plan and operational availability. No responsible property care service can guarantee inspection after every weather event. Learn about [home watch and storm checks](/home-watch-algarve/) or review [Guardemar plans](/plans/).

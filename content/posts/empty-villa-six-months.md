@@ -4,7 +4,7 @@ title: "What Happens to an Algarve Villa When It Is Empty for Six Months?"
 summary: "Why water, humidity, exterior systems and small changes deserve attention during a long vacant period."
 categories: ["Vacant Homes", "Villas"]
 slug: "empty-algarve-villa-six-months"
-author: "Guardemar"
+author: "Hugo Gonçalves"
 ---
 
 An empty villa is not static. Six months can include temperature changes, Atlantic weather, irrigation cycles, power interruptions and long periods without water moving through taps and drains.

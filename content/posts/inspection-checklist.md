@@ -4,7 +4,7 @@ title: "The Holiday Home Inspection Checklist Every Algarve Owner Should Have"
 summary: "The essential categories that turn a casual property visit into a consistent and useful inspection."
 categories: ["Inspections", "Guides"]
 slug: "holiday-home-inspection-checklist-algarve"
-author: "Guardemar"
+author: "Hugo Gonçalves"
 ---
 
 An inspection checklist makes property visits repeatable. It reduces the chance that a visitor remembers the post but overlooks the cupboard beneath the kitchen sink.
