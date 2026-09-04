@@ -417,7 +417,11 @@ async function routeRequest(req: Request, authenticated: AuthenticatedRequest) {
     }
 
     if (req.method === 'POST' && pathname === 'admin/inspections') {
-      const inspection = requireData(await authenticated.supabase.rpc('create_inspection', { inspection_data: inspectionInput.parse(await req.json()) }), 'DATABASE_ERROR', 'inspection_create')
+      const result = await authenticated.supabase.rpc('create_inspection', { inspection_data: inspectionInput.parse(await req.json()) })
+      if (result.error?.message === 'This property has no inspection areas configured.') {
+        return publicError(409, result.error.message, 'VALIDATION_ERROR', 'inspection_create')
+      }
+      const inspection = requireData(result, 'DATABASE_ERROR', 'inspection_create')
       return json({ inspection }, { status: 201 })
     }
 

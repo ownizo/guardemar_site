@@ -210,6 +210,9 @@ h1,h2,h3 { font-family:'Manrope',sans-serif; color:var(--navy); letter-spacing:-
 .confirm-copy p { margin: 0; }
 .confirm-copy p + p { margin-top: .8rem; }
 .confirm-warning { padding: .8rem; border-left: 3px solid #9a7441; background: #fbf8f2; color: #75551f; }
+.inspection-area-warning { display: flex; align-items: flex-start; gap: .75rem; }
+.inspection-area-warning > svg { flex: 0 0 auto; width: 20px; margin-top: .15rem; }
+.inspection-area-warning p { margin: .2rem 0 .75rem; }
 .confirm-actions { display: flex; justify-content: flex-end; gap: .75rem; }
 .portal-access-panel { margin-top: 1rem; border-top: 4px solid var(--private-blue); }
 .portal-access-heading { align-items: center; padding-bottom: 1rem; border-bottom: 1px solid var(--private-line); }
@@ -328,3 +331,4 @@ h1,h2,h3 { font-family:'Manrope',sans-serif; color:var(--navy); letter-spacing:-
 @media(max-width:760px){.inspection-downloads{grid-template-columns:1fr}.inspection-action-buttons{align-items:stretch;flex-direction:column}.inspection-action-buttons button{width:100%}.photo-lightbox{padding:0}.lightbox-panel{width:100%;height:100%;max-height:none}.lightbox-panel>footer{display:grid;grid-template-columns:1fr 1fr}.lightbox-panel>footer button:last-child{grid-column:2}.lightbox-image img,.lightbox-image .photo-placeholder{max-height:none}.portal-report-list .expired-inspection{grid-template-columns:auto 1fr}}
 @media(max-width:480px){.lightbox-panel>footer{grid-template-columns:1fr}.lightbox-panel>footer button:last-child{grid-column:auto}.lightbox-panel>header{padding:.8rem}.lightbox-caption,.lightbox-panel>footer{padding:.8rem}}
 @media print{.inspection-downloads,.photo-download,.report-photo-button>span,.photo-lightbox{display:none!important}.report-photo-button{cursor:default}}
+.field-error.setup-incomplete{background:#102f54}.field-error.setup-incomplete>p{max-width:34rem;line-height:1.6;color:#d9e5ea}.field-error.setup-incomplete .field-error-eyebrow{margin:1rem 0 0;color:#9eb9c8;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em}.field-error.setup-incomplete h1{margin:.45rem 0;font-family:Georgia,serif}.field-error.setup-incomplete dl{display:flex;gap:2rem;margin:1.25rem 0 0;padding-top:1rem;border-top:1px solid rgba(255,255,255,.18);text-align:left}.field-error.setup-incomplete dt{color:#9eb9c8;font-size:.65rem;text-transform:uppercase;letter-spacing:.08em}.field-error.setup-incomplete dd{margin:.2rem 0 0}
