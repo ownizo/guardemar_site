@@ -1,2 +1,2 @@
 import { createFileRoute } from '@tanstack/react-router'; import { StandardPageView } from '@/components/standard-page'
-export const Route=createFileRoute('/cookie-policy')({head:()=>({meta:[{title:'Cookie Policy | Guardemar'}],links:[{rel:'canonical',href:'https://guardemar.com/cookie-policy/'}]}),component:()=> <StandardPageView pageKey="cookie-policy" legal />})
+export const Route=createFileRoute('/cookie-policy')({head:()=>({meta:[{title:'Cookie Policy | Guardemar'},{name:'description',content:'How Guardemar uses browser storage and manages consent for optional website technologies.'}],links:[{rel:'canonical',href:'https://guardemar.com/cookie-policy/'}]}),component:()=> <StandardPageView pageKey="cookie-policy" legal />})

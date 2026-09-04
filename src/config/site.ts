@@ -1,16 +1,46 @@
-export const business = {
+export const legalEntity = {
+  legalName: 'Ownizo Unipessoal Lda',
+  tradingName: 'GUARDEMAR',
+  taxId: '517169029',
+  registeredAddress: {
+    street: 'Avenida do Atlântico 16',
+    unit: 'Escritório 5.07',
+    postalCode: '1990-019',
+    city: 'Lisboa',
+    country: 'Portugal',
+    addressLines: ['Avenida do Atlântico 16', 'Escritório 5.07', '1990-019 Lisboa', 'Portugal'],
+  },
+  contactEmail: 'info@guardemar.com',
+  phone: '+351 928 226 570',
+} as const
+
+export const operationalContact = {
   name: 'GUARDEMAR',
   descriptor: 'Private Property Care',
+  address: {
+    street: 'Varandas de São João',
+    unit: 'Lote 4, 2º E',
+    city: 'Lagos',
+    country: 'Portugal',
+    addressLines: ['Varandas de São João', 'Lote 4, 2º E', 'Lagos', 'Portugal'],
+  },
+} as const
+
+export const legalLastUpdated = '4 September 2026'
+
+export const business = {
+  name: 'GUARDEMAR',
+  descriptor: operationalContact.descriptor,
   tagline: "Here when you're away.",
-  phone: '+351 928 226 570',
-  phoneHref: 'tel:+351928226570',
-  email: 'info@guardemar.com',
-  emailHref: 'mailto:info@guardemar.com',
-  whatsapp: 'https://wa.me/351928226570',
-  addressLines: ['Varandas de São João', 'Lote 4, 2º E', 'Lagos', 'Portugal'],
+  phone: legalEntity.phone,
+  phoneHref: `tel:${legalEntity.phone.replace(/\s/g, '')}`,
+  email: legalEntity.contactEmail,
+  emailHref: `mailto:${legalEntity.contactEmail}`,
+  whatsapp: `https://wa.me/${legalEntity.phone.replace(/\D/g, '')}`,
+  addressLines: operationalContact.address.addressLines,
   territory: 'Western Algarve — from Carvoeiro to Sagres.',
   schema: { '@context': 'https://schema.org', '@graph': [
-    { '@type': ['LocalBusiness', 'Organization'], '@id': 'https://guardemar.com/#business', name: 'GUARDEMAR', description: 'Private property care and home watch services for holiday homes and second homes in the Western Algarve, Portugal.', url: 'https://guardemar.com', telephone: '+351928226570', email: 'info@guardemar.com', address: { '@type': 'PostalAddress', streetAddress: 'Varandas de São João, Lote 4, 2º E', addressLocality: 'Lagos', addressCountry: 'PT' }, areaServed: ['Carvoeiro', 'Ferragudo', 'Portimão', 'Alvor', 'Lagos', 'Praia da Luz', 'Burgau', 'Salema', 'Vila do Bispo', 'Sagres', 'Western Algarve', 'Portugal'].map((name) => ({ '@type': 'Place', name })) },
+    { '@type': ['LocalBusiness', 'Organization'], '@id': 'https://guardemar.com/#business', name: 'GUARDEMAR', legalName: legalEntity.legalName, taxID: legalEntity.taxId, brand: { '@type': 'Brand', name: legalEntity.tradingName }, description: 'Private property care and home watch services for holiday homes and second homes in the Western Algarve, Portugal.', url: 'https://guardemar.com', telephone: legalEntity.phone, email: legalEntity.contactEmail, address: { '@type': 'PostalAddress', streetAddress: `${operationalContact.address.street}, ${operationalContact.address.unit}`, addressLocality: operationalContact.address.city, addressCountry: 'PT' }, areaServed: ['Carvoeiro', 'Ferragudo', 'Portimão', 'Alvor', 'Lagos', 'Praia da Luz', 'Burgau', 'Salema', 'Vila do Bispo', 'Sagres', 'Western Algarve', 'Portugal'].map((name) => ({ '@type': 'Place', name })) },
     { '@type': 'WebSite', '@id': 'https://guardemar.com/#website', url: 'https://guardemar.com', name: 'GUARDEMAR', publisher: { '@id': 'https://guardemar.com/#business' }, inLanguage: 'en-GB' },
   ] },
 }

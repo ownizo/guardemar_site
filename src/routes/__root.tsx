@@ -3,7 +3,9 @@ import { Menu, MessageCircle, X } from 'lucide-react'
 import { useState } from 'react'
 
 import { AnalyticsLink } from '@/components/site'
-import { business, navigation } from '@/config/site'
+import { CookieConsent } from '@/components/cookie-consent'
+import { business, legalEntity, navigation } from '@/config/site'
+import { openCookieSettings } from '@/lib/consent'
 import '../styles.css'
 
 export const Route = createRootRoute({
@@ -67,13 +69,14 @@ function Footer() {
         <div><h2>Service area</h2><p>Western Algarve<br />from Carvoeiro to Sagres.</p><Link to="/areas/">View all areas</Link></div>
         <div><h2>Contact</h2><AnalyticsLink href={business.phoneHref} event="phone_click">{business.phone}</AnalyticsLink><AnalyticsLink href={business.emailHref} event="email_click">{business.email}</AnalyticsLink><p>{business.addressLines.join(', ')}</p></div>
       </div>
-      <div className="shell footer-bottom"><span>© {new Date().getFullYear()} Guardemar</span><div><Link to="/privacy-policy/">Privacy</Link><Link to="/cookie-policy/">Cookies</Link><Link to="/terms/">Terms</Link></div></div>
+      <div className="shell footer-identity">GUARDEMAR is a commercial brand of {legalEntity.legalName} · NIPC {legalEntity.taxId}</div>
+      <div className="shell footer-bottom"><span>© {new Date().getFullYear()} Guardemar</span><div><Link to="/privacy-policy/">Privacy Policy</Link><Link to="/terms/">Terms &amp; Conditions</Link><Link to="/cookie-policy/">Cookie Policy</Link><button type="button" className="footer-cookie-button" onClick={openCookieSettings}>Cookie Settings</button></div></div>
     </footer>
   )
 }
 
 function RootDocument({ children }: { children: React.ReactNode }) {
-  return <html lang="en-GB"><head><HeadContent /></head><body><a className="skip-link" href="#main">Skip to content</a><Header /><main id="main">{children}</main><Footer /><Scripts /></body></html>
+  return <html lang="en-GB"><head><HeadContent /></head><body><a className="skip-link" href="#main">Skip to content</a><Header /><main id="main">{children}</main><Footer /><CookieConsent /><Scripts /></body></html>
 }
 
 function NotFound() {
