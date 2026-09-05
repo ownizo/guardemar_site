@@ -39,10 +39,10 @@ if (!taxRateId?.startsWith('txr_')) {
   failed = true
 } else {
   const response = await fetch(`https://api.stripe.com/v1/tax_rates/${encodeURIComponent(taxRateId)}`, { headers: { Authorization: `Bearer ${key}` } })
-  const taxRate = await response.json() as { active?: boolean; livemode?: boolean; inclusive?: boolean; percentage?: number; display_name?: string; error?: { message?: string } }
-  const valid = response.ok && taxRate.livemode === true && taxRate.active === true && taxRate.inclusive === false && typeof taxRate.percentage === 'number' && taxRate.percentage >= 0 && Boolean(taxRate.display_name)
+  const taxRate = await response.json() as { active?: boolean; livemode?: boolean; inclusive?: boolean; percentage?: number; display_name?: string; country?: string | null; tax_type?: string | null; error?: { message?: string } }
+  const valid = response.ok && taxRate.livemode === true && taxRate.active === true && taxRate.inclusive === subscriptionVat.inclusive && taxRate.percentage === subscriptionVat.percentage && taxRate.display_name === subscriptionVat.displayName && taxRate.country?.toUpperCase() === subscriptionVat.country && taxRate.tax_type?.toLowerCase() === subscriptionVat.taxType
   if (!valid) {
-    console.error('STRIPE_TAX_RATE_ID: FAILED — expected a live, active, exclusive Tax Rate with an approved percentage and display name')
+    console.error('STRIPE_TAX_RATE_ID: FAILED — expected the approved LIVE Portuguese VAT Tax Rate: 23%, exclusive, PT, VAT, displayed as IVA')
     if (!response.ok) console.error(`Stripe rejected the read-only check: ${taxRate.error?.message || response.status}`)
     failed = true
   } else {
@@ -52,3 +52,4 @@ if (!taxRateId?.startsWith('txr_')) {
 
 if (failed) process.exit(1)
 console.log('All six Guardemar LIVE Stripe Prices and the configured Tax Rate passed. No Checkout Session or charge was created.')
+import { subscriptionVat } from '../src/config/subscriptions.ts'

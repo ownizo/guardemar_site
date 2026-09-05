@@ -9,6 +9,7 @@
     "typecheck": "tsc --noEmit -p tsconfig.check.json",
     "test": "node --experimental-strip-types --test tests/*.test.mts",
     "legal:hash": "node --experimental-strip-types scripts/hash-guardemar-terms-v2.5.mts",
+    "stripe:create-live-vat-rate": "node --experimental-strip-types scripts/create-stripe-live-vat-rate.mts",
     "stripe:verify-live": "node --experimental-strip-types scripts/verify-stripe-live-prices.mts"
   },
   "dependencies": {

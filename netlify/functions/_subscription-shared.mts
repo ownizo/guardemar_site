@@ -2,7 +2,7 @@ import { createHmac, timingSafeEqual } from 'node:crypto'
 
 import { createClient, type SupabaseClient, type User } from '@supabase/supabase-js'
 
-import { calculateTaxAmount, selectedAmount, subscriptionPlans, type SubscriptionBillingInterval, type SubscriptionPlanCode } from '../../src/config/subscriptions.ts'
+import { calculateTaxAmount, selectedAmount, subscriptionPlans, subscriptionVat, type SubscriptionBillingInterval, type SubscriptionPlanCode } from '../../src/config/subscriptions.ts'
 
 export const EXPECTED_SUPABASE_REF = 'ablktbpledjceddessyg'
 
@@ -103,9 +103,9 @@ export async function verifyStripePrice(priceId: string, amount: number, billing
 
 export async function verifyStripeTaxRate(taxRateId: string, expectedPercentage?: number, requireActive = true) {
   if (!taxRateId.startsWith('txr_')) throw new HttpError(503, 'The approved Stripe Tax Rate is missing.', 'STRIPE_CONFIGURATION_ERROR')
-  const taxRate = await stripeRequest<{ id: string; active: boolean; livemode: boolean; inclusive: boolean; percentage: number; display_name: string; country?: string | null; jurisdiction?: string | null }>(`/tax_rates/${encodeURIComponent(taxRateId)}`)
-  if (!taxRate.livemode || (requireActive && !taxRate.active) || taxRate.inclusive || !Number.isFinite(taxRate.percentage) || taxRate.percentage < 0 || !taxRate.display_name || (expectedPercentage !== undefined && taxRate.percentage !== expectedPercentage)) {
-    throw new HttpError(503, 'The configured Stripe Tax Rate must be live, active, exclusive, and match the accepted percentage.', 'STRIPE_CONFIGURATION_ERROR')
+  const taxRate = await stripeRequest<{ id: string; active: boolean; livemode: boolean; inclusive: boolean; percentage: number; display_name: string; country?: string | null; jurisdiction?: string | null; tax_type?: string | null }>(`/tax_rates/${encodeURIComponent(taxRateId)}`)
+  if (!taxRate.livemode || (requireActive && !taxRate.active) || taxRate.inclusive !== subscriptionVat.inclusive || taxRate.percentage !== subscriptionVat.percentage || taxRate.display_name !== subscriptionVat.displayName || taxRate.country?.toUpperCase() !== subscriptionVat.country || taxRate.tax_type?.toLowerCase() !== subscriptionVat.taxType || (expectedPercentage !== undefined && taxRate.percentage !== expectedPercentage)) {
+    throw new HttpError(503, 'The configured Stripe Tax Rate must be the approved live Portuguese VAT rate: 23%, exclusive, PT, VAT, displayed as IVA.', 'STRIPE_CONFIGURATION_ERROR')
   }
   return taxRate
 }
