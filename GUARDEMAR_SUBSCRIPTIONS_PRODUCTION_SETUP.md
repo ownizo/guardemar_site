@@ -14,54 +14,68 @@ The repository contains the final approved documents exactly as supplied:
   - Applicable date: `2026-09-05`
   - SHA-256: `0f41a94e894cb6a60af6bd87a433688107a6ae774bf83d420dfc1f0c179a483b`
 
-The unapplied migration seeds those exact UTF-8 documents into immutable database rows and verifies both hashes. Run `npm run legal:hash` to verify the canonical Terms file before deployment. Do not edit either document without creating a new contractual version and preserving historical records.
+The production subscription migration seeded those exact UTF-8 documents into immutable database rows and verified both hashes. Run `npm run legal:hash` to verify the canonical Terms file before deployment. Do not edit either document without creating a new contractual version and preserving historical records.
 
 ## LIVE Stripe products and prices
 
-In Stripe Dashboard, switch **Test mode** off. Open **Product catalogue**, create each product once, then add the two recurring Prices listed beneath it. Every Price must use currency `EUR`, must be active, and must have **Tax behaviour = Exclusive**.
+The following LIVE Stripe Products and Prices already exist in Guardemar account `acct_1QjMaJHFqsWIut8W`. Do not recreate, replace, or duplicate them. Every Price uses currency `EUR`, is recurring, and has **Tax behaviour = Exclusive**.
 
 ### GUARDEMAR CARE
 
 - Product name: `GUARDEMAR CARE`
-- €79.00 EUR, recurring every month → `STRIPE_PRICE_CARE_MONTHLY`
-- €853.20 EUR, recurring every year → `STRIPE_PRICE_CARE_YEARLY`
+- Product: `prod_VCk3F4AfrcVetv`
+- €79.00 EUR monthly: `price_1UCKZfHFqsWIut8WGfVz1hqc` → `STRIPE_PRICE_CARE_MONTHLY`
+- €853.20 EUR yearly: `price_1UCKZkHFqsWIut8WmuglMzHe` → `STRIPE_PRICE_CARE_YEARLY`
 
 ### GUARDEMAR CARE+
 
 - Product name: `GUARDEMAR CARE+`
-- €129.00 EUR, recurring every month → `STRIPE_PRICE_CARE_PLUS_MONTHLY`
-- €1,393.20 EUR, recurring every year → `STRIPE_PRICE_CARE_PLUS_YEARLY`
+- Product: `prod_VCk3WF6RieymJ7`
+- €129.00 EUR monthly: `price_1UCKZpHFqsWIut8WHvNOKlgr` → `STRIPE_PRICE_CARE_PLUS_MONTHLY`
+- €1,393.20 EUR yearly: `price_1UCKZuHFqsWIut8WvA7zN1kR` → `STRIPE_PRICE_CARE_PLUS_YEARLY`
 
 ### GUARDEMAR COMPLETE
 
 - Product name: `GUARDEMAR COMPLETE`
-- €189.00 EUR, recurring every month → `STRIPE_PRICE_COMPLETE_MONTHLY`
-- €2,041.20 EUR, recurring every year → `STRIPE_PRICE_COMPLETE_YEARLY`
+- Product: `prod_VCk3JWb3uaJmI6`
+- €189.00 EUR monthly: `price_1UCKZzHFqsWIut8WYBvSfUFU` → `STRIPE_PRICE_COMPLETE_MONTHLY`
+- €2,041.20 EUR yearly: `price_1UCKa4HFqsWIut8W0upPMtCy` → `STRIPE_PRICE_COMPLETE_YEARLY`
 
-Copy each resulting live identifier beginning `price_` into the matching Netlify variable. Do not use test Price IDs. The server retrieves every Price and refuses Checkout unless live mode, active state, amount, EUR currency, recurring interval, and exclusive tax behaviour all match.
+Copy each existing live identifier beginning `price_` into the matching Netlify variable. Do not use test Price IDs. The server retrieves every Price and refuses Checkout unless live mode, active state, amount, EUR currency, recurring interval, and exclusive tax behaviour all match.
 
 ## VAT and Stripe Tax Rate prerequisite
 
-The approved Fee Schedule states: “All amounts are exclusive of VAT, which is added at the rate required by law.” The repository does not assume a VAT percentage.
+The accounting decision for every Guardemar subscription covered by this release is final: Portuguese VAT is **23%**, charged exclusively on top of the six net plan Prices.
 
-Before payment is enabled, Guardemar’s accountant must confirm:
+- **Tax type**: VAT
+- **Country**: Portugal (`PT`)
+- **Percentage**: `23%`
+- **Inclusive**: `No` / exclusive
+- **Customer-facing display name**: `IVA`
+- **Internal description**: `Portugal VAT 23% — GUARDEMAR services`
 
-- the legally applicable VAT percentage;
-- the customer-facing tax display name;
-- any country or jurisdiction setting required for the Tax Rate;
-- whether one Tax Rate applies to every subscription covered by this release.
+Run the idempotent operational command with a LIVE Stripe credential authorised to read the account and create Tax Rates:
 
-After written accounting confirmation, create a manual Tax Rate in Stripe live mode:
+```sh
+npm run stripe:create-live-vat-rate
+```
 
-- **Display name**: the accountant-approved customer-facing label;
-- **Percentage**: the accountant-approved rate;
-- **Inclusive**: `No` / exclusive;
-- **Country or jurisdiction**: the accountant-approved value, if required;
-- **Active**: `Yes`.
+The command refuses test credentials and any Stripe account other than Guardemar account `acct_1QjMaJHFqsWIut8W`. It reuses one exact active LIVE match, fails closed if multiple exact matches exist, and otherwise creates the approved manual Tax Rate. It does not create a Customer, Checkout Session, subscription, invoice, charge, Product, or Price.
 
-Copy the resulting live identifier beginning `txr_` into `STRIPE_TAX_RATE_ID`. The application retrieves this Tax Rate before acceptance, calculates the exact tax and gross amount in integer cents, stores them in the immutable Service Order, applies the same Tax Rate to Checkout, and rejects webhook activation if Stripe’s paid tax or gross amount differs.
+Copy the returned live identifier beginning `txr_` into the required Netlify Production variable `STRIPE_TAX_RATE_ID`. The application retrieves this Tax Rate before acceptance, verifies the exact approved 23% exclusive Portuguese VAT configuration, calculates tax and gross amounts in integer cents, stores them in the immutable Service Order, applies the same Tax Rate through `subscription_data.default_tax_rates`, and rejects webhook activation if Stripe’s paid tax or gross amount differs.
 
-Do not enable Stripe Automatic Tax for this implementation. Do not create the Tax Rate until accounting has approved the treatment.
+The expected calculations are:
+
+| Plan | Billing | Net | VAT 23% | Gross |
+| --- | --- | ---: | ---: | ---: |
+| CARE | Monthly | €79.00 | €18.17 | €97.17 |
+| CARE | Annual | €853.20 | €196.24 | €1,049.44 |
+| CARE+ | Monthly | €129.00 | €29.67 | €158.67 |
+| CARE+ | Annual | €1,393.20 | €320.44 | €1,713.64 |
+| COMPLETE | Monthly | €189.00 | €43.47 | €232.47 |
+| COMPLETE | Annual | €2,041.20 | €469.48 | €2,510.68 |
+
+Do not enable Stripe Automatic Tax. Do not add client-side tax calculation, a VAT line item, a VAT Product or Price, gross plan Prices, or any other tax workaround.
 
 ## LIVE Stripe API credential
 
@@ -73,7 +87,7 @@ Grant the minimum operations used by the application:
 - Checkout Sessions: **Write**
 - Prices: **Read**
 - Subscriptions: **Read**
-- Tax Rates: **Read**
+- Tax Rates: **Read** for the production application; the one-off operational credential running `npm run stripe:create-live-vat-rate` also needs **Write**
 - Billing Portal Sessions / Customer Portal: **Write**
 
 Copy the resulting `rk_live_…` credential into `STRIPE_SECRET_KEY`. If Stripe’s current restricted-key editor cannot grant every required operation, use an `sk_live_…` secret only as a documented fallback. Never use a publishable key, a test key, or any key in browser code.
@@ -130,7 +144,7 @@ Add these under **Netlify → Guardemar → Project configuration → Environmen
 - `STRIPE_PRICE_CARE_PLUS_YEARLY` = live €1,393.20 yearly Price ID
 - `STRIPE_PRICE_COMPLETE_MONTHLY` = live €189 monthly Price ID
 - `STRIPE_PRICE_COMPLETE_YEARLY` = live €2,041.20 yearly Price ID
-- `STRIPE_TAX_RATE_ID` = accountant-approved live exclusive Tax Rate ID
+- `STRIPE_TAX_RATE_ID` = live `txr_` ID returned by `npm run stripe:create-live-vat-rate`
 - `STRIPE_BILLING_PORTAL_CONFIGURATION` = payment-method-only portal configuration ID
 
 Keep the existing production `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, and `RESEND_API_KEY` values unchanged. `SUPABASE_URL` must resolve to Guardemar project `ablktbpledjceddessyg`. Never expose or log secret values.
@@ -149,7 +163,7 @@ It:
 - adds property-scoped customer SELECT policies, stored-role staff/admin policies, safe column-level grants, one-open-subscription protection, and Stripe/audit deduplication indexes;
 - blocks UPDATE and DELETE on contractual documents, agreement acceptances, and payment history.
 
-Do not modify earlier applied migrations. After final review, apply this migration only to Supabase project `ablktbpledjceddessyg`. Never apply it to `uqjxjymvhuvtwbqtesbr`.
+This migration is already applied to production Supabase project `ablktbpledjceddessyg`. Do not modify or reapply it, and never apply Guardemar migrations to `uqjxjymvhuvtwbqtesbr`.
 
 ## Conservative live verification
 
@@ -157,9 +171,9 @@ Before exposing **New subscription** publicly:
 
 1. Run `npm run legal:hash` and confirm the Version 2.5 SHA-256 shown above.
 2. Confirm all six Stripe Prices are live, active, EUR, recurring at the correct interval, and tax-exclusive.
-3. Confirm the live Tax Rate is active, exclusive, and exactly matches written accounting instruction.
+3. Confirm the live Tax Rate is active, 23%, exclusive, country `PT`, tax type VAT, and displayed as `IVA`.
 4. Set all production variables, then run `npm run stripe:verify-live`; this performs read-only Stripe retrieval and creates no charge.
-5. Apply the reviewed migration only to `ablktbpledjceddessyg` and verify both canonical document hashes in the inserted rows.
+5. Confirm the already-applied production migration remains present in `ablktbpledjceddessyg` and verify both canonical document hashes in the inserted rows.
 6. Verify every legal control starts unchecked and all thirteen Annex C items match the canonical Terms exactly.
 7. Verify a consumer requesting a start date during the fourteen-day period cannot continue without the separate Clause 5.4 request.
 8. Verify the same acceptance and Checkout idempotency keys cannot create duplicate records or Sessions.

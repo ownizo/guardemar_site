@@ -54,6 +54,15 @@ export type SubscriptionBillingInterval = 'month' | 'year'
 export const annualDiscountPercent = 10
 export const subscriptionCurrency = 'EUR'
 
+export const subscriptionVat = {
+  displayName: 'IVA',
+  description: 'Portugal VAT 23% — GUARDEMAR services',
+  percentage: 23,
+  inclusive: false,
+  country: 'PT',
+  taxType: 'vat',
+} as const
+
 export const billingCopy = {
   month: '12-month service agreement billed monthly in advance.',
   year: '12-month service agreement billed annually in advance. Save 10% compared with twelve monthly payments.',

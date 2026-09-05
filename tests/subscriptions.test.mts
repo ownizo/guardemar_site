@@ -3,7 +3,7 @@ import { createHash, createHmac } from 'node:crypto'
 import { readFile } from 'node:fs/promises'
 import test from 'node:test'
 
-import { annexCAcknowledgementKeys, calculateTaxAmount, feeSchedule, parseAnnexCAcknowledgements, selectedAmount, subscriptionPlans, subscriptionTerms } from '../src/config/subscriptions.ts'
+import { annexCAcknowledgementKeys, calculateTaxAmount, feeSchedule, parseAnnexCAcknowledgements, selectedAmount, subscriptionPlans, subscriptionTerms, subscriptionVat } from '../src/config/subscriptions.ts'
 import { verifyStripeSignature } from '../netlify/functions/_subscription-shared.mts'
 
 const source = (path: string) => readFile(new URL(path, import.meta.url), 'utf8')
@@ -15,6 +15,15 @@ const combinations = [
   ['care_plus', 'year', 139_320],
   ['complete', 'month', 18_900],
   ['complete', 'year', 204_120],
+] as const
+
+const vatCombinations = [
+  ['care', 'month', 7_900, 1_817, 9_717],
+  ['care', 'year', 85_320, 19_624, 104_944],
+  ['care_plus', 'month', 12_900, 2_967, 15_867],
+  ['care_plus', 'year', 139_320, 32_044, 171_364],
+  ['complete', 'month', 18_900, 4_347, 23_247],
+  ['complete', 'year', 204_120, 46_948, 251_068],
 ] as const
 
 test('all six plan and billing combinations use approved integer-cent Fees', () => {
@@ -85,10 +94,22 @@ test('Stripe webhook signatures require a current valid HMAC', () => {
   assert.equal(verifyStripeSignature(body, `t=${timestamp - 301},v1=${signature}`, secret, timestamp), false)
 })
 
-test('tax calculations remain configurable and integer-cent exact', () => {
-  assert.equal(calculateTaxAmount(7_900, 23), 1_817)
-  assert.equal(calculateTaxAmount(85_320, 23), 19_624)
-  assert.equal(calculateTaxAmount(12_900, 6.5), 839)
+test('fixed Portuguese VAT calculations match Stripe cent rounding for all six combinations', () => {
+  assert.deepEqual(subscriptionVat, {
+    displayName: 'IVA',
+    description: 'Portugal VAT 23% — GUARDEMAR services',
+    percentage: 23,
+    inclusive: false,
+    country: 'PT',
+    taxType: 'vat',
+  })
+  for (const [planCode, interval, expectedNet, expectedTax, expectedGross] of vatCombinations) {
+    const net = selectedAmount(planCode, interval)
+    const tax = calculateTaxAmount(net, subscriptionVat.percentage)
+    assert.equal(net, expectedNet)
+    assert.equal(tax, expectedTax)
+    assert.equal(net + tax, expectedGross)
+  }
 })
 
 test('server controls Price and Tax Rate selection and rejects browser monetary authority', async () => {
@@ -100,6 +121,9 @@ test('server controls Price and Tax Rate selection and rejects browser monetary 
   assert.match(shared, /STRIPE_PRICE_\$\{suffix\}_\$\{interval\}/)
   assert.match(shared, /STRIPE_TAX_RATE_ID/)
   assert.match(shared, /price\.tax_behavior !== 'exclusive'/)
+  assert.match(shared, /taxRate\.percentage !== subscriptionVat\.percentage/)
+  assert.match(shared, /taxRate\.country\?\.toUpperCase\(\) !== subscriptionVat\.country/)
+  assert.match(shared, /taxRate\.tax_type\?\.toLowerCase\(\) !== subscriptionVat\.taxType/)
   assert.match(api, /approved_stripe_price_id: approvedPrice\.priceId/)
   assert.match(api, /approved_tax_rate_id: approvedTax\.taxRateId/)
   assert.match(api, /'subscription_data\[default_tax_rates\]\[0\]': acceptance\.stripe_tax_rate_id/)
@@ -176,10 +200,17 @@ test('customer portal cannot cancel or change a fixed-term subscription', async 
 
 test('operational verification tools create no charges and print no credentials', async () => {
   const stripeCheck = await source('../scripts/verify-stripe-live-prices.mts')
+  const taxRateSetup = await source('../scripts/create-stripe-live-vat-rate.mts')
   const legalHash = await source('../scripts/hash-guardemar-terms-v2.5.mts')
   assert.doesNotMatch(stripeCheck, /checkout\/sessions|payment_intents|subscriptions', \{ method: 'POST'/)
   assert.doesNotMatch(stripeCheck, /console\.log\([^\n]*(key|priceId)/)
   assert.match(stripeCheck, /tax_behavior === 'exclusive'/)
+  assert.match(taxRateSetup, /acct_1QjMaJHFqsWIut8W/)
+  assert.match(taxRateSetup, /\/tax_rates\?\$\{query\}/)
+  assert.match(taxRateSetup, /matches\.length > 1/)
+  assert.match(taxRateSetup, /'\/tax_rates', \{ method: 'POST', body \}/)
+  assert.doesNotMatch(taxRateSetup, /\/checkout\/sessions|\/payment_intents|stripeRequest[^\n]+['"]\/(customers|invoices|subscriptions)['"]/)
+  assert.doesNotMatch(taxRateSetup, /console\.(log|error)\([^\n]*(STRIPE_SECRET_KEY|process\.env|key\b)/)
   assert.match(legalHash, /Version 2\.5 — in force from 5 September 2026\./)
   assert.match(legalHash, /createHash\('sha256'\)/)
   assert.match(legalHash, new RegExp(subscriptionTerms.sha256))
