@@ -1,5 +1,5 @@
 import { Link, useNavigate } from '@tanstack/react-router'
-import { Building2, ClipboardCheck, Home, LayoutDashboard, LogOut, Menu, UserRound, Users, X } from 'lucide-react'
+import { Building2, ClipboardCheck, CreditCard, Home, LayoutDashboard, LogOut, Menu, UserRound, Users, X } from 'lucide-react'
 import { type ReactNode, useState } from 'react'
 
 import { getPrivateLoginPath, getRoleLabel, type PrivateArea } from '@/lib/portal/access'
@@ -10,6 +10,7 @@ const portalLinks = [
   { to: '/portal' as const, label: 'Overview', icon: LayoutDashboard },
   { to: '/portal/properties' as const, label: 'Properties', icon: Home },
   { to: '/portal/inspections' as const, label: 'Inspections', icon: ClipboardCheck },
+  { to: '/portal/subscriptions' as const, label: 'Subscriptions', icon: CreditCard },
   { to: '/portal/account' as const, label: 'Account', icon: UserRound },
 ]
 
@@ -18,6 +19,7 @@ const adminLinks = [
   { to: '/admin/clients' as const, label: 'Clients', icon: Users },
   { to: '/admin/properties' as const, label: 'Properties', icon: Building2 },
   { to: '/admin/inspections' as const, label: 'Inspections', icon: ClipboardCheck },
+  { to: '/admin/subscriptions' as const, label: 'Subscriptions', icon: CreditCard },
   { to: '/admin/team' as const, label: 'Team', icon: UserRound },
 ]
 
