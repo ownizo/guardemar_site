@@ -1,0 +1,32 @@
+import { createFileRoute, Link } from '@tanstack/react-router'
+import { ChevronLeft, Download, FileText } from 'lucide-react'
+import { useEffect, useState } from 'react'
+
+import { PrivateGuard } from '@/components/portal/auth'
+import { PrivateShell } from '@/components/portal/shell'
+import { formatEuro, subscriptionPlans, type SubscriptionPlanCode } from '@/config/subscriptions'
+import { downloadSubscriptionTerms, subscriptionApi } from '@/lib/portal/subscriptions'
+import type { PortalProfile } from '@/lib/portal/types'
+
+export const Route = createFileRoute('/admin/subscriptions_/$id')({ component: Page })
+function Page() { return <PrivateGuard area="admin">{(profile) => <Detail profile={profile} />}</PrivateGuard> }
+
+function Detail({ profile }: { profile: PortalProfile }) {
+  const { id } = Route.useParams()
+  const [data, setData] = useState<any>(null)
+  const [error, setError] = useState('')
+  useEffect(() => { subscriptionApi(id).then(setData).catch((loadError) => setError(loadError.message)) }, [id])
+  if (!data) return <PrivateShell area="admin" profile={profile} title="Subscription record">{error ? <div className="private-error">{error}</div> : <div className="private-panel">Loading subscription…</div>}</PrivateShell>
+  const item = data.subscription
+  const plan = subscriptionPlans[item.plan_code as SubscriptionPlanCode]
+  const acceptance = Array.isArray(item.service_agreement_acceptances) ? item.service_agreement_acceptances[0] : item.service_agreement_acceptances
+  async function downloadTerms() { setError(''); try { await downloadSubscriptionTerms(acceptance.terms_version) } catch (requestError) { setError(requestError instanceof Error ? requestError.message : 'The General Terms could not be downloaded.') } }
+  return <PrivateShell area="admin" profile={profile} title={item.properties?.display_name || 'Subscription'} eyebrow={plan.name} action={<Link className="private-secondary" to="/admin/subscriptions"><ChevronLeft />Subscriptions</Link>}>
+    {error && <div className="private-error">{error}</div>}
+    <div className="record-grid"><section className="private-panel"><div className="panel-heading"><h2>Commercial and contract</h2><span className="private-pill">{item.local_status.replaceAll('_', ' ')}</span></div><dl className="details-list"><div><dt>Client</dt><dd>{item.clients ? `${item.clients.first_name} ${item.clients.last_name}` : item.client_id}</dd></div><div><dt>Property</dt><dd>{item.properties?.display_name || item.property_id}</dd></div><div><dt>Plan</dt><dd>{plan.name}</dd></div><div><dt>Billing</dt><dd>{item.billing_interval === 'month' ? 'Monthly in advance' : 'Annually in advance'}</dd></div><div><dt>Monthly fee</dt><dd>{formatEuro(item.monthly_net_amount)}</dd></div><div><dt>12-month equivalent</dt><dd>{formatEuro(item.annual_list_net_amount)}</dd></div><div><dt>Annual discount</dt><dd>{item.annual_discount_percent}% · {formatEuro(item.annual_discount_net_amount)}</dd></div><div><dt>Selected Plan Fee</dt><dd>{formatEuro(item.selected_net_amount)} net</dd></div><div><dt>{item.tax_display_name}</dt><dd>{item.tax_percentage}% · {formatEuro(item.tax_amount)}</dd></div><div><dt>Total charge</dt><dd>{formatEuro(item.gross_amount)}</dd></div><div><dt>Contract dates</dt><dd>{item.contract_start_date} to {item.contract_end_date}</dd></div><div><dt>Payment</dt><dd>{item.payment_status.replaceAll('_', ' ')}</dd></div></dl></section>
+      <section className="private-panel"><div className="panel-heading"><h2>Stripe references</h2></div><dl className="details-list technical-identifiers"><div><dt>Customer</dt><dd>{item.stripe_customer_id || 'Not created'}</dd></div><div><dt>Subscription</dt><dd>{item.stripe_subscription_id || 'Not confirmed'}</dd></div><div><dt>Price</dt><dd>{item.stripe_price_id || 'Not selected'}</dd></div><div><dt>Tax Rate</dt><dd>{item.stripe_tax_rate_id || 'Not selected'}</dd></div><div><dt>Checkout Session</dt><dd>{item.stripe_checkout_session_id || 'Not created'}</dd></div><div><dt>Stripe status</dt><dd>{item.stripe_subscription_status || 'Pending'}</dd></div><div><dt>Next billing</dt><dd>{item.stripe_current_period_end || 'Pending'}</dd></div></dl><p className="muted-copy">Card numbers and payment credentials are never stored or displayed by Guardemar.</p></section></div>
+    <section className="private-panel"><div className="panel-heading"><h2><FileText />Legal acceptance</h2></div><dl className="details-list"><div><dt>Terms</dt><dd>Version {acceptance?.terms_version} · effective {acceptance?.terms_effective_date}</dd></div><div><dt>Terms SHA-256</dt><dd className="hash-value">{acceptance?.terms_sha256}</dd></div><div><dt>Fee Schedule SHA-256</dt><dd className="hash-value">{acceptance?.fee_schedule_sha256}</dd></div><div><dt>Accepted</dt><dd>{acceptance?.accepted_at}</dd></div><div><dt>User</dt><dd>{acceptance?.user_id}</dd></div><div><dt>Consumer early start</dt><dd>{acceptance?.withdrawal_early_start_requested ? 'Expressly requested' : 'Not requested'}</dd></div></dl>{acceptance && <button type="button" className="private-secondary" onClick={downloadTerms}><Download />Download accepted Terms</button>}<details className="service-order-details"><summary>Immutable Service Order snapshot</summary><pre>{JSON.stringify(acceptance?.service_order_snapshot, null, 2)}</pre></details><details className="service-order-details"><summary>Immutable contractual acknowledgements</summary><pre>{JSON.stringify(acceptance?.acknowledgements, null, 2)}</pre></details></section>
+    <section className="private-panel"><div className="panel-heading"><h2>Payment history</h2></div>{data.payments.length === 0 ? <p className="panel-empty">No payment events.</p> : <div className="payment-history">{data.payments.map((payment: any) => <div key={payment.id}><span>{payment.occurred_at}</span><strong>{payment.payment_status}</strong><span>{payment.amount_gross === null ? 'Pending amount' : formatEuro(payment.amount_gross)}</span></div>)}</div>}</section>
+    <section className="private-panel"><div className="panel-heading"><h2>Audit trail</h2></div>{data.audit.length === 0 ? <p className="panel-empty">No audit events.</p> : <div className="audit-list">{data.audit.map((event: any) => <div key={event.id}><span>{event.created_at}</span><strong>{event.event_type.replaceAll('_', ' ')}</strong><code>{JSON.stringify(event.metadata)}</code></div>)}</div>}</section>
+  </PrivateShell>
+}

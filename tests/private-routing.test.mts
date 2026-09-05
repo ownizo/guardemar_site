@@ -48,6 +48,8 @@ test('every Phase 1 private route uses the matching shared guard', async () => {
     '../src/routes/admin.properties_.$id.tsx',
     '../src/routes/admin.inspections.tsx',
     '../src/routes/admin.inspections_.$id.tsx',
+    '../src/routes/admin.subscriptions.tsx',
+    '../src/routes/admin.subscriptions_.$id.tsx',
     '../src/routes/admin.team.tsx',
     '../src/routes/admin.team_.$id.tsx',
   ]
@@ -57,6 +59,9 @@ test('every Phase 1 private route uses the matching shared guard', async () => {
     '../src/routes/portal.properties.tsx',
     '../src/routes/portal.inspections.tsx',
     '../src/routes/portal.inspections_.$id.tsx',
+    '../src/routes/portal.subscriptions.tsx',
+    '../src/routes/portal.subscriptions_.$id.tsx',
+    '../src/routes/portal.subscriptions_.new.tsx',
   ]
 
   for (const route of adminRoutes) assert.match(await source(route), /<PrivateGuard area="admin">/)
@@ -65,10 +70,11 @@ test('every Phase 1 private route uses the matching shared guard', async () => {
 
 test('detail routes keep their URLs without nesting under list components', async () => {
   const routeTree = await source('../src/routeTree.gen.ts')
-  for (const route of ['clients', 'inspections', 'properties', 'team']) {
+  for (const route of ['clients', 'inspections', 'properties', 'subscriptions', 'team']) {
     assert.match(routeTree, new RegExp(`id: '/${route}_/\\$id',[\\s\\S]{0,120}path: '/${route}/\\$id',[\\s\\S]{0,120}getParentRoute: \\(\\) => AdminRoute`))
   }
   assert.match(routeTree, /id: '\/inspections_\/\$id',[\s\S]{0,120}path: '\/inspections\/\$id',[\s\S]{0,120}getParentRoute: \(\) => PortalRoute/)
+  assert.match(routeTree, /id: '\/subscriptions_\/new',[\s\S]{0,120}path: '\/subscriptions\/new',[\s\S]{0,120}getParentRoute: \(\) => PortalRoute/)
 })
 
 test('admin identity and Phase 2 navigation remain operational and distinct', async () => {
@@ -80,6 +86,7 @@ test('admin identity and Phase 2 navigation remain operational and distinct', as
   assert.match(shell, /label: 'Clients'/)
   assert.match(shell, /label: 'Properties'/)
   assert.match(shell, /label: 'Inspections'/)
+  assert.match(shell, /label: 'Subscriptions'/)
   assert.match(shell, /label: 'Team'/)
   assert.doesNotMatch(shell, /label: 'Reports'|label: 'Requests'/)
   assert.match(styles, /\.private-app-admin/)
