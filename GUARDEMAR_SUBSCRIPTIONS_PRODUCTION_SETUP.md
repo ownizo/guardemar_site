@@ -64,6 +64,28 @@ The command refuses test credentials and any Stripe account other than Guardemar
 
 Copy the returned live identifier beginning `txr_` into the required Netlify Production variable `STRIPE_TAX_RATE_ID`. The application retrieves this Tax Rate before acceptance, verifies the exact approved 23% exclusive Portuguese VAT configuration, calculates tax and gross amounts in integer cents, stores them in the immutable Service Order, applies the same Tax Rate through `subscription_data.default_tax_rates`, and rejects webhook activation if Stripe’s paid tax or gross amount differs.
 
+### Temporary one-time Netlify provisioning endpoint
+
+If the LIVE Stripe credential is available only inside Netlify Production, temporarily add `GUARDEMAR_VAT_PROVISION_TOKEN` in Netlify as a secret with Functions/runtime scope and Production context only. Generate the value outside the repository with at least 32 random bytes of high-entropy data. Never commit, print, or reuse the real token.
+
+With that temporary variable present, invoke the production-only administrative Function once:
+
+```sh
+curl --fail-with-body --request POST \
+  --header "Authorization: Bearer $GUARDEMAR_VAT_PROVISION_TOKEN" \
+  https://guardemar.com/.netlify/functions/admin-provision-vat-rate-once
+```
+
+The Function accepts no query or body parameters. Its Stripe account, percentage, country, inclusive setting, tax type, display name, and description are fixed in server code. It retrieves the approved account, lists active Tax Rates, reuses one exact match, fails closed on multiple exact matches, or creates only the approved Tax Rate with a fixed Stripe idempotency key. It cannot create Customers, Checkout Sessions, subscriptions, invoices, payments, charges, Products, or Prices.
+
+Immediately after a successful response:
+
+1. Store the returned `txr_` value in the Production `STRIPE_TAX_RATE_ID` variable.
+2. Delete `GUARDEMAR_VAT_PROVISION_TOKEN` from Netlify.
+3. Remove `netlify/functions/admin-provision-vat-rate-once.mts` in a follow-up change.
+4. Redeploy Production.
+5. Verify `/.netlify/functions/admin-provision-vat-rate-once` returns `404` after removal.
+
 The expected calculations are:
 
 | Plan | Billing | Net | VAT 23% | Gross |
