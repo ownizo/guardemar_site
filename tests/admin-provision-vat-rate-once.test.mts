@@ -141,6 +141,34 @@ test('successfully reuses one exact Tax Rate', async () => {
   })
 })
 
+test('reuses an approved Tax Rate with a null description without creating another', async () => {
+  const calls: Array<{ url: string; method: string; body: string; idempotencyKey: string | null }> = []
+  const handler = createVatProvisionHandler({
+    getEnv: environment(),
+    provision: ({ secretKey }) => provisionApprovedLiveVatRate({ secretKey, fetcher: stripeFetch({ listedRates: [{ ...exactRate('txr_null_description'), description: null }], calls }) as typeof fetch }),
+  })
+  const response = await handler(post())
+  const payload = await response.json()
+  assert.equal(response.status, 200)
+  assert.equal(payload.tax_rate_id, 'txr_null_description')
+  assert.equal(payload.provisioning, 'reused')
+  assert.equal(calls.some((call) => call.method === 'POST'), false)
+})
+
+test('reuses an approved Tax Rate with a different description without creating another', async () => {
+  const calls: Array<{ url: string; method: string; body: string; idempotencyKey: string | null }> = []
+  const handler = createVatProvisionHandler({
+    getEnv: environment(),
+    provision: ({ secretKey }) => provisionApprovedLiveVatRate({ secretKey, fetcher: stripeFetch({ listedRates: [{ ...exactRate('txr_different_description'), description: 'Existing Stripe description' }], calls }) as typeof fetch }),
+  })
+  const response = await handler(post())
+  const payload = await response.json()
+  assert.equal(response.status, 200)
+  assert.equal(payload.tax_rate_id, 'txr_different_description')
+  assert.equal(payload.provisioning, 'reused')
+  assert.equal(calls.some((call) => call.method === 'POST'), false)
+})
+
 test('successfully creates the fixed Tax Rate when none exists', async () => {
   const calls: Array<{ url: string; method: string; body: string; idempotencyKey: string | null }> = []
   const handler = createVatProvisionHandler({
@@ -158,10 +186,22 @@ test('successfully creates the fixed Tax Rate when none exists', async () => {
   assert.equal(new URLSearchParams(createCall?.body).get('country'), 'PT')
 })
 
+test('rejects a newly created Tax Rate without the approved description', async () => {
+  const calls: Array<{ url: string; method: string; body: string; idempotencyKey: string | null }> = []
+  const handler = createVatProvisionHandler({
+    getEnv: environment(),
+    provision: ({ secretKey }) => provisionApprovedLiveVatRate({ secretKey, fetcher: stripeFetch({ createdRate: { ...exactRate('txr_invalid_description'), description: null }, calls }) as typeof fetch }),
+    logError: () => undefined,
+  })
+  const response = await handler(post())
+  assert.equal(response.status, 502)
+  assert.equal(calls.filter((call) => call.method === 'POST').length, 1)
+})
+
 test('fails closed on more than one exact Tax Rate', async () => {
   const handler = createVatProvisionHandler({
     getEnv: environment(),
-    provision: ({ secretKey }) => provisionApprovedLiveVatRate({ secretKey, fetcher: stripeFetch({ listedRates: [exactRate('txr_one'), exactRate('txr_two')] }) as typeof fetch }),
+    provision: ({ secretKey }) => provisionApprovedLiveVatRate({ secretKey, fetcher: stripeFetch({ listedRates: [{ ...exactRate('txr_one'), description: null }, { ...exactRate('txr_two'), description: 'Different existing description' }] }) as typeof fetch }),
     logError: () => undefined,
   })
   const response = await handler(post())

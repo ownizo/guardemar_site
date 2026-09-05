@@ -84,7 +84,10 @@ function isExactActiveMatch(taxRate: StripeTaxRate) {
     && taxRate.country?.toUpperCase() === subscriptionVat.country
     && taxRate.tax_type?.toLowerCase() === subscriptionVat.taxType
     && taxRate.display_name === subscriptionVat.displayName
-    && taxRate.description === subscriptionVat.description
+}
+
+function isCreatedRateValid(taxRate: StripeTaxRate) {
+  return isExactActiveMatch(taxRate) && taxRate.description === subscriptionVat.description
 }
 
 function resultFromTaxRate(taxRate: StripeTaxRate, provisioning: VatProvisionResult['provisioning']): VatProvisionResult {
@@ -147,5 +150,8 @@ export async function provisionApprovedLiveVatRate(input: { secretKey: string; f
     body,
     headers: { 'Idempotency-Key': CREATE_IDEMPOTENCY_KEY },
   })
+  if (!isCreatedRateValid(created)) {
+    throw new StripeVatProvisionError('Stripe returned a Tax Rate that does not match the approved LIVE Portuguese VAT configuration.', 'invalid_tax_rate_response')
+  }
   return resultFromTaxRate(created, 'created')
 }
