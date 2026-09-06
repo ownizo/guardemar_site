@@ -22,7 +22,7 @@ const exactRate = (id: string): StripeTaxRate => ({
 function environment(overrides: Record<string, string | undefined> = {}) {
   const values: Record<string, string | undefined> = {
     GUARDEMAR_VAT_PROVISION_TOKEN: provisionToken,
-    CONTEXT: 'production',
+    DEPLOY_CONTEXT: 'production',
     STRIPE_SECRET_KEY: stripeSecret,
     ...overrides,
   }
@@ -83,7 +83,7 @@ test('rejects missing provisioning env token', async () => {
 })
 
 test('rejects non-production execution', async () => {
-  const response = await createVatProvisionHandler({ getEnv: environment({ CONTEXT: 'deploy-preview' }) })(post())
+  const response = await createVatProvisionHandler({ getEnv: environment({ DEPLOY_CONTEXT: 'deploy-preview' }) })(post())
   assert.equal(response.status, 403)
 })
 

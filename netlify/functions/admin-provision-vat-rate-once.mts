@@ -60,7 +60,11 @@ export function createVatProvisionHandler(overrides: Partial<ProvisionDependenci
       return json({ success: false, error: 'Unauthorised.' }, 401)
     }
 
-    if (dependencies.getEnv('CONTEXT') !== 'production') {
+    // Note: Netlify's built-in CONTEXT variable is build-time only and is not
+    // injected into Functions at runtime (only URL/SITE_NAME/SITE_ID are), and
+    // its name is reserved so it cannot be set as a custom env var either.
+    // DEPLOY_CONTEXT is a custom env var we set per deploy context instead.
+    if (dependencies.getEnv('DEPLOY_CONTEXT') !== 'production') {
       return json({ success: false, error: 'Provisioning is unavailable.' }, 403)
     }
 
