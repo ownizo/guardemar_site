@@ -1,11 +1,13 @@
-const expectations = [
-  ['STRIPE_PRICE_CARE_MONTHLY', 7_900, 'month'],
-  ['STRIPE_PRICE_CARE_YEARLY', 85_320, 'year'],
-  ['STRIPE_PRICE_CARE_PLUS_MONTHLY', 12_900, 'month'],
-  ['STRIPE_PRICE_CARE_PLUS_YEARLY', 139_320, 'year'],
-  ['STRIPE_PRICE_COMPLETE_MONTHLY', 18_900, 'month'],
-  ['STRIPE_PRICE_COMPLETE_YEARLY', 204_120, 'year'],
-] as const
+import { subscriptionPlans, subscriptionVat, type SubscriptionPlanCode } from '../src/config/subscriptions.ts'
+
+const expectations: Array<[variable: string, planCode: SubscriptionPlanCode, expectedAmount: number, expectedInterval: 'month' | 'year']> = [
+  ['STRIPE_PRICE_CARE_MONTHLY', 'care', subscriptionPlans.care.monthlyAmount, 'month'],
+  ['STRIPE_PRICE_CARE_YEARLY', 'care', subscriptionPlans.care.yearlyAmount, 'year'],
+  ['STRIPE_PRICE_CARE_PLUS_MONTHLY', 'care_plus', subscriptionPlans.care_plus.monthlyAmount, 'month'],
+  ['STRIPE_PRICE_CARE_PLUS_YEARLY', 'care_plus', subscriptionPlans.care_plus.yearlyAmount, 'year'],
+  ['STRIPE_PRICE_COMPLETE_MONTHLY', 'complete', subscriptionPlans.complete.monthlyAmount, 'month'],
+  ['STRIPE_PRICE_COMPLETE_YEARLY', 'complete', subscriptionPlans.complete.yearlyAmount, 'year'],
+]
 
 const key = process.env.STRIPE_SECRET_KEY?.trim()
 if (!key || (!key.startsWith('rk_live_') && !key.startsWith('sk_live_'))) {
@@ -14,22 +16,46 @@ if (!key || (!key.startsWith('rk_live_') && !key.startsWith('sk_live_'))) {
 }
 
 let failed = false
-for (const [variable, expectedAmount, expectedInterval] of expectations) {
+for (const [variable, planCode, expectedAmount, expectedInterval] of expectations) {
   const priceId = process.env[variable]?.trim()
   if (!priceId?.startsWith('price_')) {
     console.error(`${variable}: missing live Price ID`)
     failed = true
     continue
   }
-  const response = await fetch(`https://api.stripe.com/v1/prices/${encodeURIComponent(priceId)}`, { headers: { Authorization: `Bearer ${key}` } })
-  const price = await response.json() as { active?: boolean; livemode?: boolean; currency?: string; unit_amount?: number; type?: string; tax_behavior?: string; recurring?: { interval?: string }; error?: { message?: string } }
-  const valid = response.ok && price.livemode === true && price.active === true && price.type === 'recurring' && price.tax_behavior === 'exclusive' && price.currency?.toUpperCase() === 'EUR' && price.unit_amount === expectedAmount && price.recurring?.interval === expectedInterval
+  const expectedProductName = subscriptionPlans[planCode].name
+  const response = await fetch(`https://api.stripe.com/v1/prices/${encodeURIComponent(priceId)}?expand[]=product`, { headers: { Authorization: `Bearer ${key}` } })
+  const price = await response.json() as {
+    active?: boolean
+    livemode?: boolean
+    currency?: string
+    unit_amount?: number
+    type?: string
+    tax_behavior?: string
+    recurring?: { interval?: string }
+    product?: { id?: string; name?: string; active?: boolean; livemode?: boolean } | string
+    error?: { message?: string }
+  }
+  const product = typeof price.product === 'object' ? price.product : undefined
+  const valid = response.ok
+    && price.livemode === true
+    && price.active === true
+    && price.type === 'recurring'
+    && price.tax_behavior === 'exclusive'
+    && price.currency?.toUpperCase() === 'EUR'
+    && price.unit_amount === expectedAmount
+    && price.recurring?.interval === expectedInterval
+    && product?.livemode === true
+    && product?.active === true
+    && product?.name === expectedProductName
   if (!valid) {
-    console.error(`${variable}: FAILED — expected EUR ${(expectedAmount / 100).toFixed(2)} recurring ${expectedInterval} with exclusive tax behaviour`)
+    console.error(`${variable}: FAILED — expected EUR ${(expectedAmount / 100).toFixed(2)} recurring ${expectedInterval}, exclusive tax, LIVE active product "${expectedProductName}"`)
     if (!response.ok) console.error(`Stripe rejected the read-only check: ${price.error?.message || response.status}`)
+    else if (!product) console.error('Stripe did not return an expanded product for this Price.')
+    else if (product.name !== expectedProductName) console.error(`Price is attached to product "${product.name}", expected "${expectedProductName}".`)
     failed = true
   } else {
-    console.log(`${variable}: PASS — LIVE EUR ${(expectedAmount / 100).toFixed(2)} recurring ${expectedInterval}, tax exclusive`)
+    console.log(`${variable}: PASS — LIVE EUR ${(expectedAmount / 100).toFixed(2)} recurring ${expectedInterval}, tax exclusive, product "${product.name}"`)
   }
 }
 
@@ -52,4 +78,3 @@ if (!taxRateId?.startsWith('txr_')) {
 
 if (failed) process.exit(1)
 console.log('All six Guardemar LIVE Stripe Prices and the configured Tax Rate passed. No Checkout Session or charge was created.')
-import { subscriptionVat } from '../src/config/subscriptions.ts'
