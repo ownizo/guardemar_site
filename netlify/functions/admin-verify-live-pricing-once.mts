@@ -1,6 +1,7 @@
 import { timingSafeEqual } from 'node:crypto'
 
-import { HttpError, verifyConfiguredTaxRate, verifyLivePrice } from './_subscription-shared.mts'
+import { subscriptionPlans } from '../../src/config/subscriptions.ts'
+import { HttpError, stripeRequest, verifyConfiguredTaxRate, verifyLivePrice } from './_subscription-shared.mts'
 
 function json(body: Record<string, unknown>, status: number) {
   return Response.json(body, { status, headers: { 'Cache-Control': 'no-store' } })
@@ -47,7 +48,12 @@ export default async function handler(request: Request) {
     const label = `${planCode}_${interval}`
     try {
       const canonical = await verifyLivePrice(planCode, interval)
-      prices[label] = { ok: true, variable: canonical.variable, priceId: canonical.priceId, amount: canonical.amount }
+      const expandedPrice = await stripeRequest<{ product?: { id?: string; name?: string; active?: boolean; livemode?: boolean } | string }>(`/prices/${encodeURIComponent(canonical.priceId)}?expand[]=product`)
+      const product = typeof expandedPrice.product === 'object' ? expandedPrice.product : undefined
+      const expectedProductName = subscriptionPlans[planCode].name
+      const productOk = product?.livemode === true && product?.active === true && product?.name === expectedProductName
+      if (!productOk) throw new HttpError(503, `Price is attached to product "${product?.name ?? 'unknown'}", expected LIVE active "${expectedProductName}".`, 'STRIPE_CONFIGURATION_ERROR')
+      prices[label] = { ok: true, variable: canonical.variable, priceId: canonical.priceId, amount: canonical.amount, productId: product?.id, productName: product?.name }
     } catch (error) {
       allPricesOk = false
       prices[label] = { ok: false, error: error instanceof HttpError ? error.message : 'Unexpected verification error.' }
