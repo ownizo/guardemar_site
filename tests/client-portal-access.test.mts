@@ -19,7 +19,7 @@ test('customer invitations use the server-only Supabase Auth Admin API', async (
   assert.ok(invitation > adminCheck)
   assert.match(source, /Netlify\.env\.get\('SUPABASE_SERVICE_ROLE_KEY'\)/)
   assert.match(source, /redirectTo: INVITATION_REDIRECT_URL/)
-  assert.match(source, /https:\/\/guardemar\.com\/reset-password/)
+  assert.match(source, /https:\/\/guardemar\.com\/auth\/callback/)
   assert.doesNotMatch(source, /auth\.admin\.createUser|localhost(?::\d+)?/i)
 })
 
@@ -94,6 +94,27 @@ test('customer inspection visibility remains RLS-backed, published-only, and lim
   assert.match(retention, /inspection\.status = 'published'/)
   assert.match(retention, /published_at \+ interval '4320 hours'/)
   assert.match(api, /rpc\('get_customer_inspection'[\s\S]*if \(!result\.data\) return publicError\(404,[\s\S]*'inspection_lookup'/)
+})
+
+test('a broken invitation credential is reported as a configuration problem, not a duplicate-email guess', async () => {
+  const source = await readFile(invitationFunctionPath, 'utf8')
+  assert.match(source, /isAuthStatusError/)
+  assert.match(source, /status === 401 \|\| status === 403/)
+  assert.match(source, /Customer invitations are not configured correctly\. Contact a Guardemar system administrator/)
+  // The generic fallback must remain reachable for genuinely unexpected errors, and must
+  // no longer make a misleading guess about a duplicate email — that case is now its own
+  // distinct, correctly-labelled branch (see the email_exists test below).
+  assert.match(source, /The invitation could not be sent\. Please check the email address and try again\./)
+})
+
+test('customer sign-in never distinguishes "no such account" from "wrong password" to the browser', async () => {
+  const source = await readFile(authComponentPath, 'utf8')
+  // Every branch of the credential check collapses to the same generic message, so a
+  // failed login cannot be used to enumerate which email addresses have accounts.
+  const submitBody = source.slice(source.indexOf('async function submit'), source.indexOf('return <PrivatePageFrame>'))
+  const genericMessageCount = submitBody.match(/The email or password was not recognised\./g)?.length ?? 0
+  assert.equal(genericMessageCount, 2) // signInWithPassword's error branch and its catch branch
+  assert.doesNotMatch(submitBody, /does not exist|no account|not registered|not found/i)
 })
 
 test('portal access integration does not recreate the already-applied production RPCs', async () => {

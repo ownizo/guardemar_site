@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { ArrowRight, Check, ClipboardCheck, CloudRain, KeyRound, ShieldCheck } from 'lucide-react'
 
-import { AssessmentCta, ButtonLink, PageIntro, ReportPreview, SectionHeading, Testimonials, TrustSection } from '@/components/site'
+import { AssessmentCta, ButtonLink, PageIntro, PropertyFocusSection, ReportPreview, SectionHeading, TrustSection } from '@/components/site'
 import { plans, trustPoints } from '@/config/site'
 import { futureLanguageAlternates, pageHead } from '@/lib/seo'
 
@@ -98,7 +98,7 @@ function HomePage() {
       </section>
 
       <TrustSection />
-      <Testimonials />
+      <PropertyFocusSection />
       <AssessmentCta />
     </>
   )

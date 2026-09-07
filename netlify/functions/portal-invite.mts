@@ -3,7 +3,7 @@ import { createClient } from '@supabase/supabase-js'
 import { z } from 'zod'
 
 const EXPECTED_SUPABASE_REF = 'ablktbpledjceddessyg'
-const INVITATION_REDIRECT_URL = 'https://guardemar.com/reset-password'
+const INVITATION_REDIRECT_URL = 'https://guardemar.com/auth/callback'
 
 const invitationInput = z.object({
   email: z.string().trim().email().max(254),
@@ -17,6 +17,16 @@ function json(data: unknown, init?: ResponseInit) {
 
 function errorResponse(status: number, message: string, code: 'VALIDATION_ERROR' | 'AUTHENTICATION_ERROR' | 'AUTHORIZATION_ERROR' | 'AUTH_INVITE_ERROR', stage: string) {
   return json({ error: { status, message, code, stage } }, { status })
+}
+
+function isAuthStatusError(error: unknown): error is { status: number } {
+  return typeof error === 'object' && error !== null && 'status' in error && typeof (error as { status: unknown }).status === 'number'
+}
+
+function authErrorCode(error: unknown): string | undefined {
+  return typeof error === 'object' && error !== null && 'code' in error && typeof (error as { code: unknown }).code === 'string'
+    ? (error as { code: string }).code
+    : undefined
 }
 
 export default async function handler(req: Request, context: Context) {
@@ -75,7 +85,25 @@ export default async function handler(req: Request, context: Context) {
       stage: 'auth_invite',
       message: error instanceof Error ? error.message : 'Unknown invitation error',
     })
-    return errorResponse(400, 'The invitation could not be sent. Check whether this email already has an account.', 'AUTH_INVITE_ERROR', 'auth_invite')
+    // A 401/403 here means the Admin API itself rejected the request (for example an
+    // invalid or rotated SUPABASE_SERVICE_ROLE_KEY), not that this particular email is
+    // already registered. Surfacing the generic "already has an account" message for a
+    // broken credential misleads staff into chasing the wrong cause, so it is reported
+    // as a configuration problem instead. No invitation is created in either case.
+    const status = isAuthStatusError(error) ? error.status : undefined
+    if (status === 401 || status === 403) {
+      return errorResponse(503, 'Customer invitations are not configured correctly. Contact a Guardemar system administrator before inviting clients.', 'AUTH_INVITE_ERROR', 'auth_invite_configuration')
+    }
+    // Supabase reports a known, specific code when this email already has an Auth
+    // identity, whether it was invited-but-never-activated or is already active. Both
+    // sub-cases are correctly resolved the same way — a password-reset email lets the
+    // holder (re)set their password and reach the portal — so staff are pointed at that
+    // single, always-correct action instead of a vague "maybe it already has an account".
+    const code = authErrorCode(error)
+    if (code === 'email_exists' || code === 'user_already_exists') {
+      return errorResponse(409, 'This email already has a Guardemar account. Send a password reset instead of a new invitation.', 'AUTH_INVITE_ERROR', 'auth_invite_email_exists')
+    }
+    return errorResponse(400, 'The invitation could not be sent. Please check the email address and try again.', 'AUTH_INVITE_ERROR', 'auth_invite')
   }
 }
 

@@ -3,6 +3,7 @@ import { type FormEvent, useEffect, useMemo, useState } from 'react'
 
 import { ConfirmDialog } from './confirm-dialog'
 import { PortalApiError, portalApi, portalInviteApi, type PortalErrorCode } from '@/lib/portal/api'
+import { getPortalSupabase } from '@/lib/portal/supabase'
 import type { AdminClientPortalAccess, AdminClientPortalUser, InvitedPortalUser, PortalAccessStatus } from '@/lib/portal/types'
 
 type ClientProperty = { id: string; displayName: string; active: boolean }
@@ -44,6 +45,8 @@ export function ClientPortalAccess({ clientId, clientFirstName, clientLastName, 
   const [revokeUser, setRevokeUser] = useState<AdminClientPortalUser | null>(null)
   const [revokeBusy, setRevokeBusy] = useState(false)
   const [feedback, setFeedback] = useState<Feedback | null>(null)
+  const [emailExistsFor, setEmailExistsFor] = useState<string | null>(null)
+  const [resetSending, setResetSending] = useState(false)
 
   const activeProperties = useMemo(() => properties.filter((property) => property.active), [properties])
   const overallStatus: PortalAccessStatus = access.users.length === 0
@@ -111,6 +114,7 @@ export function ClientPortalAccess({ clientId, clientFirstName, clientLastName, 
     if (inviteBusy) return
     setInviteBusy(true)
     setFeedback(null)
+    setEmailExistsFor(null)
     try {
       const result = await portalInviteApi<{ invitedUser: InvitedPortalUser }>({ email, firstName, lastName })
       const link = { user: result.invitedUser, relationshipLabel: inviteRelationship.trim() }
@@ -125,9 +129,32 @@ export function ClientPortalAccess({ clientId, clientFirstName, clientLastName, 
     } catch (error) {
       const portalError = asPortalError(error, 'AUTH_INVITE_ERROR', 'auth_invite')
       console.error('Portal action failed', { code: 'AUTH_INVITE_ERROR', message: portalError.message, status: portalError.status, stage: portalError.stage })
-      setFeedback({ kind: 'error', code: 'AUTH_INVITE_ERROR', message: portalError.message })
+      if (portalError.stage === 'auth_invite_email_exists') {
+        // This email already has an Auth identity, whether invited-but-never-activated
+        // or already active. Both are correctly resolved the same way: a password reset
+        // email. Offer exactly that action rather than a vague retry.
+        setEmailExistsFor(email)
+      } else {
+        setFeedback({ kind: 'error', code: 'AUTH_INVITE_ERROR', message: portalError.message })
+      }
     } finally {
       setInviteBusy(false)
+    }
+  }
+
+  async function sendPasswordResetForExistingEmail() {
+    if (!emailExistsFor || resetSending) return
+    setResetSending(true)
+    try {
+      const supabase = await getPortalSupabase()
+      await supabase.auth.resetPasswordForEmail(emailExistsFor, { redirectTo: `${window.location.origin}/auth/callback` })
+      setFeedback({ kind: 'success', message: `A password reset link was sent to ${emailExistsFor}.` })
+      setEmailExistsFor(null)
+    } catch (error) {
+      console.error('Portal action failed', { code: 'AUTH_INVITE_ERROR', message: error instanceof Error ? error.message : 'Unknown error', stage: 'send_password_reset' })
+      setFeedback({ kind: 'error', code: 'AUTH_INVITE_ERROR', message: 'The password reset email could not be sent. Try again shortly.' })
+    } finally {
+      setResetSending(false)
     }
   }
 
@@ -209,6 +236,8 @@ export function ClientPortalAccess({ clientId, clientFirstName, clientLastName, 
     </div>
 
     {feedback && <div className={`portal-notice ${feedback.kind === 'success' ? 'success' : feedback.kind === 'warning' ? 'warning' : 'error'}`} role={feedback.kind === 'error' ? 'alert' : 'status'}>{feedback.code && <strong>{feedback.code}</strong>}{feedback.message}</div>}
+
+    {emailExistsFor && <div className="portal-link-recovery"><div><strong>{emailExistsFor} already has a Guardemar account</strong><p>Send a password reset instead of a new invitation — this works whether the account was never activated or the client has simply forgotten their password.</p></div><button type="button" className="private-secondary" onClick={() => { void sendPasswordResetForExistingEmail() }} disabled={resetSending}>{resetSending ? 'Sending…' : 'Send password reset'}</button></div>}
 
     {loading ? <p className="muted-copy">Loading portal access…</p> : <>
       {access.users.length === 0 ? <div className="portal-access-empty"><KeyRound /><div><h3>Portal access is not activated</h3><p>Invite the client or another authorised representative, then choose the properties they may view.</p></div></div> : <div className="portal-user-list">{access.users.map((user) => <article className="portal-user-card" key={user.userId}>

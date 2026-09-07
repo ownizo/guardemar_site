@@ -2,55 +2,13 @@ import { Link, useNavigate } from '@tanstack/react-router'
 import { ArrowRight, KeyRound, LoaderCircle, ShieldCheck } from 'lucide-react'
 import { type FormEvent, type ReactNode, useEffect, useState } from 'react'
 
+import { logAuthDiagnostic } from '@/lib/portal/auth-diagnostics'
 import { portalApi, PortalApiError } from '@/lib/portal/api'
 import { canAccessPrivateArea, getPrivateHomePath, getPrivateLoginPath, type PrivateArea } from '@/lib/portal/access'
 import { getPortalSupabase } from '@/lib/portal/supabase'
 import type { PortalProfile } from '@/lib/portal/types'
 
-type AuthDiagnosticCode = 'AUTH_CREDENTIAL_ERROR' | 'PROFILE_INITIALISATION_ERROR' | 'PORTAL_ACCESS_ERROR' | 'NAVIGATION_ERROR'
-
 const portalOpenError = 'Your sign-in was successful, but your Guardemar portal access could not be opened. Please contact Guardemar.'
-
-function logAuthDiagnostic(code: AuthDiagnosticCode, error: unknown, stage: string) {
-  console.error('Portal sign-in failed', {
-    code,
-    stage,
-    message: error instanceof Error ? error.message : 'Unknown error',
-  })
-}
-
-const authCallbackParameters = [
-  'access_token',
-  'code',
-  'error',
-  'error_code',
-  'error_description',
-  'expires_at',
-  'expires_in',
-  'flow_id',
-  'provider_token',
-  'refresh_token',
-  'token_type',
-  'type',
-]
-
-function readAuthCallback() {
-  const url = new URL(window.location.href)
-  const hashParameters = new URLSearchParams(url.hash.replace(/^#/, ''))
-  const getParameter = (name: string) => url.searchParams.get(name) ?? hashParameters.get(name)
-  const error = getParameter('error') ?? getParameter('error_code') ?? getParameter('error_description')
-  const hasCallback = Boolean(error || getParameter('code') || getParameter('access_token') || getParameter('type'))
-  return { error, hasCallback }
-}
-
-function clearAuthCallbackParameters() {
-  const url = new URL(window.location.href)
-  for (const parameter of authCallbackParameters) url.searchParams.delete(parameter)
-  const hashParameters = new URLSearchParams(url.hash.replace(/^#/, ''))
-  const hasAuthHash = authCallbackParameters.some((parameter) => hashParameters.has(parameter))
-  if (hasAuthHash) url.hash = ''
-  window.history.replaceState(window.history.state, '', `${url.pathname}${url.search}${url.hash}`)
-}
 
 export function AuthCard({ area }: { area: PrivateArea }) {
   const navigate = useNavigate()
@@ -58,44 +16,6 @@ export function AuthCard({ area }: { area: PrivateArea }) {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
-
-  useEffect(() => {
-    let active = true
-    async function continueAuthCallback() {
-      const callback = readAuthCallback()
-      if (callback.error) {
-        clearAuthCallbackParameters()
-        if (active) setError(area === 'admin'
-          ? 'This invitation or sign-in link is invalid or has expired. Please contact Guardemar for a new invitation.'
-          : 'This sign-in link is invalid or has expired. Please request a new password reset link.')
-        return
-      }
-      try {
-        const supabase = await getPortalSupabase()
-        const { data, error: sessionError } = await supabase.auth.getSession()
-        if (!active) return
-        if (sessionError || !data.session) {
-          if (callback.hasCallback) {
-            clearAuthCallbackParameters()
-            setError(area === 'admin'
-              ? 'This invitation or sign-in link is invalid or has expired. Please contact Guardemar for a new invitation.'
-              : 'This sign-in link is invalid or has expired. Please request a new password reset link.')
-          }
-          return
-        }
-        if (callback.hasCallback) clearAuthCallbackParameters()
-        const { profile } = await portalApi<{ profile: PortalProfile }>('session/initialise', { method: 'POST' })
-        await navigate({ to: getPrivateHomePath(profile.role), replace: true })
-      } catch {
-        if (callback.hasCallback && active) {
-          clearAuthCallbackParameters()
-          setError('This secure sign-in link could not be completed. Please try signing in again.')
-        }
-      }
-    }
-    void continueAuthCallback()
-    return () => { active = false }
-  }, [area, navigate])
 
   async function submit(event: FormEvent) {
     event.preventDefault()
@@ -184,7 +104,7 @@ export function ForgotPasswordCard() {
     try {
       const supabase = await getPortalSupabase()
       const origin = window.location.origin
-      await supabase.auth.resetPasswordForEmail(email, { redirectTo: `${origin}/reset-password` })
+      await supabase.auth.resetPasswordForEmail(email, { redirectTo: `${origin}/auth/callback` })
       setMessage('If an account exists for that address, a secure reset link has been sent.')
     } finally {
       setBusy(false)
@@ -194,83 +114,109 @@ export function ForgotPasswordCard() {
   return <PrivatePageFrame><section className="auth-card"><p className="private-eyebrow">Secure account recovery</p><h1>Reset your password</h1><p>Enter the email address used for your Guardemar portal invitation.</p><form className="private-form" onSubmit={submit}><label>Email address<input type="email" autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} required /></label>{message && <p className="form-success" role="status">{message}</p>}<button className="private-primary" disabled={busy}>{busy ? 'Sending…' : 'Send reset link'}</button></form><Link className="quiet-link" to="/portal/login">Return to sign in</Link></section></PrivatePageFrame>
 }
 
+/**
+ * Renders once /auth/callback has already established a session (invitation or
+ * recovery) and redirected here. This component never interprets a Supabase callback
+ * itself — it only ever checks whether a session already exists (which /auth/callback
+ * guarantees before it navigates here) and, for `flow=invite`, completes portal
+ * onboarding after the password is set. See src/routes/auth.callback.tsx.
+ */
 export function ResetPasswordCard() {
+  const navigate = useNavigate()
   const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [recoveryState, setRecoveryState] = useState<'checking' | 'ready' | 'invalid' | 'complete'>('checking')
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
+  const flow: 'invite' | 'recovery' = new URLSearchParams(window.location.search).get('flow') === 'invite' ? 'invite' : 'recovery'
 
   useEffect(() => {
     let active = true
-    let unsubscribe: (() => void) | undefined
-
-    async function initialiseRecovery() {
-      const callback = readAuthCallback()
-      if (callback.error || !callback.hasCallback) {
-        if (callback.error) clearAuthCallbackParameters()
-        if (active) setRecoveryState('invalid')
-        return
-      }
-
+    async function checkSession() {
       try {
         const supabase = await getPortalSupabase()
-        const { data: listener } = supabase.auth.onAuthStateChange((event) => {
-          if (event === 'PASSWORD_RECOVERY' && active) {
-            clearAuthCallbackParameters()
-            setRecoveryState('ready')
-          }
-        })
-        unsubscribe = () => listener.subscription.unsubscribe()
-
         const { data, error: sessionError } = await supabase.auth.getSession()
         if (!active) return
-        if (sessionError || !data.session) {
-          clearAuthCallbackParameters()
-          setRecoveryState('invalid')
-          return
-        }
-        clearAuthCallbackParameters()
-        setRecoveryState('ready')
+        setRecoveryState(sessionError || !data.session ? 'invalid' : 'ready')
       } catch {
-        if (active) {
-          clearAuthCallbackParameters()
-          setRecoveryState('invalid')
-        }
+        if (active) setRecoveryState('invalid')
       }
     }
-
-    void initialiseRecovery()
-    return () => {
-      active = false
-      unsubscribe?.()
-    }
+    void checkSession()
+    return () => { active = false }
   }, [])
 
   async function submit(event: FormEvent) {
     event.preventDefault()
-    setBusy(true)
     setError('')
+    if (password !== confirmPassword) {
+      setError('The passwords do not match.')
+      return
+    }
+    setBusy(true)
     try {
       const supabase = await getPortalSupabase()
-      const { error } = await supabase.auth.updateUser({ password })
-      if (error) throw error
+      const { error: updateError } = await supabase.auth.updateUser({ password })
+      if (updateError) {
+        logAuthDiagnostic('PASSWORD_UPDATE_FAILED', updateError, 'update_user')
+        setError('Your password could not be updated. The link may have expired; please request a new one.')
+        setBusy(false)
+        return
+      }
+
+      if (flow === 'invite') {
+        let profile: PortalProfile
+        try {
+          const result = await portalApi<{ profile: PortalProfile }>('session/initialise', { method: 'POST' })
+          profile = result.profile
+        } catch (initialisationError) {
+          logAuthDiagnostic('PROFILE_INITIALISATION_FAILED', initialisationError, 'session_initialise')
+          setError('Your password was set, but your Guardemar portal access could not be opened. Please contact Guardemar.')
+          setBusy(false)
+          return
+        }
+        if (!canAccessPrivateArea(profile.role, 'portal')) {
+          logAuthDiagnostic('ROLE_ACCESS_FAILED', new Error(`Role ${profile.role} cannot access portal`), 'role_access')
+          setError('Your password was set, but your Guardemar portal access could not be opened. Please contact Guardemar.')
+          setBusy(false)
+          return
+        }
+        try {
+          await navigate({ to: getPrivateHomePath(profile.role), replace: true })
+        } catch (navigationError) {
+          logAuthDiagnostic('NAVIGATION_ERROR', navigationError, 'navigation')
+          setError('Your password was set. Please sign in to continue.')
+        } finally {
+          setBusy(false)
+        }
+        return
+      }
+
       await supabase.auth.signOut({ scope: 'local' })
       setPassword('')
+      setConfirmPassword('')
       setRecoveryState('complete')
-    } catch {
-      setError('Your password could not be updated. The reset link may have expired; please request a new one.')
-    } finally {
+      setBusy(false)
+    } catch (updateError) {
+      logAuthDiagnostic('PASSWORD_UPDATE_FAILED', updateError, 'update_user')
+      setError('Your password could not be updated. The link may have expired; please request a new one.')
       setBusy(false)
     }
   }
 
-  if (recoveryState === 'checking') return <PrivatePageFrame><div className="private-loading"><LoaderCircle className="spin" /><span>Checking your secure reset link…</span></div></PrivatePageFrame>
+  if (recoveryState === 'checking') return <PrivatePageFrame><div className="private-loading"><LoaderCircle className="spin" /><span>Checking your secure link…</span></div></PrivatePageFrame>
 
-  if (recoveryState === 'invalid') return <PrivatePageFrame><section className="auth-card"><p className="private-eyebrow">Secure account recovery</p><h1>This reset link is no longer valid</h1><p>The link may have expired or already been used. Request a new secure link to continue.</p><Link className="private-primary inline-action" to="/portal/forgot-password">Request a new reset link</Link><Link className="quiet-link" to="/portal/login">Return to sign in</Link></section></PrivatePageFrame>
+  if (recoveryState === 'invalid') return <PrivatePageFrame><section className="auth-card"><p className="private-eyebrow">Secure account recovery</p><h1>This link is no longer valid</h1><p>The link may have expired or already been used. Request a new secure link to continue.</p><Link className="private-primary inline-action" to="/portal/forgot-password">Request a new reset link</Link><Link className="quiet-link" to="/portal/login">Return to sign in</Link></section></PrivatePageFrame>
 
   if (recoveryState === 'complete') return <PrivatePageFrame><section className="auth-card"><p className="private-eyebrow">Password updated</p><h1>Your new password is ready</h1><p>Your recovery session has been closed. Sign in again with your new password.</p><Link className="private-primary inline-action" to="/portal/login">Client sign in</Link><Link className="quiet-link" to="/admin/login">Team sign in</Link></section></PrivatePageFrame>
 
-  return <PrivatePageFrame><section className="auth-card"><p className="private-eyebrow">Secure account recovery</p><h1>Choose a new password</h1><form className="private-form" onSubmit={submit}><label>New password<input type="password" minLength={10} autoComplete="new-password" value={password} onChange={(event) => setPassword(event.target.value)} required /></label>{error && <p className="form-error" role="alert">{error}</p>}<button className="private-primary" disabled={busy}>{busy ? 'Updating…' : 'Update password'}</button></form><Link className="quiet-link" to="/portal/login">Return to sign in</Link></section></PrivatePageFrame>
+  const eyebrow = flow === 'invite' ? 'Activate your Guardemar access' : 'Secure account recovery'
+  const title = flow === 'invite' ? 'Set up your Guardemar access' : 'Choose a new password'
+  const intro = flow === 'invite' ? 'Choose a password to finish setting up your Guardemar client portal account.' : 'Choose a new password for your Guardemar client portal account.'
+  const submitLabel = flow === 'invite' ? 'Set up access' : 'Update password'
+  const busyLabel = flow === 'invite' ? 'Setting up access…' : 'Updating…'
+
+  return <PrivatePageFrame><section className="auth-card"><p className="private-eyebrow">{eyebrow}</p><h1>{title}</h1><p>{intro}</p><form className="private-form" onSubmit={submit}><label>New password<input type="password" minLength={10} autoComplete="new-password" value={password} onChange={(event) => setPassword(event.target.value)} required /></label><label>Confirm new password<input type="password" minLength={10} autoComplete="new-password" value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} required /></label>{error && <p className="form-error" role="alert">{error}</p>}<button className="private-primary" disabled={busy}>{busy ? busyLabel : submitLabel}</button></form><Link className="quiet-link" to="/portal/login">Return to sign in</Link></section></PrivatePageFrame>
 }
 
 export function PrivateGuard({ area, children }: { area: PrivateArea; children: (profile: PortalProfile) => ReactNode }) {

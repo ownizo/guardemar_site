@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import { readFile } from 'node:fs/promises'
 import test from 'node:test'
 
-import { createAdminPropertyWithRefresh, type AdminPropertyPayload } from '../src/lib/portal/property-creation.ts'
+import { buildAdminPropertyPayload, createAdminPropertyWithRefresh, type AdminPropertyPayload } from '../src/lib/portal/property-creation.ts'
 import { createStaffWithPhoto, STAFF_PHOTO_MAX_BYTES, type AdminStaffPayload, validateStaffPhoto } from '../src/lib/portal/staff-creation.ts'
 import { acquireSubmissionLock } from '../src/lib/portal/submission-lock.ts'
 import type { StaffProfile } from '../src/lib/portal/types.ts'
@@ -174,4 +174,56 @@ test('team API uses Phase 2 staff RPCs and does not create Auth accounts', async
   assert.match(source, /rpc\('update_staff_profile'/)
   assert.match(source, /rpc\('list_admin_team'/)
   assert.doesNotMatch(source, /auth\.admin\.createUser/)
+})
+
+function propertyForm(fields: Record<string, string>) {
+  const form = new FormData()
+  for (const [key, value] of Object.entries(fields)) form.set(key, value)
+  return form
+}
+
+test('a locked client always wins, even if the submitted form disagrees', () => {
+  const form = propertyForm({
+    clientId: '99999999-0000-4000-8000-000000000099',
+    displayName: 'Casa da Praia', addressLine1: '2 Rua do Mar', postalCode: '8600-000', locality: 'Lagos', municipality: 'Lagos', country: 'Portugal',
+  })
+  const payload = buildAdminPropertyPayload(form, '10000000-0000-4000-8000-000000000001')
+  assert.equal(payload.clientId, '10000000-0000-4000-8000-000000000001')
+})
+
+test('without a locked client, the payload uses the selected client from the form', () => {
+  const form = propertyForm({
+    clientId: '10000000-0000-4000-8000-000000000001',
+    displayName: 'Casa da Praia', addressLine1: '2 Rua do Mar', postalCode: '8600-000', locality: 'Lagos', municipality: 'Lagos', country: 'Portugal',
+  })
+  const payload = buildAdminPropertyPayload(form)
+  assert.equal(payload.clientId, '10000000-0000-4000-8000-000000000001')
+})
+
+test('property payload carries the fields the properties schema actually supports, nothing invented', () => {
+  const form = propertyForm({
+    displayName: 'Casa da Praia', addressLine1: '2 Rua do Mar', addressLine2: 'Bloco B', postalCode: '8600-000', locality: 'Lagos', municipality: 'Lagos', country: 'Portugal', propertyType: 'villa', bedrooms: '3', bathrooms: '2',
+  })
+  const payload = buildAdminPropertyPayload(form, '10000000-0000-4000-8000-000000000001')
+  assert.deepEqual(Object.keys(payload).sort(), [
+    'accessNotesPrivate', 'addressLine1', 'addressLine2', 'bathrooms', 'bedrooms', 'clientId', 'country',
+    'displayName', 'hasAlarm', 'hasGarden', 'hasIrrigation', 'hasPool', 'internalNotes', 'locality',
+    'municipality', 'postalCode', 'propertyType',
+  ])
+  assert.equal(payload.bedrooms, 3)
+  assert.equal(payload.hasPool, false)
+})
+
+test('a client record exposes a visible "Add property" action scoped to that client', async () => {
+  const source = await readFile(new URL('../src/routes/admin.clients_.$id.tsx', import.meta.url), 'utf8')
+  assert.match(source, /Add property/)
+  assert.match(source, /PropertyCreateForm/)
+  assert.match(source, /lockedClient=\{\{\s*id:\s*client\.id/)
+  assert.match(source, /refresh=\{loadClient\}/)
+})
+
+test('the property directory still lets staff choose any client (unlocked path)', async () => {
+  const source = await readFile(new URL('../src/routes/admin.properties.tsx', import.meta.url), 'utf8')
+  assert.match(source, /PropertyCreateForm clients=\{clients\}/)
+  assert.doesNotMatch(source, /lockedClient/)
 })

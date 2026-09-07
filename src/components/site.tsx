@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router'
-import { ArrowRight, Camera, CircleAlert, Clock3, KeyRound, LockKeyhole, Quote, ShieldCheck, UsersRound } from 'lucide-react'
+import { ArrowRight, CalendarClock, Camera, CircleAlert, ClipboardCheck, Clock3, Home, KeyRound, LockKeyhole, MessageCircle } from 'lucide-react'
 import type { ReactNode } from 'react'
 
 import { business, faqs, founder } from '@/config/site'
@@ -34,20 +34,20 @@ export function AuthorCard({ compact = false, showPhoto = false }: { compact?: b
 export function FAQSection({ limit, items = faqs }: { limit?: number; items?: ReadonlyArray<readonly [string, string]> }) { const visible = limit ? items.slice(0, limit) : items; const schema={'@context':'https://schema.org','@type':'FAQPage',mainEntity:visible.map(([question,answer])=>({'@type':'Question',name:question,acceptedAnswer:{'@type':'Answer',text:answer}}))};return <section className="section shell"><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(schema)}}/><PageIntro eyebrow="Frequently asked questions" title="Clear answers before you hand over the keys." text="If your property or arrangements are unusual, talk to us. The service is designed around the home." /><div className="faq-list">{visible.map(([question, answer]) => <details key={question}><summary>{question}<span>+</span></summary><p>{answer}</p></details>)}</div></section> }
 
 const trustItems = [
-  { icon: ShieldCheck, title: 'Professional liability cover', text: '[CONFIRM: insurer and cover level]. The applicable policy details should be verified before publication.' },
-  { icon: KeyRound, title: 'Key handling protocol', text: 'Keys are coded rather than labelled with a full address, stored securely, accessed only for authorised purposes and recorded when used.' },
-  { icon: UsersRound, title: 'Service continuity', text: '[CONFIRM: named cover arrangement during owner absence, illness or other unavailability]. Any authorised substitute must follow the agreed property instructions.' },
+  { icon: ClipboardCheck, title: 'Documented property checks', text: 'Every scheduled visit is followed by a structured report, with photographs where applicable, so the recorded condition of the property is always current.' },
+  { icon: KeyRound, title: 'Controlled keyholding', text: 'Keys are coded rather than labelled with a full address, stored securely and accessed only for authorised service purposes, with each use recorded.' },
+  { icon: MessageCircle, title: 'Clear issue escalation', text: 'When something requiring attention is identified, the owner is informed and next steps are coordinated according to the agreed service arrangements.' },
   { icon: LockKeyhole, title: 'Data protection', text: 'Property, contact and access information is limited to the service purpose, handled under GDPR principles and shared only where authorised or legally required.' },
 ] as const
 
-export function TrustSection() { return <section className="section trust-section"><div className="shell"><PageIntro eyebrow="Trust and access" title="Clear controls around your home and information." text="Property care depends on disciplined access, documented handling and continuity when circumstances change." /><div className="trust-detail-grid">{trustItems.map(({ icon: Icon, title, text }) => <article key={title}><Icon size={22}/><h3>{title}</h3><p>{text}</p></article>)}</div></div></section> }
+export function TrustSection() { return <section className="section trust-section"><div className="shell"><PageIntro eyebrow="Trust and access" title="Clear controls around your home and information." text="Property care depends on disciplined access, documented handling and clear communication whenever something needs attention." /><div className="trust-detail-grid">{trustItems.map(({ icon: Icon, title, text }) => <article key={title}><Icon size={22}/><h3>{title}</h3><p>{text}</p></article>)}</div></div></section> }
 
-const testimonialPlaceholders = [
-  { quote: '[TESTIMONIAL 1 — awaiting client consent]', person: '[First name and initial]', locality: '[Locality]', property: '[Property type]' },
-  { quote: '[TESTIMONIAL 2 — awaiting client consent]', person: '[First name and initial]', locality: '[Locality]', property: '[Property type]' },
-  { quote: '[TESTIMONIAL 3 — awaiting client consent]', person: '[First name and initial]', locality: '[Locality]', property: '[Property type]' },
+const differenceItems = [
+  { icon: Home, title: 'Property-first, not booking-first', text: 'Traditional holiday-rental management is organised around guests, turnovers and reviews. Guardemar is organised around the property itself — its condition, access, maintenance needs and readiness while the owner is elsewhere.' },
+  { icon: ClipboardCheck, title: 'A continuous record, not a single snapshot', text: 'Every visit adds to a documented history of the property, making a genuine change in condition easy to distinguish from how the home ordinarily looks.' },
+  { icon: CalendarClock, title: 'Built for absence, not occupancy', text: 'The service is designed around the weeks or months a property stands empty between stays, not the nights it happens to be occupied.' },
 ] as const
 
-export function Testimonials() { return <section className="section shell testimonials"><PageIntro eyebrow="Client experience" title="Owner feedback, published only with consent." text="These positions are reserved for verified client comments." /><div className="testimonial-grid">{testimonialPlaceholders.map((item) => <blockquote key={item.quote}><Quote size={22}/><p>{item.quote}</p><footer><strong>{item.person}</strong><span>{item.locality} · {item.property}</span></footer></blockquote>)}</div></section> }
+export function PropertyFocusSection() { return <section className="section shell property-focus"><PageIntro eyebrow="A different starting point" title="Designed around the property, not the booking." text="Traditional property management often focuses on guests and bookings. Guardemar focuses on the property itself." /><div className="difference-grid">{differenceItems.map(({ icon: Icon, title, text }) => <article key={title}><Icon size={22}/><h3>{title}</h3><p>{text}</p></article>)}</div></section> }
 
 export function ContentSection({ title, children }: { title: string; children: ReactNode }) { return <section className="content-block"><h2>{title}</h2>{children}</section> }
