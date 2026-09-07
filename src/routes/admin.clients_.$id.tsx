@@ -8,6 +8,7 @@ import { ConfirmDialog } from '@/components/portal/confirm-dialog'
 import { PropertyCreateForm, type PropertyFormNotice } from '@/components/portal/property-create-form'
 import { EmptyState, PrivateShell } from '@/components/portal/shell'
 import { PortalApiError, portalApi } from '@/lib/portal/api'
+import { formatPersonName } from '@/lib/portal/client-display'
 import type { ClientDeletionResult, PortalProfile } from '@/lib/portal/types'
 
 type ClientDetail = { id: string; firstName: string; lastName: string; email: string; phone: string; taxNumber: string | null; billingAddress: string | null; country: string; internalNotes: string | null; active: boolean }
@@ -37,6 +38,7 @@ function ClientDetails({ profile }: { profile: PortalProfile }) {
   useEffect(() => { void loadClient() }, [id])
   if (!data) return <PrivateShell area="admin" profile={profile} title="Client record"><div className="private-panel">Loading client…</div></PrivateShell>
   const { client, properties } = data
+  const clientName = formatPersonName(client.firstName, client.lastName, client.email)
 
   async function deleteClient() {
     if (deleting) return
@@ -68,19 +70,19 @@ function ClientDetails({ profile }: { profile: PortalProfile }) {
     }
   }
 
-  if (deleted) return <PrivateShell area="admin" profile={profile} title="Client deleted" eyebrow="Client record"><div className="portal-notice success" role="status">{notice || `${client.firstName} ${client.lastName} was deleted successfully.`}<Link to="/admin/clients">Return to clients</Link></div></PrivateShell>
+  if (deleted) return <PrivateShell area="admin" profile={profile} title="Client deleted" eyebrow="Client record"><div className="portal-notice success" role="status">{notice || `${clientName} was deleted successfully.`}<Link to="/admin/clients">Return to clients</Link></div></PrivateShell>
 
-  return <PrivateShell area="admin" profile={profile} title={`${client.firstName} ${client.lastName}`} eyebrow="Client record" action={<div className="heading-actions"><Link className="private-secondary" to="/admin/clients"><ChevronLeft />Clients</Link>{profile.role === 'admin' && <button type="button" className="private-danger" onClick={() => setShowDelete(true)}><Trash2 />Delete client</button>}</div>}>
+  return <PrivateShell area="admin" profile={profile} title={clientName} eyebrow="Client record" action={<div className="heading-actions"><Link className="private-secondary" to="/admin/clients"><ChevronLeft />Clients</Link>{profile.role === 'admin' && <button type="button" className="private-danger" onClick={() => setShowDelete(true)}><Trash2 />Delete client</button>}</div>}>
     {notice && <div className="portal-notice error" role="alert">{notice}</div>}
     <div className="record-grid"><section className="private-panel"><div className="panel-heading"><h2>Contact information</h2></div><dl className="details-list"><div><dt>Email</dt><dd>{client.email}</dd></div><div><dt>Telephone</dt><dd>{client.phone}</dd></div><div><dt>Tax number</dt><dd>{client.taxNumber || 'Not provided'}</dd></div><div><dt>Country</dt><dd>{client.country}</dd></div><div><dt>Billing address</dt><dd>{client.billingAddress || 'Not provided'}</dd></div></dl></section><section className="private-panel staff-only-panel"><div className="panel-heading"><h2>Internal notes</h2><span>Staff only</span></div><p>{client.internalNotes || 'No internal notes.'}</p></section></div>
     <section className="private-panel">
       <div className="panel-heading"><h2>Properties</h2><div className="heading-actions"><button type="button" className="private-primary" onClick={() => setShowAddProperty((visible) => !visible)}><Plus />Add property</button><Link to="/admin/properties">Property directory</Link></div></div>
       {propertyNotice && <div className={`portal-notice ${propertyNotice.kind}`} role={propertyNotice.kind === 'error' ? 'alert' : 'status'}>{propertyNotice.message}</div>}
-      {showAddProperty && <PropertyCreateForm lockedClient={{ id: client.id, name: `${client.firstName} ${client.lastName}` }} onCancel={() => setShowAddProperty(false)} onCreated={() => setShowAddProperty(false)} refresh={loadClient} onNotice={setPropertyNotice} />}
+      {showAddProperty && <PropertyCreateForm lockedClient={{ id: client.id, name: clientName }} onCancel={() => setShowAddProperty(false)} onCreated={() => setShowAddProperty(false)} refresh={loadClient} onNotice={setPropertyNotice} />}
       {properties.length === 0 ? <EmptyState title="No properties added">Use “Add property” above to create this client’s first property.</EmptyState> : <div className="private-list compact">{properties.map((property) => <Link to="/admin/properties/$id" params={{ id: property.id }} key={property.id}><div className="list-icon"><Building2 /></div><div><h3>{property.displayName}</h3><p>{property.addressLine1}, {property.locality}</p></div><span className="private-pill">{property.active ? 'Active' : 'Inactive'}</span></Link>)}</div>}
     </section>
     <section className="private-panel related-subscriptions"><div><p className="private-eyebrow">Contracts and billing</p><h2>Service subscriptions</h2><p>Review this client’s accepted Service Orders, payment state and Stripe references.</p></div><Link className="private-primary" to="/admin/subscriptions" search={{ clientId: client.id } as never}>View subscriptions</Link></section>
     {profile.role === 'admin' && <ClientPortalAccess clientId={client.id} clientFirstName={client.firstName} clientLastName={client.lastName} clientEmail={client.email} properties={properties} />}
-    {showDelete && <ConfirmDialog title={`Delete ${client.firstName} ${client.lastName}?`} confirmLabel="Delete client" busy={deleting} onCancel={() => setShowDelete(false)} onConfirm={() => { void deleteClient() }}><p>This action permanently deletes this client record and cannot be undone.</p>{properties.length > 0 && <p className="confirm-warning">This client has linked properties and cannot be deleted until those records are removed or reassigned.</p>}</ConfirmDialog>}
+    {showDelete && <ConfirmDialog title={`Delete ${clientName}?`} confirmLabel="Delete client" busy={deleting} onCancel={() => setShowDelete(false)} onConfirm={() => { void deleteClient() }}><p>This action permanently deletes this client record and cannot be undone.</p>{properties.length > 0 && <p className="confirm-warning">This client has linked properties and cannot be deleted until those records are removed or reassigned.</p>}</ConfirmDialog>}
   </PrivateShell>
 }
