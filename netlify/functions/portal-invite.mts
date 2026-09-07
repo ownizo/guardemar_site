@@ -19,6 +19,10 @@ function errorResponse(status: number, message: string, code: 'VALIDATION_ERROR'
   return json({ error: { status, message, code, stage } }, { status })
 }
 
+function isAuthStatusError(error: unknown): error is { status: number } {
+  return typeof error === 'object' && error !== null && 'status' in error && typeof (error as { status: unknown }).status === 'number'
+}
+
 export default async function handler(req: Request, context: Context) {
   if (req.method !== 'POST') return errorResponse(405, 'Method not allowed.', 'VALIDATION_ERROR', 'method')
 
@@ -75,6 +79,15 @@ export default async function handler(req: Request, context: Context) {
       stage: 'auth_invite',
       message: error instanceof Error ? error.message : 'Unknown invitation error',
     })
+    // A 401/403 here means the Admin API itself rejected the request (for example an
+    // invalid or rotated SUPABASE_SERVICE_ROLE_KEY), not that this particular email is
+    // already registered. Surfacing the generic "already has an account" message for a
+    // broken credential misleads staff into chasing the wrong cause, so it is reported
+    // as a configuration problem instead. No invitation is created in either case.
+    const status = isAuthStatusError(error) ? error.status : undefined
+    if (status === 401 || status === 403) {
+      return errorResponse(503, 'Customer invitations are not configured correctly. Contact a Guardemar system administrator before inviting clients.', 'AUTH_INVITE_ERROR', 'auth_invite_configuration')
+    }
     return errorResponse(400, 'The invitation could not be sent. Check whether this email already has an account.', 'AUTH_INVITE_ERROR', 'auth_invite')
   }
 }

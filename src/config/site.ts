@@ -104,9 +104,9 @@ export const faqs = [
 
 export const planFaqs = [
   ...faqs,
-  ['Who actually enters my property?', 'Access is limited to Guardemar and any person specifically authorised under the agreed service arrangements. [CONFIRM: named staff and substitute-access procedure].'],
-  ['What happens if you are ill or away?', '[CONFIRM: service-continuity arrangement]. Any approved cover must use the property instructions, access controls and reporting process agreed with the owner.'],
-  ['Are you insured?', '[CONFIRM: insurer, policy type and cover level]. Guardemar does not sell insurance or provide insurance advice.'],
+  ['Who actually enters my property?', 'Access is limited to Guardemar and to any person specifically authorised under the agreed service arrangements. Where third-party access is required — for example a contractor approved by the owner — it is coordinated in accordance with the owner’s instructions and the service agreement.'],
+  ['What happens if you are ill or away?', 'Visits are scheduled and planned in advance. If a scheduled visit needs to be rescheduled, the owner is informed and a revised date is agreed as part of the normal service arrangements, so a property is never simply left unchecked without communication.'],
+  ['Are you insured?', 'Guardemar maintains such professional liability insurance as it considers appropriate from time to time; current cover details can be confirmed on request. Guardemar does not sell insurance or provide insurance advice, and inspection reports do not replace the owner’s own home insurance arrangements.'],
   ['How are my keys stored and who can authorise access?', 'Keys are coded rather than labelled with a full property address and stored securely. Access is limited to authorised purposes; the owner defines who may be admitted and under what circumstances.'],
   ['What happens if something is damaged during a visit?', 'The condition is documented, the owner is informed and the circumstances are reviewed promptly. Any responsibility, repair or insurance process depends on the facts and the applicable service and policy terms.'],
   ['Is there a minimum contract term?', 'Yes. Both Monthly Billing and Annual Billing are based on a 12-month Guardemar Service Agreement. Monthly Billing is a payment frequency, not a monthly contract. Renewal and ending provisions are set out in the accepted Service Order and General Terms.'],

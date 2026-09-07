@@ -1,10 +1,11 @@
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
-import { Building2, ChevronLeft, Trash2 } from 'lucide-react'
+import { Building2, ChevronLeft, Plus, Trash2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 import { PrivateGuard } from '@/components/portal/auth'
 import { ClientPortalAccess } from '@/components/portal/client-portal-access'
 import { ConfirmDialog } from '@/components/portal/confirm-dialog'
+import { PropertyCreateForm, type PropertyFormNotice } from '@/components/portal/property-create-form'
 import { EmptyState, PrivateShell } from '@/components/portal/shell'
 import { PortalApiError, portalApi } from '@/lib/portal/api'
 import type { ClientDeletionResult, PortalProfile } from '@/lib/portal/types'
@@ -26,7 +27,14 @@ function ClientDetails({ profile }: { profile: PortalProfile }) {
   const [deleting, setDeleting] = useState(false)
   const [notice, setNotice] = useState('')
   const [deleted, setDeleted] = useState(false)
-  useEffect(() => { void portalApi<{ client: ClientDetail; properties: ClientProperty[] }>(`admin/clients/${id}`).then(setData) }, [id])
+  const [showAddProperty, setShowAddProperty] = useState(false)
+  const [propertyNotice, setPropertyNotice] = useState<PropertyFormNotice | null>(null)
+
+  async function loadClient() {
+    const result = await portalApi<{ client: ClientDetail; properties: ClientProperty[] }>(`admin/clients/${id}`)
+    setData(result)
+  }
+  useEffect(() => { void loadClient() }, [id])
   if (!data) return <PrivateShell area="admin" profile={profile} title="Client record"><div className="private-panel">Loading client…</div></PrivateShell>
   const { client, properties } = data
 
@@ -65,7 +73,12 @@ function ClientDetails({ profile }: { profile: PortalProfile }) {
   return <PrivateShell area="admin" profile={profile} title={`${client.firstName} ${client.lastName}`} eyebrow="Client record" action={<div className="heading-actions"><Link className="private-secondary" to="/admin/clients"><ChevronLeft />Clients</Link>{profile.role === 'admin' && <button type="button" className="private-danger" onClick={() => setShowDelete(true)}><Trash2 />Delete client</button>}</div>}>
     {notice && <div className="portal-notice error" role="alert">{notice}</div>}
     <div className="record-grid"><section className="private-panel"><div className="panel-heading"><h2>Contact information</h2></div><dl className="details-list"><div><dt>Email</dt><dd>{client.email}</dd></div><div><dt>Telephone</dt><dd>{client.phone}</dd></div><div><dt>Tax number</dt><dd>{client.taxNumber || 'Not provided'}</dd></div><div><dt>Country</dt><dd>{client.country}</dd></div><div><dt>Billing address</dt><dd>{client.billingAddress || 'Not provided'}</dd></div></dl></section><section className="private-panel staff-only-panel"><div className="panel-heading"><h2>Internal notes</h2><span>Staff only</span></div><p>{client.internalNotes || 'No internal notes.'}</p></section></div>
-    <section className="private-panel"><div className="panel-heading"><h2>Properties</h2><Link to="/admin/properties">Manage properties</Link></div>{properties.length === 0 ? <EmptyState title="No properties added">Add this client’s first property from the property directory.</EmptyState> : <div className="private-list compact">{properties.map((property) => <Link to="/admin/properties/$id" params={{ id: property.id }} key={property.id}><div className="list-icon"><Building2 /></div><div><h3>{property.displayName}</h3><p>{property.addressLine1}, {property.locality}</p></div><span className="private-pill">{property.active ? 'Active' : 'Inactive'}</span></Link>)}</div>}</section>
+    <section className="private-panel">
+      <div className="panel-heading"><h2>Properties</h2><div className="heading-actions"><button type="button" className="private-primary" onClick={() => setShowAddProperty((visible) => !visible)}><Plus />Add property</button><Link to="/admin/properties">Property directory</Link></div></div>
+      {propertyNotice && <div className={`portal-notice ${propertyNotice.kind}`} role={propertyNotice.kind === 'error' ? 'alert' : 'status'}>{propertyNotice.message}</div>}
+      {showAddProperty && <PropertyCreateForm lockedClient={{ id: client.id, name: `${client.firstName} ${client.lastName}` }} onCancel={() => setShowAddProperty(false)} onCreated={() => setShowAddProperty(false)} refresh={loadClient} onNotice={setPropertyNotice} />}
+      {properties.length === 0 ? <EmptyState title="No properties added">Use “Add property” above to create this client’s first property.</EmptyState> : <div className="private-list compact">{properties.map((property) => <Link to="/admin/properties/$id" params={{ id: property.id }} key={property.id}><div className="list-icon"><Building2 /></div><div><h3>{property.displayName}</h3><p>{property.addressLine1}, {property.locality}</p></div><span className="private-pill">{property.active ? 'Active' : 'Inactive'}</span></Link>)}</div>}
+    </section>
     <section className="private-panel related-subscriptions"><div><p className="private-eyebrow">Contracts and billing</p><h2>Service subscriptions</h2><p>Review this client’s accepted Service Orders, payment state and Stripe references.</p></div><Link className="private-primary" to="/admin/subscriptions" search={{ clientId: client.id } as never}>View subscriptions</Link></section>
     {profile.role === 'admin' && <ClientPortalAccess clientId={client.id} clientFirstName={client.firstName} clientLastName={client.lastName} clientEmail={client.email} properties={properties} />}
     {showDelete && <ConfirmDialog title={`Delete ${client.firstName} ${client.lastName}?`} confirmLabel="Delete client" busy={deleting} onCancel={() => setShowDelete(false)} onConfirm={() => { void deleteClient() }}><p>This action permanently deletes this client record and cannot be undone.</p>{properties.length > 0 && <p className="confirm-warning">This client has linked properties and cannot be deleted until those records are removed or reassigned.</p>}</ConfirmDialog>}

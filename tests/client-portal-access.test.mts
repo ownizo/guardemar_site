@@ -96,6 +96,25 @@ test('customer inspection visibility remains RLS-backed, published-only, and lim
   assert.match(api, /rpc\('get_customer_inspection'[\s\S]*if \(!result\.data\) return publicError\(404,[\s\S]*'inspection_lookup'/)
 })
 
+test('a broken invitation credential is reported as a configuration problem, not a duplicate-email guess', async () => {
+  const source = await readFile(invitationFunctionPath, 'utf8')
+  assert.match(source, /isAuthStatusError/)
+  assert.match(source, /status === 401 \|\| status === 403/)
+  assert.match(source, /Customer invitations are not configured correctly\. Contact a Guardemar system administrator/)
+  // The misleading fallback message must remain reachable only for the non-configuration path.
+  assert.match(source, /The invitation could not be sent\. Check whether this email already has an account\./)
+})
+
+test('customer sign-in never distinguishes "no such account" from "wrong password" to the browser', async () => {
+  const source = await readFile(authComponentPath, 'utf8')
+  // Every branch of the credential check collapses to the same generic message, so a
+  // failed login cannot be used to enumerate which email addresses have accounts.
+  const submitBody = source.slice(source.indexOf('async function submit'), source.indexOf('return <PrivatePageFrame>'))
+  const genericMessageCount = submitBody.match(/The email or password was not recognised\./g)?.length ?? 0
+  assert.equal(genericMessageCount, 2) // signInWithPassword's error branch and its catch branch
+  assert.doesNotMatch(submitBody, /does not exist|no account|not registered|not found/i)
+})
+
 test('portal access integration does not recreate the already-applied production RPCs', async () => {
   const migrationFiles = await Promise.all([
     readFile(new URL('../supabase/migrations/20260904074341_create_guardemar_portal_foundation.sql', import.meta.url), 'utf8'),
