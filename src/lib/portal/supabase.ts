@@ -13,7 +13,14 @@ export function getPortalSupabase() {
         auth: {
           persistSession: true,
           autoRefreshToken: true,
-          detectSessionInUrl: true,
+          // Callback processing is explicit and owned entirely by /auth/callback (see
+          // src/lib/portal/auth-callback.ts). The SDK's automatic URL detection swallows
+          // the real Supabase error (a flow-type mismatch, an expired code, a failed OTP
+          // verification) and simply leaves no session behind, which every other page
+          // then misreports as "link invalid" regardless of the true cause. Every page
+          // that constructs this client — including /auth/callback itself — must call
+          // supabase.auth.getSession()/verifyOtp()/exchangeCodeForSession() deliberately.
+          detectSessionInUrl: false,
           flowType: 'pkce',
         },
       }))

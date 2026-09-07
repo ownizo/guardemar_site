@@ -52,6 +52,7 @@ import { Route as PortalAccountRouteImport } from './routes/portal.account'
 import { Route as ContactThankYouRouteImport } from './routes/contact.thank-you'
 import { Route as ContactPropertyAssessmentRouteImport } from './routes/contact.property-assessment'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as AreasAreaRouteImport } from './routes/areas.$area'
 import { Route as AdminTeamRouteImport } from './routes/admin.team'
 import { Route as AdminSubscriptionsRouteImport } from './routes/admin.subscriptions'
@@ -293,6 +294,11 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
   path: '/blog/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthCallbackRoute = AuthCallbackRouteImport.update({
+  id: '/auth/callback',
+  path: '/auth/callback',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AreasAreaRoute = AreasAreaRouteImport.update({
   id: '/areas/$area',
   path: '/areas/$area',
@@ -429,6 +435,7 @@ export interface FileRoutesByFullPath {
   '/admin/subscriptions': typeof AdminSubscriptionsRoute
   '/admin/team': typeof AdminTeamRoute
   '/areas/$area': typeof AreasAreaRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/contact/property-assessment': typeof ContactPropertyAssessmentRoute
   '/contact/thank-you': typeof ContactThankYouRoute
@@ -491,6 +498,7 @@ export interface FileRoutesByTo {
   '/admin/subscriptions': typeof AdminSubscriptionsRoute
   '/admin/team': typeof AdminTeamRoute
   '/areas/$area': typeof AreasAreaRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/contact/property-assessment': typeof ContactPropertyAssessmentRoute
   '/contact/thank-you': typeof ContactThankYouRoute
@@ -556,6 +564,7 @@ export interface FileRoutesById {
   '/admin/subscriptions': typeof AdminSubscriptionsRoute
   '/admin/team': typeof AdminTeamRoute
   '/areas/$area': typeof AreasAreaRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/contact/property-assessment': typeof ContactPropertyAssessmentRoute
   '/contact/thank-you': typeof ContactThankYouRoute
@@ -622,6 +631,7 @@ export interface FileRouteTypes {
     | '/admin/subscriptions'
     | '/admin/team'
     | '/areas/$area'
+    | '/auth/callback'
     | '/blog/$slug'
     | '/contact/property-assessment'
     | '/contact/thank-you'
@@ -684,6 +694,7 @@ export interface FileRouteTypes {
     | '/admin/subscriptions'
     | '/admin/team'
     | '/areas/$area'
+    | '/auth/callback'
     | '/blog/$slug'
     | '/contact/property-assessment'
     | '/contact/thank-you'
@@ -748,6 +759,7 @@ export interface FileRouteTypes {
     | '/admin/subscriptions'
     | '/admin/team'
     | '/areas/$area'
+    | '/auth/callback'
     | '/blog/$slug'
     | '/contact/property-assessment'
     | '/contact/thank-you'
@@ -806,6 +818,7 @@ export interface RootRouteChildren {
   LocaleHomeWatchAlgarveRoute: typeof LocaleHomeWatchAlgarveRoute
   LocalePlansRoute: typeof LocalePlansRoute
   AreasAreaRoute: typeof AreasAreaRoute
+  AuthCallbackRoute: typeof AuthCallbackRoute
   BlogSlugRoute: typeof BlogSlugRoute
   LocaleIndexRoute: typeof LocaleIndexRoute
   AreasIndexRoute: typeof AreasIndexRoute
@@ -1116,6 +1129,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth/callback': {
+      id: '/auth/callback'
+      path: '/auth/callback'
+      fullPath: '/auth/callback'
+      preLoaderRoute: typeof AuthCallbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/areas/$area': {
       id: '/areas/$area'
       path: '/areas/$area'
@@ -1369,6 +1389,7 @@ const rootRouteChildren: RootRouteChildren = {
   LocaleHomeWatchAlgarveRoute: LocaleHomeWatchAlgarveRoute,
   LocalePlansRoute: LocalePlansRoute,
   AreasAreaRoute: AreasAreaRoute,
+  AuthCallbackRoute: AuthCallbackRoute,
   BlogSlugRoute: BlogSlugRoute,
   LocaleIndexRoute: LocaleIndexRoute,
   AreasIndexRoute: AreasIndexRoute,
@@ -1378,3 +1399,12 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}

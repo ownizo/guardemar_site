@@ -19,7 +19,7 @@ test('customer invitations use the server-only Supabase Auth Admin API', async (
   assert.ok(invitation > adminCheck)
   assert.match(source, /Netlify\.env\.get\('SUPABASE_SERVICE_ROLE_KEY'\)/)
   assert.match(source, /redirectTo: INVITATION_REDIRECT_URL/)
-  assert.match(source, /https:\/\/guardemar\.com\/reset-password/)
+  assert.match(source, /https:\/\/guardemar\.com\/auth\/callback/)
   assert.doesNotMatch(source, /auth\.admin\.createUser|localhost(?::\d+)?/i)
 })
 
@@ -101,8 +101,10 @@ test('a broken invitation credential is reported as a configuration problem, not
   assert.match(source, /isAuthStatusError/)
   assert.match(source, /status === 401 \|\| status === 403/)
   assert.match(source, /Customer invitations are not configured correctly\. Contact a Guardemar system administrator/)
-  // The misleading fallback message must remain reachable only for the non-configuration path.
-  assert.match(source, /The invitation could not be sent\. Check whether this email already has an account\./)
+  // The generic fallback must remain reachable for genuinely unexpected errors, and must
+  // no longer make a misleading guess about a duplicate email — that case is now its own
+  // distinct, correctly-labelled branch (see the email_exists test below).
+  assert.match(source, /The invitation could not be sent\. Please check the email address and try again\./)
 })
 
 test('customer sign-in never distinguishes "no such account" from "wrong password" to the browser', async () => {

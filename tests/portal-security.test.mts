@@ -103,18 +103,20 @@ test('service-role credentials are not required by Phase 1 code', async () => {
   for (const file of files) assert.doesNotMatch(await readFile(file, 'utf8'), /SUPABASE_SERVICE_ROLE_KEY/)
 })
 
-test('browser auth redirects use the active origin and the dedicated reset route', async () => {
+test('browser auth redirects use the active origin and the dedicated GUARDEMAR callback route', async () => {
   const auth = await readFile(new URL('../src/components/portal/auth.tsx', import.meta.url), 'utf8')
   assert.match(auth, /const origin = window\.location\.origin/)
-  assert.match(auth, /resetPasswordForEmail\(email, \{ redirectTo: `\$\{origin\}\/reset-password` \}\)/)
+  assert.match(auth, /resetPasswordForEmail\(email, \{ redirectTo: `\$\{origin\}\/auth\/callback` \}\)/)
   assert.doesNotMatch(auth, /localhost(?::\d+)?/i)
 })
 
-test('password recovery validates the callback and removes auth parameters', async () => {
+test('the password screen treats an already-established session as the sole signal of a valid callback', async () => {
   const auth = await readFile(new URL('../src/components/portal/auth.tsx', import.meta.url), 'utf8')
-  assert.match(auth, /event === 'PASSWORD_RECOVERY'/)
-  assert.match(auth, /setRecoveryState\('invalid'\)/)
-  assert.match(auth, /clearAuthCallbackParameters\(\)/)
+  // Callback interpretation (PASSWORD_RECOVERY event listening, manual URL-parameter
+  // clearing) has moved entirely to /auth/callback. By the time this component mounts,
+  // the session already exists or it doesn't — there is nothing left for it to parse.
+  assert.match(auth, /setRecoveryState\(sessionError \|\| !data\.session \? 'invalid' : 'ready'\)/)
+  assert.doesNotMatch(auth, /event === 'PASSWORD_RECOVERY'|clearAuthCallbackParameters/)
   assert.match(auth, /to="\/portal\/forgot-password">Request a new reset link/)
 })
 
