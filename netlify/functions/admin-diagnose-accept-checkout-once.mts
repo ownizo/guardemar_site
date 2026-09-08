@@ -69,6 +69,42 @@ export default async function handler(request: Request) {
     acceptanceExists: s.agreement_acceptance_id ? acceptanceIds.has(s.agreement_acceptance_id) : null,
   }))
 
+  // Safe RPC re-invocation: uses the EXACT idempotency key + actor already stored on
+  // the existing row, which the function's own idempotent-retry branch matches and
+  // returns from immediately (before any insert). Zero new writes are possible here —
+  // this only reveals what the currently-deployed RPC actually returns for this exact
+  // subscription, to check for a return-shape mismatch against the migration file.
+  let rpcProbe: unknown = null
+  let rpcProbeError: string | null = null
+  const existingSub = (subscriptions.data ?? [])[0]
+  if (existingSub) {
+    const rpcResult = await database.rpc('create_service_agreement_acceptance', {
+      actor_user_id: existingSub.created_by,
+      acceptance_idempotency: existingSub.acceptance_idempotency_key,
+      property_uuid: existingSub.property_id,
+      requested_plan: existingSub.plan_code,
+      requested_billing: existingSub.billing_interval,
+      approved_stripe_price_id: existingSub.stripe_price_id,
+      approved_service_scope: ['diagnostic-probe'],
+      approved_fee_schedule_effective_date: new Date().toISOString().slice(0, 10),
+      approved_fee_schedule_sha256: 'diagnostic',
+      approved_tax_statement: 'diagnostic',
+      approved_tax_rate_id: existingSub.stripe_tax_rate_id,
+      approved_tax_percentage: 23,
+      approved_tax_display_name: 'IVA',
+      approved_tax_amount: existingSub.tax_amount,
+      approved_gross_amount: existingSub.gross_amount,
+      requested_start_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10),
+      acknowledgement_evidence: {},
+      early_start_requested: false,
+      request_user_agent: 'diagnostic',
+      request_ip: null,
+      technical_metadata: {},
+    })
+    rpcProbe = rpcResult.data
+    rpcProbeError = rpcResult.error ? rpcResult.error.message : null
+  }
+
   return json({
     success: true,
     properties: properties.data,
@@ -77,5 +113,8 @@ export default async function handler(request: Request) {
     acceptances: acceptances.data,
     crossCheck,
     subscriptionCrossCheck,
+    rpcProbe,
+    rpcProbeError,
+    rpcProbeExpected: existingSub ? { subscriptionId: existingSub.id, acceptanceId: existingSub.agreement_acceptance_id } : null,
   }, 200)
 }
