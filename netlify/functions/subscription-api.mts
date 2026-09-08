@@ -91,7 +91,7 @@ async function handler(req: Request) {
 
   if (req.method === 'GET' && path === 'options') {
     const access = auth.role === 'customer'
-      ? await auth.database.from('property_users').select('properties(id,client_id,display_name,address_line_1,address_line_2,postal_code,locality,municipality,country,active,clients(first_name,last_name,email))').eq('user_id', auth.user.id)
+      ? await auth.database.from('property_users').select('properties(id,client_id,display_name,address_line_1,address_line_2,postal_code,locality,municipality,country,property_type,active,clients(first_name,last_name,email))').eq('user_id', auth.user.id)
       : { data: [], error: null }
     if (access.error) throw new HttpError(500, 'Properties could not be loaded.')
     let legalConfiguration: Awaited<ReturnType<typeof loadCanonicalDocuments>> | null = null
