@@ -51,7 +51,13 @@ export default async function handler(request: Request) {
   checks.inspection_media_table = media.error ? { ok: false, error: media.error.message, code: media.error.code } : { ok: true, count: media.count }
 
   const oldTable = await supabase.from('inspection_photos').select('id', { count: 'exact', head: true })
-  checks.inspection_photos_table_gone = { ok: oldTable.error?.code === 'PGRST205' || !!oldTable.error, error: oldTable.error?.message }
+  checks.inspection_photos_table_gone = { ok: oldTable.error?.code === 'PGRST205' || !!oldTable.error, error: oldTable.error?.message, code: oldTable.error?.code, count: oldTable.count, status: oldTable.status }
+
+  const mediaColumns = await supabase.from('inspection_media').select('*').limit(0)
+  checks.inspection_media_columns = mediaColumns.error ? { ok: false, error: mediaColumns.error.message } : { ok: true }
+
+  const migrationsTable = await supabase.from('supabase_migrations.schema_migrations' as never).select('version').order('version', { ascending: false }).limit(5)
+  checks.recent_migrations = migrationsTable.error ? { ok: false, error: migrationsTable.error.message } : { ok: true, versions: migrationsTable.data }
 
   const bucket = await supabase.storage.getBucket('inspection-photos')
   checks.bucket_config = bucket.error
