@@ -119,7 +119,7 @@ function Wizard({ profile }: { profile: PortalProfile }) {
   }
 
   return <PrivateShell area="portal" profile={profile} title="Start Guardemar service" eyebrow="Secure subscription and agreement">
-    <ol className="wizard-steps">{steps.map((label, index) => <li className={index === step ? 'active' : index < step ? 'done' : ''} key={label}><span>{index < step ? <Check /> : index + 1}</span>{label}</li>)}</ol>
+    <ol className="subscription-steps" aria-label="Subscription steps">{steps.map((label, index) => <li className={index === step ? 'active' : index < step ? 'complete' : ''} key={label} aria-current={index === step ? 'step' : undefined}><span aria-hidden="true">{index < step ? <Check /> : index + 1}</span><small>{label}</small></li>)}</ol>
     {error && <div className="private-error">{error}</div>}
     <section className="private-panel subscription-wizard">
       {step === 0 && <div><h2><Home />Choose your property</h2><p>Only properties assigned to your Guardemar portal account are available.</p><div className="property-choice-list">{options?.properties.map((item) => <label className={propertyId === item.id ? 'property-choice selected' : 'property-choice'} key={item.id}><input type="radio" checked={propertyId === item.id} onChange={() => setPropertyId(item.id)} /><strong>{item.display_name}</strong><span>{item.locality}, {item.municipality}</span></label>)}</div></div>}
