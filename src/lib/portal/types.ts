@@ -94,9 +94,42 @@ export type StaffProfile = {
 }
 
 export type PropertyArea = { id: string; property_id: string; area_type: string; custom_label: string; display_order: number; active: boolean; internal_notes: string | null }
-export type InspectionListItem = { id: string; scheduled_for: string; property_id: string; property_name: string; locality: string; inspector_staff_id: string; inspector_name: string; status: InspectionLifecycleStatus; condition: InspectionCondition | null }
+export type InspectionListItem = { id: string; scheduled_for: string; property_id: string; property_name: string; locality: string; inspector_staff_id: string; inspector_name: string; status: InspectionLifecycleStatus; condition: InspectionCondition | null; is_baseline: boolean; baseline_state: BaselineAcknowledgementState | null }
+export type CustomerInspectionListItem = { id: string; scheduled_for: string; published_at: string; available_until: string; is_available: boolean; days_remaining: number; property_id: string; property_name: string; locality: string; inspector_name: string | null; overall_condition: InspectionCondition; is_baseline: boolean; baseline_state: BaselineAcknowledgementState | null; baseline_acknowledged_at: string | null }
 export type InspectionItem = { id: string; label: string; guidance?: string | null; display_order?: number; required?: boolean; status: InspectionResultStatus; observation: string | null; observation_client_visible?: boolean; recommendation: string | null; recommendation_client_visible?: boolean; updated_at?: string }
 export type InspectionPhoto = { id: string; inspection_item_id?: string | null; storage_path: string; caption: string | null; display_order?: number; client_visible?: boolean }
-export type InspectionArea = { id: string; area_type: string; custom_label: string; display_order: number; status: InspectionResultStatus; suggested_status: InspectionResultStatus; observation: string | null; observation_client_visible?: boolean; recommendation: string | null; recommendation_client_visible?: boolean; items: InspectionItem[]; photos: InspectionPhoto[] }
-export type AdminInspectionDetail = { inspection: { id: string; status: InspectionLifecycleStatus; scheduled_for: string; started_at: string | null; completed_at: string | null; reviewed_at: string | null; published_at: string | null; suggested_condition: InspectionCondition | null; final_condition: InspectionCondition | null; client_summary: string | null; internal_review_notes: string | null; property_id: string; property_name: string; locality: string; inspector_staff_id: string; inspector_name: string }; areas: InspectionArea[] }
+export type InspectionArea = { id: string; area_type: string; custom_label: string; display_order: number; status: InspectionResultStatus; suggested_status: InspectionResultStatus; observation: string | null; observation_client_visible?: boolean; recommendation: string | null; recommendation_client_visible?: boolean; items: InspectionItem[]; photos: InspectionPhoto[]; baseline?: { inspectionId: string; status: InspectionResultStatus; observation: string | null } | null }
+export type AdminInspectionDetail = { inspection: { id: string; status: InspectionLifecycleStatus; scheduled_for: string; started_at: string | null; completed_at: string | null; reviewed_at: string | null; published_at: string | null; suggested_condition: InspectionCondition | null; final_condition: InspectionCondition | null; client_summary: string | null; internal_review_notes: string | null; property_id: string; property_name: string; locality: string; inspector_staff_id: string; inspector_name: string; is_baseline: boolean; baseline_state: BaselineAcknowledgementState | null; superseded_by: string | null }; areas: InspectionArea[] }
 export type ClientInspectionReport = { id: string; scheduled_for: string; started_at?: string | null; completed_at?: string | null; published_at: string; available_until: string; days_remaining: number; property: { id: string; display_name: string; address_line_1?: string; address_line_2?: string | null; postal_code?: string; locality: string; municipality?: string; country?: string }; overall_condition: InspectionCondition; client_summary: string | null; inspector: { display_name: string; role_title: string; profile_photo_path: string | null } | null; areas: InspectionArea[] }
+
+// Initial Property Condition Report (baseline condition record) -- General
+// Terms v2.5, Clause 8. Layered on top of the existing inspection/report
+// model rather than a parallel structure: see src/config/baseline-condition.ts
+// for the canonical product name and acknowledgement wording.
+export type BaselineAcknowledgementState = 'pending' | 'comments_received' | 'acknowledged'
+
+export type BaselineComment = {
+  id: string
+  inspectionAreaId: string | null
+  commentText: string
+  createdAt: string
+  staffResponseText: string | null
+  staffRespondedAt: string | null
+}
+
+export type BaselineConditionStatus = {
+  isBaseline: boolean
+  baselineState: BaselineAcknowledgementState | null
+  comments: BaselineComment[]
+  acknowledgement: { acknowledgedAt: string; acknowledgementWording: { confirmation: string; scopeCaveat: string }; wordingVersion: string } | null
+}
+
+export type PropertyBaselineStatus = {
+  inspectionId: string | null
+  status: InspectionLifecycleStatus | null
+  isBaseline: boolean
+  baselineState: BaselineAcknowledgementState | null
+  publishedAt?: string | null
+  acknowledgedAt?: string | null
+  openCommentCount?: number
+}

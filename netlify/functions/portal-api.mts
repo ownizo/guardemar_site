@@ -58,6 +58,19 @@ const areaInput = z.object({
 const inspectionInput = z.object({
   propertyId: z.string().uuid(), templateId: z.string().uuid(), inspectorStaffId: z.string().uuid(),
   scheduledFor: z.string().datetime(), idempotencyKey: z.string().uuid(),
+  // Marks this as the property's Initial Property Condition Report (internal
+  // concept: baseline condition record) at creation time -- see
+  // create_inspection / General Terms v2.5 Clause 8.
+  isBaseline: z.boolean().optional(),
+})
+
+const baselineCommentInput = z.object({
+  inspectionAreaId: z.string().uuid().optional().or(z.literal('')),
+  commentText: z.string().trim().min(1).max(4000),
+})
+
+const baselineCommentResponseInput = z.object({
+  responseText: z.string().trim().min(1).max(4000),
 })
 
 const resultStatus = z.enum(['good', 'attention', 'urgent', 'not_checked', 'not_applicable'])
@@ -253,6 +266,30 @@ async function routeRequest(req: Request, authenticated: AuthenticatedRequest) {
     return json({ inspection: result.data })
   }
 
+  // Initial Property Condition Report (baseline) review/acknowledgement --
+  // customer-facing. Non-baseline or unpublished inspections simply return
+  // isBaseline: false / null status, since get_baseline_condition_status is
+  // scoped to published inspections the caller already has property access to.
+  if (req.method === 'GET' && segments[0] === 'inspections' && segments[1] && segments[2] === 'baseline' && segments.length === 3) {
+    const status = requireData(await authenticated.supabase.rpc('get_baseline_condition_status', { inspection_uuid: z.string().uuid().parse(segments[1]) }), 'DATABASE_ERROR', 'baseline_status_lookup')
+    return json({ baseline: status })
+  }
+
+  if (req.method === 'POST' && segments[0] === 'inspections' && segments[1] && segments[2] === 'baseline-comments' && segments.length === 3) {
+    const input = baselineCommentInput.parse(await req.json())
+    const comment = requireData(await authenticated.supabase.rpc('submit_baseline_condition_comment', {
+      inspection_uuid: z.string().uuid().parse(segments[1]),
+      area_uuid: input.inspectionAreaId || null,
+      comment_body: input.commentText,
+    }), 'DATABASE_ERROR', 'baseline_comment_submit')
+    return json({ comment }, { status: 201 })
+  }
+
+  if (req.method === 'POST' && segments[0] === 'inspections' && segments[1] && segments[2] === 'baseline-acknowledge' && segments.length === 3) {
+    const acknowledgement = requireData(await authenticated.supabase.rpc('acknowledge_baseline_condition', { inspection_uuid: z.string().uuid().parse(segments[1]) }), 'DATABASE_ERROR', 'baseline_acknowledge')
+    return json({ acknowledgement })
+  }
+
   if (segments[0] === 'admin') {
     await requireStaff(authenticated)
 
@@ -352,6 +389,11 @@ async function routeRequest(req: Request, authenticated: AuthenticatedRequest) {
       const input = propertyInput.parse(await req.json())
       const property = requireData(await authenticated.supabase.rpc('create_admin_property', { property_data: input }))
       return json({ property }, { status: 201 })
+    }
+
+    if (req.method === 'GET' && segments[1] === 'properties' && segments[2] && segments[3] === 'baseline' && segments.length === 4) {
+      const status = requireData(await authenticated.supabase.rpc('get_property_baseline_status', { property_uuid: z.string().uuid().parse(segments[2]) }), 'DATABASE_ERROR', 'baseline_status_lookup')
+      return json({ baseline: status })
     }
 
     if (req.method === 'GET' && segments[1] === 'properties' && segments[2] && segments[3] === 'operations') {
@@ -476,6 +518,27 @@ async function routeRequest(req: Request, authenticated: AuthenticatedRequest) {
       await requireAdmin(authenticated)
       const inspection = requireData(await authenticated.supabase.rpc('publish_admin_inspection', { inspection_uuid: segments[2] }), 'DATABASE_ERROR', 'inspection_publish')
       return json({ inspection })
+    }
+
+    if (req.method === 'GET' && segments[1] === 'inspections' && segments[2] && segments[3] === 'baseline' && segments.length === 4) {
+      const rows = requireData(await authenticated.supabase
+        .from('baseline_condition_comments')
+        .select('id, inspection_area_id, comment_text, created_at, staff_response_text, staff_responded_at')
+        .eq('inspection_id', z.string().uuid().parse(segments[2]))
+        .order('created_at'), 'DATABASE_ERROR', 'baseline_comments_lookup')
+      return json({ baseline: { comments: rows.map((row) => ({
+        id: row.id, inspectionAreaId: row.inspection_area_id, commentText: row.comment_text,
+        createdAt: row.created_at, staffResponseText: row.staff_response_text, staffRespondedAt: row.staff_responded_at,
+      })) } })
+    }
+
+    if (req.method === 'POST' && segments[1] === 'inspections' && segments[2] && segments[3] === 'baseline-comments' && segments[4] && segments[5] === 'respond') {
+      const input = baselineCommentResponseInput.parse(await req.json())
+      const comment = requireData(await authenticated.supabase.rpc('respond_to_baseline_condition_comment', {
+        comment_uuid: z.string().uuid().parse(segments[4]),
+        response_body: input.responseText,
+      }), 'DATABASE_ERROR', 'baseline_comment_respond')
+      return json({ comment })
     }
 
     if (req.method === 'GET' && segments[1] === 'properties' && segments[2] && segments.length === 3) {
