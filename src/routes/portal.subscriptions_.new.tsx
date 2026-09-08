@@ -110,6 +110,7 @@ function Wizard({ profile }: { profile: PortalProfile }) {
         body: JSON.stringify({ idempotencyKey, propertyId, planCode, billingInterval, startDate, acknowledgements: checks, isConsumer: consumer === 'yes', earlyStartRequested: earlyStartRequired && earlyStart }),
       })
       const checkout = await subscriptionApi<{ url: string }>('checkout', { method: 'POST', body: JSON.stringify({ subscriptionId: accepted.subscriptionId }) })
+      if (typeof checkout.url !== 'string' || !/^https:\/\/checkout\.stripe\.com\//.test(checkout.url)) throw new Error('Checkout could not be prepared. Please try again.')
       setStep(7)
       window.location.assign(checkout.url)
     } catch (requestError) {

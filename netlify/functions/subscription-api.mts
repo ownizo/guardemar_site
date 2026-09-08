@@ -58,7 +58,7 @@ async function subscriptionDetails(database: any, id: string, includeAdminEviden
   const acceptanceColumns = includeAdminEvidence
     ? '*'
     : 'id,terms_version,terms_effective_date,terms_sha256,accepted_at,plan_code,billing_interval,currency,monthly_amount,annual_list_amount,annual_discount_percent,annual_discount_amount,selected_amount,tax_percentage,tax_display_name,tax_amount,gross_amount,service_order_snapshot,acknowledgements,withdrawal_early_start_requested,withdrawal_early_start_text'
-  const subscription = await database.from('service_subscriptions').select(`${subscriptionColumns}, clients(first_name,last_name,email), properties(display_name,address_line_1,address_line_2,postal_code,locality,municipality,country), service_agreement_acceptances(${acceptanceColumns})`).eq('id', id).maybeSingle()
+  const subscription = await database.from('service_subscriptions').select(`${subscriptionColumns}, clients(first_name,last_name,email), properties(display_name,address_line_1,address_line_2,postal_code,locality,municipality,country), service_agreement_acceptances!subscription_id(${acceptanceColumns})`).eq('id', id).maybeSingle()
   if (subscription.error || !subscription.data) throw new HttpError(404, 'Subscription not found.', 'NOT_FOUND')
   const paymentColumns = includeAdminEvidence ? '*' : 'id,subscription_id,stripe_invoice_id,event_type,payment_status,amount_net,amount_tax,amount_gross,currency,action_url,occurred_at,created_at'
   const payments = await database.from('subscription_payment_events').select(paymentColumns).eq('subscription_id', id).order('occurred_at', { ascending: false })
@@ -118,7 +118,7 @@ async function handler(req: Request) {
 
   if (req.method === 'GET' && path === '') {
     const url = new URL(req.url)
-    let query = auth.database.from('service_subscriptions').select('id,client_id,property_id,plan_code,billing_interval,currency,selected_net_amount,tax_percentage,tax_display_name,tax_amount,gross_amount,contract_start_date,contract_end_date,renews_at,local_status,payment_status,stripe_current_period_end,created_at,clients(first_name,last_name),properties(display_name,locality,municipality),service_agreement_acceptances(terms_version,accepted_at)').order('created_at', { ascending: false })
+    let query = auth.database.from('service_subscriptions').select('id,client_id,property_id,plan_code,billing_interval,currency,selected_net_amount,tax_percentage,tax_display_name,tax_amount,gross_amount,contract_start_date,contract_end_date,renews_at,local_status,payment_status,stripe_current_period_end,created_at,clients(first_name,last_name),properties(display_name,locality,municipality),service_agreement_acceptances!subscription_id(terms_version,accepted_at)').order('created_at', { ascending: false })
     if (auth.role === 'customer') {
       const access = await auth.database.from('property_users').select('property_id').eq('user_id', auth.user.id)
       if (access.error) throw new HttpError(500, 'Subscription access could not be checked.')
@@ -205,14 +205,37 @@ async function handler(req: Request) {
       if (!unavailable) console.error('Agreement acceptance failed', { code: result.error.code || 'DATABASE_ERROR' })
       throw new HttpError(unavailable ? 503 : 400, unavailable ? 'The approved legal or tax configuration is not available. Checkout remains disabled.' : 'Agreement acceptance could not be recorded. Check the property, start date and acknowledgements.', unavailable ? 'CONFIGURATION_ERROR' : 'VALIDATION_ERROR')
     }
-    return json(result.data, { status: 201 })
+    // Defensive verification: never trust the RPC's return shape blindly. Re-read the
+    // subscription it claims to have created/found by the ID it returned, and confirm
+    // every field the caller is trusted with actually matches what was requested,
+    // before this response is ever used to open a Checkout Session.
+    const returned = result.data as { subscriptionId?: unknown; acceptanceId?: unknown }
+    const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+    if (typeof returned.subscriptionId !== 'string' || typeof returned.acceptanceId !== 'string' || !uuidPattern.test(returned.subscriptionId) || !uuidPattern.test(returned.acceptanceId)) {
+      console.error('Agreement acceptance failed', { code: 'MALFORMED_RPC_RESPONSE' })
+      throw new HttpError(500, 'Agreement acceptance could not be verified. Please try again.', 'ACCEPTANCE_VERIFICATION_FAILED')
+    }
+    const verification = await auth.database.from('service_subscriptions').select('created_by,property_id,agreement_acceptance_id,acceptance_idempotency_key,plan_code,billing_interval').eq('id', returned.subscriptionId).maybeSingle()
+    if (
+      verification.error || !verification.data
+      || verification.data.created_by !== auth.user.id
+      || verification.data.property_id !== input.propertyId
+      || verification.data.agreement_acceptance_id !== returned.acceptanceId
+      || verification.data.acceptance_idempotency_key !== input.idempotencyKey
+      || verification.data.plan_code !== input.planCode
+      || verification.data.billing_interval !== input.billingInterval
+    ) {
+      console.error('Agreement acceptance failed', { code: 'ACCEPTANCE_LINKAGE_MISMATCH' })
+      throw new HttpError(500, 'Agreement acceptance could not be verified. Please try again.', 'ACCEPTANCE_VERIFICATION_FAILED')
+    }
+    return json(returned, { status: 201 })
   }
 
   if (req.method === 'POST' && path === 'checkout') {
     if (auth.role !== 'customer') throw new HttpError(403, 'Only an authorised client can start Checkout.', 'AUTHORIZATION_ERROR')
     const input = checkoutInput.parse(await req.json())
     await requireSubscriptionAccess(auth, input.subscriptionId)
-    const internal = await auth.database.from('service_subscriptions').select('*, service_agreement_acceptances(id,stripe_price_id,stripe_tax_rate_id,tax_percentage,tax_amount,gross_amount)').eq('id', input.subscriptionId).maybeSingle()
+    const internal = await auth.database.from('service_subscriptions').select('*, service_agreement_acceptances!subscription_id(id,stripe_price_id,stripe_tax_rate_id,tax_percentage,tax_amount,gross_amount)').eq('id', input.subscriptionId).maybeSingle()
     if (internal.error || !internal.data) throw new HttpError(404, 'Subscription not found.', 'NOT_FOUND')
     const subscription = internal.data as Record<string, any>
     const acceptance = Array.isArray(subscription.service_agreement_acceptances) ? subscription.service_agreement_acceptances[0] : subscription.service_agreement_acceptances
