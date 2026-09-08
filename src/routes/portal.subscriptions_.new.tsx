@@ -110,7 +110,15 @@ function Wizard({ profile }: { profile: PortalProfile }) {
         body: JSON.stringify({ idempotencyKey, propertyId, planCode, billingInterval, startDate, acknowledgements: checks, isConsumer: consumer === 'yes', earlyStartRequested: earlyStartRequired && earlyStart }),
       })
       const checkout = await subscriptionApi<{ url: string }>('checkout', { method: 'POST', body: JSON.stringify({ subscriptionId: accepted.subscriptionId }) })
-      if (typeof checkout.url !== 'string' || !/^https:\/\/checkout\.stripe\.com\//.test(checkout.url)) throw new Error('Checkout could not be prepared. Please try again.')
+      // Stripe Checkout can be served from a Stripe-verified custom domain (e.g. a
+      // checkout.<merchant-domain> configured in the Stripe Dashboard) as well as
+      // checkout.stripe.com, so this validates the Stripe-specific URL shape
+      // (a live Checkout Session id in the standard hosted-page path) rather than a
+      // fixed host. The server already only ever hands back a URL Stripe itself
+      // returned for a confirmed-live session (see the checkout endpoint's own
+      // session.livemode check) -- this is a defensive check against an
+      // empty/malformed response, not the security boundary.
+      if (typeof checkout.url !== 'string' || !/^https:\/\/[^/]+\/c\/pay\/cs_live_[A-Za-z0-9]+/.test(checkout.url)) throw new Error('Checkout could not be prepared. Please try again.')
       setStep(7)
       window.location.assign(checkout.url)
     } catch (requestError) {

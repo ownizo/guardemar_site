@@ -77,10 +77,15 @@ test('a malformed or mismatched RPC response fails closed instead of returning a
   assert.doesNotMatch(api, /return json\(result\.data, \{ status: 201 \}\)/, 'the raw unverified RPC result must never be returned directly')
 })
 
-test('the wizard only advances to Confirmation / redirects once the Checkout URL is verified to be Stripe-hosted', async () => {
+test('the wizard only advances to Confirmation / redirects once the Checkout URL is verified to be a live Stripe Checkout URL', async () => {
   const wizard = await source('../src/routes/portal.subscriptions_.new.tsx')
   const body = extractProceedToCheckout(wizard)
-  assert.match(body, /\/\^https:\\\/\\\/checkout\\\.stripe\\\.com\\\//)
+  // Must validate the Stripe-specific hosted-checkout URL shape (a live Checkout
+  // Session id in the standard /c/pay/ path), not a fixed host -- Stripe Checkout can
+  // legitimately be served from a Stripe-verified custom domain, not only
+  // checkout.stripe.com.
+  assert.match(body, /\/\^https:\\\/\\\/\[\^\/\]\+\\\/c\\\/pay\\\/cs_live_\[A-Za-z0-9\]\+\//)
+  assert.doesNotMatch(body, /checkout\\\.stripe\\\.com/, 'must not hardcode checkout.stripe.com as the only valid host')
   const urlCheckIndex = body.indexOf('.test(checkout.url)')
   const setStepIndex = body.indexOf('setStep(7)')
   const assignIndex = body.indexOf('window.location.assign(checkout.url)')
