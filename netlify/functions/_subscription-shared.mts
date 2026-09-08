@@ -38,12 +38,25 @@ export async function authenticate(req: Request): Promise<AuthContext> {
   const url = environment('SUPABASE_URL')
   const publishableKey = environment('SUPABASE_PUBLISHABLE_KEY')
   if (!token || !url || !publishableKey || new URL(url).hostname.split('.')[0] !== EXPECTED_SUPABASE_REF) throw new HttpError(401, 'Your session has expired. Please sign in again.', 'AUTHENTICATION_ERROR')
-  const authClient = createClient(url, publishableKey, { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false } })
-  const { data, error } = await authClient.auth.getUser(token)
+  // Carries the caller's own bearer token, so this client is authorised exactly like
+  // portal-api.mts's authenticated client: auth.uid() resolves and RLS applies as the
+  // signed-in user, not as an anonymous or privileged caller.
+  const authenticatedClient = createClient(url, publishableKey, {
+    global: { headers: { Authorization: `Bearer ${token}` } },
+    auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
+  })
+  const { data, error } = await authenticatedClient.auth.getUser(token)
   if (error || !data.user) throw new HttpError(401, 'Your session has expired. Please sign in again.', 'AUTHENTICATION_ERROR')
-  const database = serviceDatabase()
-  const profile = await database.from('profiles').select('role').eq('id', data.user.id).maybeSingle()
+  // Resolve the caller's own role via their own authenticated, RLS-scoped read
+  // (profiles_select_own already permits a user to read their own row) rather than
+  // the service-role client. Nothing about "can this caller read their own profile"
+  // needs an elevated credential, and requiring one here made this specific check —
+  // uniquely among the portal's authorization paths — fail whenever
+  // SUPABASE_SERVICE_ROLE_KEY was misconfigured, even though every other portal page
+  // (which authenticates the same way) kept working.
+  const profile = await authenticatedClient.from('profiles').select('role').eq('id', data.user.id).maybeSingle()
   if (profile.error || !profile.data) throw new HttpError(403, 'Your Guardemar profile is unavailable.', 'AUTHORIZATION_ERROR')
+  const database = serviceDatabase()
   return { user: data.user, database, role: profile.data.role }
 }
 
