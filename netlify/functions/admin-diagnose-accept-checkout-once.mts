@@ -105,6 +105,25 @@ export default async function handler(request: Request) {
     rpcProbeError = rpcResult.error ? rpcResult.error.message : null
   }
 
+  // Reproduces the EXACT read-only query used by POST /checkout's internal lookup
+  // (service_subscriptions embedding service_agreement_acceptances) against the real
+  // subscription id, to check for a PostgREST ambiguous-embedding error -- there are
+  // two foreign keys between these tables in opposite directions
+  // (service_agreement_acceptances.subscription_id -> service_subscriptions.id, and
+  // service_subscriptions.agreement_acceptance_id -> service_agreement_acceptances.id),
+  // which is a documented PostgREST trap for implicit (unqualified) embedding.
+  let checkoutQueryError: string | null = null
+  let checkoutQueryFound = false
+  if (existingSub) {
+    const checkoutStyleQuery = await database
+      .from('service_subscriptions')
+      .select('*, service_agreement_acceptances(id,stripe_price_id,stripe_tax_rate_id,tax_percentage,tax_amount,gross_amount)')
+      .eq('id', existingSub.id)
+      .maybeSingle()
+    checkoutQueryError = checkoutStyleQuery.error ? `${checkoutStyleQuery.error.code ?? ''} ${checkoutStyleQuery.error.message}`.trim() : null
+    checkoutQueryFound = Boolean(checkoutStyleQuery.data)
+  }
+
   return json({
     success: true,
     properties: properties.data,
@@ -116,5 +135,7 @@ export default async function handler(request: Request) {
     rpcProbe,
     rpcProbeError,
     rpcProbeExpected: existingSub ? { subscriptionId: existingSub.id, acceptanceId: existingSub.agreement_acceptance_id } : null,
+    checkoutQueryError,
+    checkoutQueryFound,
   }, 200)
 }
