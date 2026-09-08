@@ -6,7 +6,7 @@ import sharp from 'sharp'
 import { z } from 'zod'
 
 import { business } from '../../src/config/site.ts'
-import type { ClientInspectionReport, InspectionArea, InspectionPhoto } from '../../src/lib/portal/types.ts'
+import { mediaForArea, type ClientInspectionReport, type InspectionArea, type InspectionMedia } from '../../src/lib/portal/types.ts'
 
 const EXPECTED_SUPABASE_REF = 'ablktbpledjceddessyg'
 const UUID = z.string().uuid()
@@ -71,10 +71,11 @@ async function authorise(req: Request, inspectionId: string): Promise<Authorised
   return { report: data as ClientInspectionReport, supabase }
 }
 
-function findPhoto(report: ClientInspectionReport, photoId: string) {
+function findMedia(report: ClientInspectionReport, mediaId: string) {
   for (const area of report.areas) {
-    const photoIndex = area.photos.findIndex((photo) => photo.id === photoId)
-    if (photoIndex >= 0) return { area, photo: area.photos[photoIndex], photoIndex }
+    const items = mediaForArea(area)
+    const mediaIndex = items.findIndex((item) => item.id === mediaId)
+    if (mediaIndex >= 0) return { area, media: items[mediaIndex], mediaIndex }
   }
   return null
 }
@@ -111,6 +112,41 @@ function ensureSpace(document: PDFKit.PDFDocument, height: number) {
 function writeLabelValue(document: PDFKit.PDFDocument, label: string, value: string) {
   document.fillColor('#60717c').font('Helvetica-Bold').fontSize(7).text(label.toUpperCase(), { continued: true })
   document.fillColor('#172f44').font('Helvetica').fontSize(9).text(`  ${value}`)
+}
+
+function durationLabel(seconds: number | null | undefined) {
+  if (!seconds) return null
+  const minutes = Math.floor(seconds / 60)
+  const remaining = seconds % 60
+  return `${minutes}:${String(remaining).padStart(2, '0')}`
+}
+
+// Video is never embedded playable into the PDF -- a clean evidence tile
+// records that it exists (poster frame if one was captured, caption,
+// duration) and points the reader to the client portal, which is where
+// portal authentication actually gates access to the video itself.
+async function renderVideoTile(document: PDFKit.PDFDocument, supabase: SupabaseClient, contentWidth: number, media: InspectionMedia, caption: string) {
+  const tileHeight = 130
+  ensureSpace(document, tileHeight + 30)
+  const top = document.y
+  document.roundedRect(48, top, contentWidth, tileHeight, 4).fillAndStroke('#101c27', '#101c27')
+  if (media.poster_storage_path) {
+    try {
+      const source = await downloadStorage(supabase, 'inspection-photos', media.poster_storage_path)
+      const poster = await renderImage(source.buffer, 'pdf')
+      document.image(poster, 48, top, { fit: [140, tileHeight], align: 'center', valign: 'center' })
+    } catch {
+      // fall through to the plain tile below
+    }
+  }
+  document.fillColor('#ffffff').font('Helvetica-Bold').fontSize(9).text('VIDEO EVIDENCE', 200, top + 18, { width: contentWidth - 160 })
+  const duration = durationLabel(media.duration_seconds)
+  if (duration) document.fillColor('#c3d2da').font('Helvetica').fontSize(8).text(`Duration ${duration}`, 200, top + 36, { width: contentWidth - 160 })
+  document.fillColor('#d6e2e8').font('Helvetica').fontSize(8).text('Video available in the Guardemar client portal.', 200, top + (duration ? 54 : 40), { width: contentWidth - 160 })
+  if (media.caption) document.fillColor('#9fb2bc').font('Helvetica-Oblique').fontSize(7.5).text(media.caption, 200, top + (duration ? 72 : 58), { width: contentWidth - 160 })
+  document.y = top + tileHeight + 5
+  document.fillColor('#60717c').font('Helvetica').fontSize(7).text(caption, { align: 'center' })
+  document.moveDown(.8)
 }
 
 async function createPdf(req: Request, authorised: AuthorisedInspection) {
@@ -188,22 +224,23 @@ async function createPdf(req: Request, authorised: AuthorisedInspection) {
       document.moveDown(.8)
     }
 
-    for (const [photoIndex, photo] of area.photos.entries()) {
+    for (const [mediaIndex, media] of mediaForArea(area).entries()) {
+      const item = area.items.find((candidate) => candidate.id === media.inspection_item_id)
+      const caption = [`${areaIndex + 1}.${mediaIndex + 1}`, item?.label, media.caption].filter(Boolean).join(' · ')
+      if (media.media_type === 'video') {
+        await renderVideoTile(document, supabase, contentWidth, media, caption)
+        continue
+      }
       try {
-        const source = await downloadStorage(supabase, 'inspection-photos', photo.storage_path)
+        const source = await downloadStorage(supabase, 'inspection-photos', media.storage_path)
         const image = await renderImage(source.buffer, 'pdf')
         ensureSpace(document, 250)
-        const item = area.items.find((candidate) => candidate.id === photo.inspection_item_id)
         document.image(image, 48, document.y, { fit: [contentWidth, 220], align: 'center', valign: 'center' })
         document.y += 225
-        document.fillColor('#60717c').font('Helvetica').fontSize(7).text([
-          `${areaIndex + 1}.${photoIndex + 1}`,
-          item?.label,
-          photo.caption,
-        ].filter(Boolean).join(' · '), { align: 'center' })
+        document.fillColor('#60717c').font('Helvetica').fontSize(7).text(caption, { align: 'center' })
         document.moveDown(.8)
       } catch (error) {
-        console.error('PDF photograph omitted', { inspectionId: report.id, photoId: photo.id, message: error instanceof Error ? error.message : 'Unknown error' })
+        console.error('PDF photograph omitted', { inspectionId: report.id, mediaId: media.id, message: error instanceof Error ? error.message : 'Unknown error' })
       }
     }
     document.moveDown(.8)
@@ -229,14 +266,20 @@ async function createPdf(req: Request, authorised: AuthorisedInspection) {
   } })
 }
 
-async function createPhotoResponse(authorised: AuthorisedInspection, photoId: string, action: 'thumbnail' | 'display' | 'download') {
-  const match = findPhoto(authorised.report, photoId)
+async function createMediaResponse(authorised: AuthorisedInspection, mediaId: string, action: 'thumbnail' | 'display' | 'download') {
+  const match = findMedia(authorised.report, mediaId)
   if (!match) return jsonError(404, 'Photograph not found.')
-  const source = await downloadStorage(authorised.supabase, 'inspection-photos', match.photo.storage_path)
-  const item = match.area.items.find((candidate) => candidate.id === match.photo.inspection_item_id)
-  const extension = action === 'download' ? photoExtension(source.contentType, match.photo.storage_path) : 'jpg'
+  if (match.media.media_type === 'video') {
+    // The frontend never requests this route for a video (it uses a direct
+    // signed Supabase Storage URL instead -- see PrivateVideo/downloadSignedMedia);
+    // this only guards a stale or hand-crafted request.
+    return jsonError(404, 'Video is served directly from the client portal, not this route.')
+  }
+  const source = await downloadStorage(authorised.supabase, 'inspection-photos', match.media.storage_path)
+  const item = match.area.items.find((candidate) => candidate.id === match.media.inspection_item_id)
+  const extension = action === 'download' ? photoExtension(source.contentType, match.media.storage_path) : 'jpg'
   const buffer = action === 'download' ? source.buffer : await renderImage(source.buffer, action)
-  const filename = `Guardemar_${safePart(authorised.report.property.display_name, 'Property')}_${inspectionDate(authorised.report)}_${safePart(match.area.custom_label, 'Area')}_${String(match.photoIndex + 1).padStart(2, '0')}.${extension}`
+  const filename = `Guardemar_${safePart(authorised.report.property.display_name, 'Property')}_${inspectionDate(authorised.report)}_${safePart(match.area.custom_label, 'Area')}_${String(match.mediaIndex + 1).padStart(2, '0')}.${extension}`
   return new Response(buffer, { headers: {
     'Content-Type': action === 'download' ? source.contentType || 'application/octet-stream' : 'image/jpeg',
     'Content-Disposition': `${action === 'download' ? 'attachment' : 'inline'}; filename="${filename}"`,
@@ -259,15 +302,24 @@ async function createInspectorPhotoResponse(authorised: AuthorisedInspection) {
   } })
 }
 
+// Photographs only. Videos are deliberately excluded from server-side ZIP
+// generation: a Netlify Function has limited execution time and buffers its
+// whole response in memory, and a 60-second inspection video can be tens of
+// megabytes -- fine one at a time via its own signed URL (see
+// PrivateVideo/downloadSignedMedia), unsafe to download+re-buffer several of
+// at once inside a serverless function. The customer portal instead
+// downloads each video individually, direct from Supabase Storage, when the
+// visitor clicks "Download all media" and there are videos present.
 async function createZip(authorised: AuthorisedInspection) {
   const zip = new JSZip()
   let sequence = 0
   for (const [areaIndex, area] of authorised.report.areas.entries()) {
-    for (const [photoIndex, photo] of area.photos.entries()) {
-      const source = await downloadStorage(authorised.supabase, 'inspection-photos', photo.storage_path)
-      const extension = photoExtension(source.contentType, photo.storage_path)
+    const images = mediaForArea(area).filter((item) => item.media_type !== 'video')
+    for (const [imageIndex, media] of images.entries()) {
+      const source = await downloadStorage(authorised.supabase, 'inspection-photos', media.storage_path)
+      const extension = photoExtension(source.contentType, media.storage_path)
       sequence += 1
-      zip.file(`${String(sequence).padStart(2, '0')}_${safePart(area.custom_label, `Area-${areaIndex + 1}`)}_${String(photoIndex + 1).padStart(2, '0')}.${extension}`, source.buffer)
+      zip.file(`${String(sequence).padStart(2, '0')}_${safePart(area.custom_label, `Area-${areaIndex + 1}`)}_${String(imageIndex + 1).padStart(2, '0')}.${extension}`, source.buffer)
     }
   }
   if (sequence === 0) return jsonError(404, 'This inspection has no client photographs to download.')
@@ -291,10 +343,10 @@ export default async (req: Request, context: Context) => {
     const authorised = await authorise(req, inspectionId)
     if (authorised instanceof Response) return authorised
     if (segments[1] === 'pdf' && segments.length === 2) return await createPdf(req, authorised)
-    if (segments[1] === 'photos' && segments[2] === 'zip' && segments.length === 3) return await createZip(authorised)
+    if (segments[1] === 'media' && segments[2] === 'photos-zip' && segments.length === 3) return await createZip(authorised)
     if (segments[1] === 'inspector' && segments[2] === 'display' && segments.length === 3) return await createInspectorPhotoResponse(authorised)
-    if (segments[1] === 'photos' && segments[2] && ['thumbnail', 'display', 'download'].includes(segments[3])) {
-      return await createPhotoResponse(authorised, UUID.parse(segments[2]), segments[3] as 'thumbnail' | 'display' | 'download')
+    if (segments[1] === 'media' && segments[2] && ['thumbnail', 'display', 'download'].includes(segments[3])) {
+      return await createMediaResponse(authorised, UUID.parse(segments[2]), segments[3] as 'thumbnail' | 'display' | 'download')
     }
     return jsonError(404, 'Inspection file not found.')
   } catch (error) {

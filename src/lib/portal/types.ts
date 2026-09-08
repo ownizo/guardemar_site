@@ -97,8 +97,46 @@ export type PropertyArea = { id: string; property_id: string; area_type: string;
 export type InspectionListItem = { id: string; scheduled_for: string; property_id: string; property_name: string; locality: string; inspector_staff_id: string; inspector_name: string; status: InspectionLifecycleStatus; condition: InspectionCondition | null; is_baseline: boolean; baseline_state: BaselineAcknowledgementState | null }
 export type CustomerInspectionListItem = { id: string; scheduled_for: string; published_at: string; available_until: string; is_available: boolean; days_remaining: number; property_id: string; property_name: string; locality: string; inspector_name: string | null; overall_condition: InspectionCondition; is_baseline: boolean; baseline_state: BaselineAcknowledgementState | null; baseline_acknowledged_at: string | null }
 export type InspectionItem = { id: string; label: string; guidance?: string | null; display_order?: number; required?: boolean; status: InspectionResultStatus; observation: string | null; observation_client_visible?: boolean; recommendation: string | null; recommendation_client_visible?: boolean; updated_at?: string }
+// A media item is a photograph or a short (<=60s) video captured for an
+// inspection area, up to 5 per area (any mix) -- see
+// supabase/migrations/20260908150000_generalize_inspection_media.sql.
+export type MediaType = 'image' | 'video'
+export type InspectionMedia = {
+  id: string
+  inspection_item_id?: string | null
+  media_type: MediaType
+  storage_path: string
+  poster_storage_path?: string | null
+  duration_seconds?: number | null
+  caption: string | null
+  display_order?: number
+  client_visible?: boolean
+  original_filename?: string | null
+  mime_type?: string | null
+  file_size?: number | null
+}
+/** @deprecated kept only to type pre-migration frozen published_snapshot rows; use InspectionMedia. */
 export type InspectionPhoto = { id: string; inspection_item_id?: string | null; storage_path: string; caption: string | null; display_order?: number; client_visible?: boolean }
-export type InspectionArea = { id: string; area_type: string; custom_label: string; display_order: number; status: InspectionResultStatus; suggested_status: InspectionResultStatus; observation: string | null; observation_client_visible?: boolean; recommendation: string | null; recommendation_client_visible?: boolean; items: InspectionItem[]; photos: InspectionPhoto[]; baseline?: { inspectionId: string; status: InspectionResultStatus; observation: string | null } | null }
+export type InspectionArea = {
+  id: string; area_type: string; custom_label: string; display_order: number
+  status: InspectionResultStatus; suggested_status: InspectionResultStatus
+  observation: string | null; observation_client_visible?: boolean
+  recommendation: string | null; recommendation_client_visible?: boolean
+  items: InspectionItem[]
+  media?: InspectionMedia[]
+  /** @deprecated present only on reports published before the media migration; use mediaForArea(area). */
+  photos?: InspectionPhoto[]
+  baseline?: { inspectionId: string; status: InspectionResultStatus; observation: string | null } | null
+}
+
+// Normalises an area's media regardless of whether it came from a live query
+// (area.media, current shape) or a frozen published_snapshot created before
+// the photos -> media migration (area.photos, image-only, no media_type).
+// Every already-published report keeps rendering exactly as before.
+export function mediaForArea(area: Pick<InspectionArea, 'media' | 'photos'>): InspectionMedia[] {
+  if (area.media) return area.media
+  return (area.photos ?? []).map((photo) => ({ ...photo, media_type: 'image' as const }))
+}
 export type AdminInspectionDetail = { inspection: { id: string; status: InspectionLifecycleStatus; scheduled_for: string; started_at: string | null; completed_at: string | null; reviewed_at: string | null; published_at: string | null; suggested_condition: InspectionCondition | null; final_condition: InspectionCondition | null; client_summary: string | null; internal_review_notes: string | null; property_id: string; property_name: string; locality: string; inspector_staff_id: string; inspector_name: string; is_baseline: boolean; baseline_state: BaselineAcknowledgementState | null; superseded_by: string | null }; areas: InspectionArea[] }
 export type ClientInspectionReport = { id: string; scheduled_for: string; started_at?: string | null; completed_at?: string | null; published_at: string; available_until: string; days_remaining: number; property: { id: string; display_name: string; address_line_1?: string; address_line_2?: string | null; postal_code?: string; locality: string; municipality?: string; country?: string }; overall_condition: InspectionCondition; client_summary: string | null; inspector: { display_name: string; role_title: string; profile_photo_path: string | null } | null; areas: InspectionArea[] }
 

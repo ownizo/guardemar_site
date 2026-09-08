@@ -497,10 +497,16 @@ async function routeRequest(req: Request, authenticated: AuthenticatedRequest) {
       return json({ item })
     }
 
-    if (req.method === 'PATCH' && segments[1] === 'inspections' && segments[2] && segments[3] === 'photos' && segments[4]) {
+    if (req.method === 'PATCH' && segments[1] === 'inspections' && segments[2] && segments[3] === 'media' && segments[4]) {
       const input = z.object({ caption: z.string().max(500).optional(), displayOrder: z.number().int().min(0).max(1000).optional(), clientVisible: z.boolean().optional(), rejected: z.boolean().optional() }).parse(await req.json())
-      const photo = requireData(await authenticated.supabase.rpc('update_inspection_photo', { photo_uuid: segments[4], photo_data: input }), 'DATABASE_ERROR', 'review_photo')
-      return json({ photo })
+      const media = requireData(await authenticated.supabase.rpc('update_inspection_media', { media_uuid: segments[4], media_data: input }), 'DATABASE_ERROR', 'review_media')
+      return json({ media })
+    }
+
+    if (req.method === 'POST' && segments[1] === 'inspections' && segments[2] && segments[3] === 'areas' && segments[4] && segments[5] === 'media-reorder') {
+      const input = z.object({ orderedIds: z.array(z.string().uuid()).min(1).max(5) }).parse(await req.json())
+      const reordered = requireData(await authenticated.supabase.rpc('reorder_inspection_media', { area_uuid: segments[4], ordered_ids: input.orderedIds }), 'DATABASE_ERROR', 'review_media_reorder')
+      return json({ reordered })
     }
 
     if (req.method === 'PATCH' && segments[1] === 'inspections' && segments[2] && segments[3] === 'review') {

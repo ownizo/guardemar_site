@@ -3,7 +3,7 @@ import { type FormEvent, useEffect, useState } from 'react'
 
 import { baselineConditionAcknowledgementWording, baselineConditionProductName, baselineStatusLabels } from '@/config/baseline-condition'
 import { portalApi } from '@/lib/portal/api'
-import type { BaselineComment, BaselineConditionStatus, ClientInspectionReport, InspectionArea } from '@/lib/portal/types'
+import { mediaForArea, type BaselineComment, type BaselineConditionStatus, type ClientInspectionReport, type InspectionArea } from '@/lib/portal/types'
 
 function BaselineCommentForm({ inspectionId, areaId, onDone }: { inspectionId: string; areaId: string; onDone: () => Promise<void> }) {
   const [submitting, setSubmitting] = useState(false)
@@ -37,7 +37,7 @@ function ConditionRow({ inspectionId, area, comments, onCommentSubmitted }: { in
   return <article className="baseline-condition-row">
     <div className="baseline-condition-heading"><div><small>{area.area_type}</small><strong>{area.custom_label}</strong></div><span className={`baseline-condition-status status-${area.status}`}>{area.status === 'good' ? <ShieldCheck /> : <AlertTriangle />}{area.status.replaceAll('_', ' ')}</span></div>
     {area.observation && <p className="baseline-condition-observation"><strong>Observed during the initial Guardemar inspection:</strong> {area.observation}</p>}
-    {area.photos.length > 0 && <p className="baseline-condition-photo-count">{area.photos.length} photograph{area.photos.length === 1 ? '' : 's'} attached to this report.</p>}
+    {mediaForArea(area).length > 0 && <p className="baseline-condition-photo-count">{mediaForArea(area).length} media item{mediaForArea(area).length === 1 ? '' : 's'} attached to this report.</p>}
     {areaComments.map((comment) => <div className="baseline-comment-existing" key={comment.id}><p>“{comment.commentText}”</p><small>Submitted {new Intl.DateTimeFormat('en-GB', { dateStyle: 'long' }).format(new Date(comment.createdAt))}</small>{comment.staffResponseText && <div className="baseline-comment-response"><strong>Guardemar response</strong><p>{comment.staffResponseText}</p></div>}</div>)}
     {!showForm ? <button type="button" className="private-secondary compact" onClick={() => setShowForm(true)}><MessageSquarePlus />Add a comment / request correction</button> : <BaselineCommentForm inspectionId={inspectionId} areaId={area.id} onDone={async () => { setShowForm(false); await onCommentSubmitted() }} />}
   </article>

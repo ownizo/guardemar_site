@@ -49,14 +49,14 @@ test('client reports use the projected area status without requiring suggested s
   assert.doesNotMatch(source, /area\.suggested_status/)
 })
 
-test('PDF, photo and ZIP routes share server-side customer authorisation', async () => {
+test('PDF, media and ZIP routes share server-side customer authorisation', async () => {
   const source = await readFile(filesFunctionPath, 'utf8')
   assert.match(source, /profile\.role !== 'customer'/)
   assert.match(source, /rpc\('get_customer_inspection'/)
   assert.match(source, /segments\[1\] === 'pdf'/)
-  assert.match(source, /segments\[2\] === 'zip'/)
-  assert.match(source, /findPhoto\(authorised\.report, photoId\)/)
-  assert.match(source, /photo\.inspection_item_id/)
+  assert.match(source, /segments\[2\] === 'photos-zip'/)
+  assert.match(source, /findMedia\(authorised\.report, mediaId\)/)
+  assert.match(source, /media\.inspection_item_id/)
   assert.doesNotMatch(source, /SUPABASE_SERVICE_ROLE_KEY/)
   assert.doesNotMatch(source, /internal_review_notes|token_hash|mobile_access|auth_id/)
   assert.match(source, /Cache-Control': 'private, no-store'/)
@@ -85,6 +85,9 @@ test('gallery uses authorised optimised images and accessible controls', async (
   assert.match(source, /\/thumbnail/)
   assert.match(source, /\/display/)
   assert.match(source, /\/download/)
-  assert.match(source, /Photo \{selectedIndex \+ 1\} of \{photos\.length\}/)
-  assert.doesNotMatch(source, /createSignedUrl/)
+  assert.match(source, /\{selectedIndex \+ 1\} of \{entries\.length\}/)
+  // Video is the one exception -- it is deliberately never proxied (see
+  // PrivateVideo), so a direct signed-URL call is expected here, unlike the
+  // image path which still goes through the authorised proxy.
+  assert.match(source, /PrivateVideo/)
 })
