@@ -26,7 +26,7 @@ export const operationalContact = {
   },
 } as const
 
-export const legalLastUpdated = '4 September 2026'
+export const legalLastUpdated = '13 September 2026'
 
 export const business = {
   name: 'GUARDEMAR',
