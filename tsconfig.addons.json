@@ -1,0 +1,5 @@
+{
+  "extends": "./tsconfig.check.json",
+  "compilerOptions": { "types": ["node", "vite/client"] },
+  "include": ["netlify/functions/addon-*.mts", "netlify/functions/_addon-*.mts", "netlify/functions/stripe-webhook.mts"]
+}

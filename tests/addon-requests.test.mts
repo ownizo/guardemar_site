@@ -7,6 +7,7 @@ import { handleAddonRequest } from '../netlify/functions/addon-api.mts'
 import { HttpError } from '../netlify/functions/_subscription-shared.mts'
 import { escapeHtml, sendAddonAdminEmail } from '../netlify/functions/_addon-shared.mts'
 
+;(globalThis as any).Netlify = { env: { get: () => '' } }
 const user = '00000000-0000-4000-8000-00000000000a'
 const property = '20000000-0000-4000-8000-00000000000a'
 const requestId = '30000000-0000-4000-8000-00000000000a'
@@ -25,7 +26,7 @@ function mockDatabase(options: { denied?: boolean; ownership?: boolean; clientAc
     from(table: string) {
       const call: any = { table, steps: [] }; calls.push(call)
       const query: any = {}
-      for (const method of ['select','eq','in','neq','order','limit','is','or','update']) query[method] = (...args: any[]) => { call.steps.push([method, ...args]); return query }
+      for (const method of ['select','eq','in','not','neq','order','limit','is','or','update']) query[method] = (...args: any[]) => { call.steps.push([method, ...args]); return query }
       function result(single: boolean) {
         if (table === 'addon_requests') return { data: single ? record : [record], error: null }
         if (table === 'property_users') return { data: single ? options.ownership === false ? null : { id: 'access' } : [{ property_id: property }], error: null }
@@ -131,7 +132,7 @@ test('payment draft uses explicitly admin-entered amount, EUR and linked request
 })
 test('send/resend/replacement fail closed without Stripe creation or email', async () => {
   for (const action of ['send','resend','replace']) {
-    const result = await invoke(`admin/payments/${requestId}/${action}`, 'POST', {}, 'admin'); assert.equal(result.response.status, 409); assert.equal(result.body.error.code, 'ADDON_PAYMENT_APPROVAL_REQUIRED'); assert.equal(result.calls.length, 0); assert.equal(result.emails, 0)
+    const result = await invoke(`admin/payments/${requestId}/${action}`, 'POST', { confirmed: true, actionKey: generic().idempotencyKey }, 'admin'); assert.equal(result.response.status, 409); assert.equal(result.body.error.code, 'ADDON_PAYMENT_APPROVAL_REQUIRED'); assert.equal(result.calls.length, 0); assert.equal(result.emails, 0)
   }
 })
 test('persistent sent marker prevents duplicate admin email', async () => {

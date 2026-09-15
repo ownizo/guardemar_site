@@ -1,117 +1,113 @@
-# Optional Services request flow — implementation and activation handover
+# GUARDEMAR Add-on Services — payment implementation handover
 
-Starting main: `2c8b03d5980d2a647b37063eac8a6245b0ed4f99`.
+Continuation starting commit: `aa7c4acbcdaa3e32e74386ce51219741a66091d3`.
+Audited current main: `2c8b03d5980d2a647b37063eac8a6245b0ed4f99`.
 Branch: `feat/addon-service-requests`.
 
-## Audit findings
+## Existing architecture reused
 
-- TanStack file routes are deliberately flat beneath `/portal` and `/admin`; every new page uses the existing `PrivateGuard`, `PrivateShell`, navigation and authenticated Supabase session.
-- `profiles.role` is the authoritative customer/staff/admin role. `client_users` links a user to a client; `property_users` separately authorises a property. Neither user metadata nor browser-supplied client IDs are used for authorisation.
-- Existing property access is reused; new requests additionally require the property owner's `client_users` relationship. Active client/property checks occur inside the creation transaction. Revoked property or client access hides requests and their children.
-- There is no notification table/service in the repository. The admin dashboard has an operational activity placeholder and the database has `audit_events`. Request creation writes `ADDON_REQUEST_CREATED` atomically; Services and the existing dashboard expose the new-request queue as in-app alerts linking to request details. A second general-purpose notification architecture has not been introduced.
-- Existing transactional emails use Resend, the business email in `src/config/site.ts`, escaped HTML and stable provider idempotency keys. The new request email uses those conventions and adds a persistent delivery marker because [Resend's 24-hour idempotency window](https://resend.com/docs/dashboard/emails/idempotency-keys) alone is insufficient for indefinite retries.
-- The catalogue remains `src/config/optional-services.ts`. No second maintained catalogue or numeric charge mapping was introduced. The customer-visible fee/note is snapshotted as text and never used as a final charge.
-- Stripe server helpers are in `_subscription-shared.mts`. They authenticate using the caller's token/profile, guard the production project reference, then use a server-only service-role client for privileged work. Stripe calls are REST requests with idempotency headers and LIVE-only key validation.
-- The canonical Stripe Customer is `clients.stripe_customer_id`; subscription Checkout creates a missing Customer using `guardemar-client-{client_id}` idempotency. Add-on code creates no Stripe Customer.
-- Subscription accounting explicitly uses EUR cents, approved exclusive Portuguese VAT at 23%, immutable accepted net/tax/gross evidence, approved recurring Prices and a configured Tax Rate. These semantics have not been approved for variable one-off add-ons.
-- Subscription payments/invoice history use `subscription_payment_events`. The existing webhook verifies signatures and LIVE mode, records `stripe_webhook_events`, retries failed/stale processing and activates subscriptions only through validated `invoice.paid`. None of those paths were altered.
-- The correct Netlify site is linked and authenticated; production function configuration for Supabase, Resend and Stripe is present. Secret values are redacted. Actual deployed restricted-key permissions could not be confirmed. The code accepts an `rk_live_` key, but that prefix does not prove its granted capabilities. Do not infer permission approval from it.
-- The target Supabase project `ablktbpledjceddessyg` reported `INACTIVE`; SQL and table queries timed out. No migration was applied to production or any unrelated project.
+The existing twelve customer services, authenticated request routes, shopping items, transfer details, property cards, staff notes, audit-backed alerts and request-email delivery markers remain in place. `src/config/optional-services.ts` is the only maintained catalogue. External Provider is the thirteenth canonical category, marked admin-only and filtered out of public and customer catalogue views.
 
-## Schema and access
+Authentication continues through `_subscription-shared.mts`: Supabase validates the caller, `profiles.role` controls permissions, and a server-only service-role database client is restricted to project `ablktbpledjceddessyg`. Request creation resolves the property's client server-side and checks both `client_users` and `property_users`. No parallel auth, generic notification service or webhook was introduced.
 
-Migration: `supabase/migrations/20260915201630_addon_service_requests.sql`, generated using `supabase migration new addon_service_requests`.
+The canonical Stripe Customer remains `clients.stripe_customer_id`. Payment creation verifies and reuses it. For an authorised client without a Customer, production runtime uses the core flow's identical Customer parameters and `guardemar-client-{client_id}` idempotency key, with a compare-and-swap canonical linkage check. No Customer was created during implementation/testing. Email-only External Provider Checkout uses `customer_email`; subscription Checkout creates its Customer only if the recipient subsequently completes Checkout. An email alone never grants portal access.
 
-- `addon_requests`: client/property/requester, stable reference, controlled status, published fee/note snapshot, customer observations (5,000 characters), structured details, lifecycle timestamps, requester/key uniqueness and a SHA-256 submission fingerprint.
-- `addon_shopping_items`: ordered relational shopping items, free-form quantity with units, brands, validated alternative policy/product and notes.
-- `addon_internal_notes`: staff-only notes stored separately from customer data.
-- `addon_payments`: linked request/client/admin, EUR cents, email/description, unique idempotency key, separate payment state, nullable Stripe IDs/URL and payment timestamps. Draft amount semantics are explicitly `unapproved`.
-- `addon_request_email_delivery`: request-specific durable send marker, first-attempt/claim/sent timestamps and provider message ID. It is not a customer notification feed.
+## Applied database migrations
 
-All five tables enable RLS and revoke public/anonymous/default browser write grants. Authenticated users have read-only request/item access requiring both client and property membership; staff use the existing `private.is_staff()` helper. Internal notes are staff-only. Payment SELECT grants exclude email, Stripe identifiers and URLs; customer RLS excludes drafts. Delivery markers are server-only.
+Target Supabase is `ACTIVE_HEALTHY`. The previously pending request migration and payment continuation plus draft-visibility hardening were applied only to GUARDEMAR:
 
-The three write RPCs use `SECURITY INVOKER`, an empty search path, explicit role/property/client checks and server-supplied actors. Execution is revoked from PUBLIC, anon and authenticated, and granted only to service_role. The browser cannot forge an actor via RPC.
+- `supabase/migrations/20260915204504_addon_service_requests.sql`
+- `supabase/migrations/20260915210341_addon_payment_and_monthly_billing.sql`
+- `supabase/migrations/20260915211050_addon_billing_visibility_hardening.sql`
 
-Creation is atomic across request, shopping items, audit alert and email marker. A transaction-level advisory lock serialises requester/key retries; changed payloads with the same key fail closed. Payment draft creation locks the request and a partial unique index permits only one unresolved/payment record per request, including paid records. Staff changes use an expected-status comparison and a controlled transition graph. No operational endpoint permits setting `paid` or `payment_pending`.
+The original request migration content is unchanged; its filename and the continuation filename match the versions allocated by Supabase's migration ledger. This prevents future CLI migration replay.
 
-## Customer experience
+Existing `addon_requests`, `addon_shopping_items`, `addon_internal_notes`, `addon_payments` and request-email markers are reused. Payments add explicit category, one-time/monthly type, server-resolved property/service, final gross/net/VAT evidence and approved Stripe configuration IDs. Existing unapproved drafts retain their original semantics and must be replaced through an unused-draft cancellation/review workflow.
 
-- `/portal/services`: all 12 catalogue services with icons, concise descriptions, exact published fees, external-cost notes and View service links; history of authorised requests.
-- `/portal/services/:serviceCode`: full catalogue description, property cards (preselected when only one), published price disclaimer and large optional Additional details textarea. Opening this page never creates a request.
-- Shopping: up to 60 stacked items, product/quantity/preferred brand/substitution/specific alternative/notes, arrival date/time (Portugal time), special instructions and general observations. Fields start empty; examples appear only in placeholders. No supermarket cost calculation.
-- Transfer: both directions, airport/date/time/flight/passenger count/luggage/child seat details and general observations. No supplier booking integration.
-- SEND REQUEST: server validation, derived client and authorisation, atomic persistence, audit alert and Resend notification. Confirmation says Request received, shows reference/service/property/Requested and explains agent contact and the later secure link. No booking or final-price promise.
-- `/portal/services/requests/:id`: customer-safe observations/details/shopping list/status. Staff notes, audit metadata, email-delivery internals and Stripe IDs are excluded. Draft payments are invisible.
+New tables:
 
-## Admin experience
+- `addon_subscriptions`: one per monthly payment invitation, independent of `service_subscriptions`; gross monthly amount, category/client/property/service, lifecycle and reconciliation IDs.
+- `addon_checkout_attempts`: persisted generation, Stripe idempotency key, lease, immutable session binding, expiry and URL.
+- `addon_subscription_payment_events`: monthly paid-invoice evidence.
+- `addon_email_deliveries`: immutable rendered Resend envelope, claim, provider ID and durable sent marker.
 
-- Services and Add-on Payments are separate navigation items.
-- `/admin/services`: new request count, status filter, reference/service/customer/property/date/status and linked details. Scheduled includes in-progress requests.
-- `/admin/services/:id`: customer contact/property/catalogue snapshot/observations/structured details/shopping list/history; controlled review/status changes and staff-only notes. Shows email delivery state, including stale deliveries requiring reconciliation.
-- `/admin/add-on-payments?requestId=...`: populate a reviewed request, customer/email/service description. Admin enters a positive EUR amount; no default is taken from the catalogue. Only administrators can save drafts. Amount is labelled Proposed amount — tax treatment unapproved. Creating/sending a live link is disabled.
-- Admin notification email contains the reference/customer/property/service/observations, concise shopping summary where applicable and an admin link. Customer data is escaped. Resend failures leave the request confirmed and a durable pending marker.
-- Scheduled retries run every five minutes, claim pending deliveries atomically, and reuse the stable provider key. Confirmed sent markers prevent duplicates. An ambiguous first attempt older than 23 hours is never automatically resent; staff must inspect Resend before manual reconciliation. This deliberately avoids exceeding the provider's 24-hour idempotency window.
+A partial unique index prevents concurrent unresolved or active equivalent monthly subscriptions. Standard services use property/service scope. External Provider uses client/email plus normalised description; descriptions must accurately identify the same arranged service rather than be changed to evade duplicate protection.
 
-## Payment activation decision — deliberately blocked
+Server-only transactional RPCs create drafts, lease/create/reconcile attempts, record Checkout, apply verified Stripe state, record email delivery and cancel unused drafts. Payment and subscription activation cannot be set through Admin or customer APIs.
 
-Preferred architecture remains a **one-time server-created Checkout Session linked to exactly one local payment record**, rather than a reusable public Payment Link. It offers authoritative linkage, metadata, session expiry and webhook confirmation.
+## RLS and security
 
-However, implementation of Stripe creation, payment-link email, replacement/resend and payment-confirmation webhook handling is **deferred**, not production-ready:
+All Add-on tables retain RLS. Browser mutation and privileged RPC execution are revoked. Customer reads require client membership and, whenever a property is linked, property membership; drafts and cancelled unused drafts are hidden. Private email/Stripe fields have no customer column grants. Staff notes stay staff-only. Checkout attempts, invoice evidence and delivery envelopes have no browser grants or policies and are intentionally service-only.
 
-1. The admin amount's net/gross/VAT/external-cost meaning is unapproved. No tax calculation or subscription Tax Rate reuse has been implemented.
-2. Modern Checkout dynamic `price_data` creates an inline Price, and `product_data` creates a Product. That conflicts with the explicit prohibition on creating per-request Products/Prices. A decision is required: permit inline non-reusable pricing against an approved shared add-on Product, or approve a different exact-amount hosted collection architecture. Do not silently treat inline pricing as exempt from the prohibition.
-3. Deployed restricted-key permissions must be inspected and narrowly authorised before adding payment capabilities.
+The actual database transactional assertions passed and all fixtures were rolled back. Customer property-access revocation immediately hides linked payments/subscriptions. Email-only external records have no customer portal ownership. The security advisor's four RLS-without-policy informational findings refer to intentionally server-only Add-on tables; unrelated existing inspection/auth advisories were not modified.
 
-Sources: [Checkout pricing model](https://docs.stripe.com/payments/checkout/migrating-prices), [Checkout fulfilment](https://docs.stripe.com/checkout/fulfillment), [Supabase RLS](https://supabase.com/docs/guides/database/postgres/row-level-security).
+Core `service_subscriptions` count/digest before and after migration/tests were identical: 1 record, digest `b514b28fd2db0f0cbfeddaea8e854604`. Core Checkout, approved Products/Prices, exclusive VAT Rate, Billing Portal, agreement evidence and legal documents were not changed.
 
-The server explicitly rejects `send`, `resend` and `replace` with `ADDON_PAYMENT_APPROVAL_REQUIRED`. No environment toggle can enable them. No Products, Prices, Customers, Checkout Sessions, PaymentIntents, Payment Links or payments were created during development/testing. No customer payment-link email was sent.
+## Commercial and VAT behaviour
 
-For the eventual approved implementation:
+Published Guardemar fees exclude Portuguese VAT at 23%. Admin always enters the final gross amount, explicitly labelled **FINAL AMOUNT (VAT INCLUDED)**, or **Final monthly amount (VAT included)**. Decimal EUR input becomes integer cents server-side. Informational included VAT uses safely rounded `gross * 100 / 123`; VAT is the remainder. €98.40 becomes gross 9840, net 8000, VAT 1840 cents. Stripe receives 9840, never 9840 plus VAT.
 
-- Create the local payment first; amount/description/EUR and all linkage metadata come from the authorised server record.
-- Reuse `clients.stripe_customer_id` where verified; never silently create Customers in development.
-- Persist each Checkout attempt and idempotency key before Stripe; lock/compare-and-swap local ownership so concurrent attempts cannot create independent payable Sessions.
-- Resend the same valid URL, never create another payment for an email resend. Reconcile Stripe state before any expiry replacement; fail closed for completed/processing/paid or uncertain payment state. A paid record must remain terminal for payment creation.
-- Extend the existing verified webhook ledger, keeping subscription dispatch isolated. Candidate events are `checkout.session.completed` with authoritative `payment_status=paid`, `checkout.session.async_payment_succeeded` for delayed methods, and expiry/failure events. Verify current Stripe Session/PaymentIntent amount, currency, IDs and metadata before an atomic paid transition. A return page never confirms payment.
-- Payment confirmation sets payment/request paid, never operational completed, and writes `ADDON_PAYMENT_CONFIRMED`, then appropriate idempotent notifications. Expiry/send/resend events are audited when those operations actually exist.
+Pre-Arrival Shopping Stripe payment contains only the agreed Guardemar service fee. Shopping items remain request data and never influence the amount. Admin must confirm that groceries, shopping expenditure and client purchase funds are excluded. Customer request/payment/email copy says: “Your Guardemar service fee is charged separately. The cost of your shopping will be handled through the Guardemar client account.”
 
-Currently implemented audit actions: `ADDON_REQUEST_CREATED`, `ADDON_REQUEST_STATUS_CHANGED`, `ADDON_REQUEST_NOTE_ADDED`, `ADDON_PAYMENT_CREATED` (draft), `ADDON_REQUEST_COMPLETED`, `ADDON_REQUEST_CANCELLED`. Payment send/resend/confirmed/expired audit actions have intentionally not been emitted for operations that are not implemented.
+External Provider has `payment_category=external_provider`, final-charge semantics and no inferred VAT rate/net/VAT split. Its separate LIVE enable flag stays off until accounting approves collection, invoicing and provider responsibility. Standard Guardemar payments are non-refundable once paid; no refund API, automatic refund or customer refund button exists.
 
-## Validation and production rollout
+## Admin and portal
 
-All required checks passed: `npm run typecheck`, `npm test`, `npm run build`, `npm run lint`, `npm run legal:hash`, `git diff --check`.
+Admin Add-on Payments offers service, reviewed request or external optional client, email, description and final amount. Monthly recurring checkbox defaults unchecked and works for any catalogue service. “Review payment” only creates a local draft. A separate server-derived summary shows recipient, service, description, type, exact amount and VAT breakdown before “SEND PAYMENT LINK” / “SEND SUBSCRIPTION LINK” can create Stripe Checkout.
 
-`tests/addon-requests.test.mts` covers catalogue fees, strict request/payment input, server-derived snapshot/actor, authorisation failures, customer-safe projections, structured shopping/transfer details, operational transitions, email delivery idempotency/failure, payment drafts, disabled send/resend/replacement and return-page safety. These use mocks and do not claim to verify real Stripe events or production delivery.
+Unused draft editing cancels that local draft and creates a fresh reviewed draft; it never mutates a payable Checkout. Lists filter category/type/status and show date/customer/service/description/amount/status. Resend and expiry replacement each require another confirmation summary.
 
-`tests/addon-rls.sql` contains transactional database assertions for creation/item/audit/email-marker idempotency, fingerprint mismatch, client derivation/property denial, staff access, stale/invalid transitions, admin-only payment drafts, authoritative draft amount, duplicate/paid draft protection and RLS/privilege isolation. All fixtures roll back.
+Portal Services retains requests/history and shows payment status/amount/date where applicable. Monthly setup requested, Active, Past due and Cancelled are displayed from the separate subscription domain. Known-client external arrangements without a standard request appear under Services; email-only arrangements stay in the recipient's payment email. Payment links are resolved only after server-side ownership and current Stripe state checks. Return pages cannot confirm payment or complete a service.
 
-Local execution without production access:
+## Stripe architecture and configuration
 
-```sh
-npm install --prefix /tmp/guardemar-addon-db-test --no-audit --no-fund @electric-sql/pglite@0.5.8
-node scripts/verify-addon-schema.mjs
-```
+Both flows use server-created Stripe-hosted Checkout Sessions. One-time uses `mode=payment`; monthly uses `mode=subscription` with inline `price_data.recurring.interval=month`. One approved shared Add-on Product per service/category is referenced; no per-request Product or reusable public Payment Link is created. Inline Checkout Prices are the supported dynamic-price strategy, including recurring amounts, and are non-reusable and effectively archived. No core Product/Price is reused or modified.
 
-The local runner uses repository foundation table definitions and role helpers with local auth/extension substitutes and scoped membership read policies. It validates the new migration and assertions in isolated PostgreSQL; it is not a replacement for testing the actual deployed RLS environment. No repository dependency/lockfile change is required.
+Standard Guardemar lines use inclusive price behaviour plus a **separate inclusive** PT VAT Tax Rate at 23%, with automatic tax and adaptive currency pricing disabled. A VAT-exempt canonical Customer fails closed because inclusive exemption handling could reduce the exact agreed gross amount. Monthly Customer credits/balances or discounts also require reconciliation before Checkout because the recurring charge must equal the agreed gross amount. External Provider attaches no tax rate and claims no 23% breakdown. Unexpected discounts, automatic tax, wrong currency, multiple recurring lines or changed amount/ownership are rejected.
 
-Production is **not deployed or verified**. Restore access to the inactive target project; review/apply this migration only there; run advisors and transactional tests in an approved disposable GUARDEMAR environment; verify the existing function environment and Resend configuration; deploy the tested branch. A browser was unavailable in this session, so interactive/mobile visual checks remain outstanding.
+Required function configuration, intentionally absent/off in production:
 
-Use a designated test customer with authorised property and explicit synthetic request observations for the controlled production request test. Verify customer submission/confirmation, admin alert/email/details and loading the payment draft form. Stop before creating any real Stripe object. Do not claim successful production delivery from mocked tests.
+- `STRIPE_ADDON_LIVE_ENABLED=true` only after controlled testing is approved.
+- `STRIPE_ADDON_EXTERNAL_PROVIDER_ENABLED=true` only after that category's accounting activation approval.
+- `STRIPE_ADDON_VAT_INCLUSIVE_TAX_RATE_ID`: LIVE active inclusive PT VAT 23% rate, separate from core.
+- `STRIPE_ADDON_PRODUCT_{SERVICE_CODE_IN_UPPER_SNAKE_CASE}`: approved shared LIVE active Product with metadata `payment_domain=addon`, `service_code` matching the canonical category.
 
-Current production is unchanged: Netlify deploy `6aa98b9b00d152000859b2fe`, state `ready`, commit `2c8b03d5980d2a647b37063eac8a6245b0ed4f99`.
+Existing Stripe/Resend/Supabase configuration is present. Stripe secrets are redacted in the Netlify audit, so restricted-key permissions and actual webhook event subscription configuration could not be verified. Before activation, check least-privilege Checkout write/read, Customer read/write when needed, Product/Price and Tax Rate reads/inline-price capabilities, PaymentIntent reads, Subscription reads and Invoice reads. Code does not call Product/Price/Tax Rate creation endpoints. Do not silently broaden the existing key.
 
-Application test runner: 20 files passed, 0 failed, including 20 new add-on test cases. The isolated SQL runner, separate server-function TypeScript check and local Netlify function bundling also passed. Build completed with existing Vite chunk-size/unused-import warnings. Lint is the repository's TypeScript check.
+Official documentation reviewed: [Checkout inline prices](https://docs.stripe.com/products-prices/manage-prices), [Checkout Session create reference](https://docs.stripe.com/api/checkout/sessions/create), [manual inclusive Tax Rates](https://docs.stripe.com/tax/tax-rates), [subscription webhooks](https://docs.stripe.com/billing/subscriptions/webhooks).
 
-General Terms 2.5 SHA-256 remains `7bdf2ed911c1c6f312e20a985c8e40ddc09af5b7e401925a9c3ffd49d6bf76fd`.
+## Webhook, retries and alerts
 
-## Required legal/accounting decisions
+The existing signed LIVE webhook and `stripe_webhook_events` processing/retry ledger remain authoritative. A small dispatcher routes Add-on metadata and bound Add-on subscription IDs before the unchanged core handler; first invoice classification can retrieve the Stripe Subscription before local Checkout binding. Contradictory core metadata cannot route Add-on events into CARE processing. The only other core-file edits are TypeScript non-null assertions for existing successful email lookups, erased at runtime.
 
-No General Terms or Fee Schedule changes have been made. Confirm before LIVE activation:
+One-time confirmation uses `checkout.session.completed` or `checkout.session.async_payment_succeeded`, current Session `payment_status=paid`, and a matching LIVE succeeded PaymentIntent with exact received amount, currency, customer and metadata. Monthly Checkout completion binds IDs only; a verified current paid `invoice.paid` activates the separate Add-on subscription. Subscription created/updated/deleted and invoice payment-failed events reconcile current Stripe lifecycle; historical events never override current authoritative paid/cancelled state. Checkout expiry is recorded separately. Ensure these events are enabled on the existing endpoint before LIVE activation.
 
-1. Published prices say “+ VAT”; confirm VAT-exclusive treatment and applicability for each add-on, and define admin amount semantics explicitly.
-2. How variable third-party costs are invoiced/collected, including supplier/customer relationships and VAT evidence.
-3. Shopping reimbursement versus resale/disbursement treatment and receipts.
-4. Cancellation/refund rules and operational handling of paid cancellations.
-5. Mail Care/Vehicle Care recurring charging model; they remain requests and are not added to care subscriptions.
-6. Third-party provider liability wording.
-7. Resolve dynamic Checkout inline Price/Product creation versus the stated prohibition.
+The database applies paid/active/past-due/cancelled transitions only within a verified processing webhook ledger row. Paid updates never complete the operational request. Persisted attempt leases and keys cover concurrency and network retries; an ambiguous creation older than 23 hours requires manual Stripe reconciliation. Replacement requires an expired current Session, no completed subscription/payment, and no pending/succeeded PaymentIntent. Paid or ever-activated subscriptions cannot create/resend another invitation.
+
+Resend reuses current valid Checkout. Email retries reuse stable Resend keys and durable sent markers, capped within 23 hours of the first attempt. Admin gets audit-backed new-request, one-time-paid, monthly-activated and monthly-past-due alerts, linking to the request or payment list. Customer email covers payment/setup links, confirmed one-time payment and first monthly activation, with explicit monthly acceptance copy and no internal Stripe IDs.
+
+Audits: `ADDON_REQUEST_CREATED`, controlled request review/note/completion/cancellation actions, `ADDON_PAYMENT_CREATED`, `EXTERNAL_PROVIDER_PAYMENT_CREATED`, `ADDON_PAYMENT_LINK_SENT`, `ADDON_PAYMENT_LINK_RESENT`, `ADDON_PAYMENT_CONFIRMED`, `ADDON_PAYMENT_EXPIRED`, unused-draft cancellation, `ADDON_SUBSCRIPTION_CREATED`, `ADDON_SUBSCRIPTION_LINK_SENT`, link resent, `ADDON_SUBSCRIPTION_ACTIVATED`, `ADDON_SUBSCRIPTION_PAST_DUE`, `ADDON_SUBSCRIPTION_CANCELLED`.
+
+## Validation and remaining activation work
+
+All required validation passed: `npm run typecheck`, `npm test`, `npm run build`, `npm run lint`, `npm run legal:hash`, `git diff --check`. Typecheck/lint now also cover the Add-on server functions and imported webhook. `node scripts/verify-addon-schema.mjs` uses pinned PGlite 0.5.8 in `/tmp`, checks both migrations and request/payment/monthly/VAT/RLS assertions locally. The continuation assertions also passed transactionally against the correct deployed project. No dependency or lockfile change is required.
+
+Twenty-six focused payment tests cover exact gross/VAT, fee-only shopping, all-service recurrence, external email-only flow, Stripe metadata/customer/tax reconciliation, verified activation, core dispatch isolation across CARE/CARE+/COMPLETE, leases, resend/replacement, durable email markers, confirmation and access denial. Existing request and core regression tests pass. Function bundling through the installed Netlify CLI passes too.
+
+Interactive browser checks could not run: the browser runtime returned an empty list of available browsers. Implementation/migration/mock checks do not constitute a successful LIVE financial test. This continuation has not deployed the UI/functions to production. Production activation remains disabled until configuration and controlled tests are approved.
+
+## Protected legal wording recommended, not edited
+
+Future reviewed documents should cover prices excluding VAT and 23% VAT, final VAT-inclusive payment quotes, non-refundable paid Add-ons and exceptional manual handling, recurring monthly Add-ons/Stripe acceptance, recurring cancellation timing, shopping purchases through the client account, External Provider invoicing/collection and third-party responsibility. Recurring cancellation notice/effective date and External Provider accounting remain policy/configuration decisions; no new policy was invented.
+
+General Terms 2.5 SHA-256: `7bdf2ed911c1c6f312e20a985c8e40ddc09af5b7e401925a9c3ffd49d6bf76fd`.
+Fee Schedule SHA-256: `0f41a94e894cb6a60af6bd87a433688107a6ae774bf83d420dfc1f0c179a483b`.
+
+## Proposed controlled LIVE checks — approval required
+
+Customer/property must be explicitly designated by the operator; no production customer was selected or created for testing. Prefer an existing authorised test client with a canonical LIVE Stripe Customer. Neither proposal charges or completes Checkout:
+
+1. **One-time:** reviewed Pre-Arrival Shopping request; description “Controlled verification — Pre-Arrival Shopping service fee”; final gross **€98.40**, net €80.00, VAT €18.40. Create one local payment/attempt and one LIVE `mode=payment` Checkout Session with inline one-time Price against the approved shared Product and inclusive VAT Rate. Email its secure link to the designated test recipient; inspect displayed amount/property/one-time/service-fee-only/non-refundable copy. Shopping expenditure is absent. Do not pay; allow the Session to expire. This verifies LIVE configuration, hosted presentation and email without a charge.
+2. **Monthly:** reviewed Mail Care request; description “Controlled verification — Mail Care monthly”; final gross **€18.45/month**, net €15.00, VAT €3.45. Monthly checkbox explicitly selected. Create one local monthly invitation/attempt and one LIVE `mode=subscription` Checkout Session with inline monthly Price against the approved shared Product and inclusive VAT Rate. Email the setup link and inspect recurring acceptance and exact monthly amount. Do not complete Checkout; no Subscription, Invoice or Charge is proposed in this check. Allow expiry. Actual paid activation/lifecycle verification would require separately approved completion and financial test scope.
+
+Shared Product and inclusive Tax Rate configuration must be approved/provisioned beforehand; no such Stripe objects were created in this task. Email-only External Provider LIVE testing is outside these proposals pending category accounting approval. No LIVE Stripe financial object, Customer or actual payment/subscription was created during this task.

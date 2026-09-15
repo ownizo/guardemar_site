@@ -49,6 +49,7 @@ import { Route as PortalPropertiesRouteImport } from './routes/portal.properties
 import { Route as PortalLoginRouteImport } from './routes/portal.login'
 import { Route as PortalInspectionsRouteImport } from './routes/portal.inspections'
 import { Route as PortalForgotPasswordRouteImport } from './routes/portal.forgot-password'
+import { Route as PortalAddOnPaymentReturnRouteImport } from './routes/portal.add-on-payment-return'
 import { Route as PortalAccountRouteImport } from './routes/portal.account'
 import { Route as ContactThankYouRouteImport } from './routes/contact.thank-you'
 import { Route as ContactPropertyAssessmentRouteImport } from './routes/contact.property-assessment'
@@ -284,6 +285,12 @@ const PortalForgotPasswordRoute = PortalForgotPasswordRouteImport.update({
   path: '/forgot-password',
   getParentRoute: () => PortalRoute,
 } as any)
+const PortalAddOnPaymentReturnRoute =
+  PortalAddOnPaymentReturnRouteImport.update({
+    id: '/add-on-payment-return',
+    path: '/add-on-payment-return',
+    getParentRoute: () => PortalRoute,
+  } as any)
 const PortalAccountRoute = PortalAccountRouteImport.update({
   id: '/account',
   path: '/account',
@@ -480,6 +487,7 @@ export interface FileRoutesByFullPath {
   '/contact/property-assessment': typeof ContactPropertyAssessmentRoute
   '/contact/thank-you': typeof ContactThankYouRoute
   '/portal/account': typeof PortalAccountRoute
+  '/portal/add-on-payment-return': typeof PortalAddOnPaymentReturnRoute
   '/portal/forgot-password': typeof PortalForgotPasswordRoute
   '/portal/inspections': typeof PortalInspectionsRoute
   '/portal/login': typeof PortalLoginRoute
@@ -549,6 +557,7 @@ export interface FileRoutesByTo {
   '/contact/property-assessment': typeof ContactPropertyAssessmentRoute
   '/contact/thank-you': typeof ContactThankYouRoute
   '/portal/account': typeof PortalAccountRoute
+  '/portal/add-on-payment-return': typeof PortalAddOnPaymentReturnRoute
   '/portal/forgot-password': typeof PortalForgotPasswordRoute
   '/portal/inspections': typeof PortalInspectionsRoute
   '/portal/login': typeof PortalLoginRoute
@@ -621,6 +630,7 @@ export interface FileRoutesById {
   '/contact/property-assessment': typeof ContactPropertyAssessmentRoute
   '/contact/thank-you': typeof ContactThankYouRoute
   '/portal/account': typeof PortalAccountRoute
+  '/portal/add-on-payment-return': typeof PortalAddOnPaymentReturnRoute
   '/portal/forgot-password': typeof PortalForgotPasswordRoute
   '/portal/inspections': typeof PortalInspectionsRoute
   '/portal/login': typeof PortalLoginRoute
@@ -694,6 +704,7 @@ export interface FileRouteTypes {
     | '/contact/property-assessment'
     | '/contact/thank-you'
     | '/portal/account'
+    | '/portal/add-on-payment-return'
     | '/portal/forgot-password'
     | '/portal/inspections'
     | '/portal/login'
@@ -763,6 +774,7 @@ export interface FileRouteTypes {
     | '/contact/property-assessment'
     | '/contact/thank-you'
     | '/portal/account'
+    | '/portal/add-on-payment-return'
     | '/portal/forgot-password'
     | '/portal/inspections'
     | '/portal/login'
@@ -834,6 +846,7 @@ export interface FileRouteTypes {
     | '/contact/property-assessment'
     | '/contact/thank-you'
     | '/portal/account'
+    | '/portal/add-on-payment-return'
     | '/portal/forgot-password'
     | '/portal/inspections'
     | '/portal/login'
@@ -1182,6 +1195,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PortalForgotPasswordRouteImport
       parentRoute: typeof PortalRoute
     }
+    '/portal/add-on-payment-return': {
+      id: '/portal/add-on-payment-return'
+      path: '/add-on-payment-return'
+      fullPath: '/portal/add-on-payment-return'
+      preLoaderRoute: typeof PortalAddOnPaymentReturnRouteImport
+      parentRoute: typeof PortalRoute
+    }
     '/portal/account': {
       id: '/portal/account'
       path: '/account'
@@ -1451,6 +1471,7 @@ const ContactRouteWithChildren =
 
 interface PortalRouteChildren {
   PortalAccountRoute: typeof PortalAccountRoute
+  PortalAddOnPaymentReturnRoute: typeof PortalAddOnPaymentReturnRoute
   PortalForgotPasswordRoute: typeof PortalForgotPasswordRoute
   PortalInspectionsRoute: typeof PortalInspectionsRoute
   PortalLoginRoute: typeof PortalLoginRoute
@@ -1467,6 +1488,7 @@ interface PortalRouteChildren {
 
 const PortalRouteChildren: PortalRouteChildren = {
   PortalAccountRoute: PortalAccountRoute,
+  PortalAddOnPaymentReturnRoute: PortalAddOnPaymentReturnRoute,
   PortalForgotPasswordRoute: PortalForgotPasswordRoute,
   PortalInspectionsRoute: PortalInspectionsRoute,
   PortalLoginRoute: PortalLoginRoute,

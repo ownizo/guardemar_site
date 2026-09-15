@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "vite dev --port 3000",
     "build": "vite build",
-    "lint": "tsc --noEmit -p tsconfig.check.json",
-    "typecheck": "tsc --noEmit -p tsconfig.check.json",
+    "lint": "tsc --noEmit -p tsconfig.check.json && tsc --noEmit -p tsconfig.addons.json",
+    "typecheck": "tsc --noEmit -p tsconfig.check.json && tsc --noEmit -p tsconfig.addons.json",
     "test": "node --experimental-strip-types --test tests/*.test.mts",
     "legal:hash": "node --experimental-strip-types scripts/hash-guardemar-terms-v2.5.mts",
     "stripe:create-live-vat-rate": "node --experimental-strip-types scripts/create-stripe-live-vat-rate.mts",

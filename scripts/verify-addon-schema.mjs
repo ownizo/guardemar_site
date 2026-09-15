@@ -20,8 +20,14 @@ create policy profile_read on public.profiles for select to authenticated using(
 create policy client_user_read on public.client_users for select to authenticated using(user_id=auth.uid() or private.is_staff());
 create policy property_user_read on public.property_users for select to authenticated using(user_id=auth.uid() or private.is_staff());
 grant select on public.profiles,public.client_users,public.property_users to authenticated;`)
-await db.exec(await readFile(root+'supabase/migrations/20260915201630_addon_service_requests.sql','utf8'))
+await db.exec(await readFile(root+'supabase/migrations/20260915204504_addon_service_requests.sql','utf8'))
 console.log('Migration applied to isolated PostgreSQL engine using foundation table definitions and role helpers.')
 await db.exec(await readFile(root+'tests/addon-rls.sql','utf8'))
 console.log('Transactional request, draft, idempotency, status and RLS assertions passed; fixtures rolled back.')
+await db.exec(`create table public.stripe_webhook_events(stripe_event_id text primary key,event_type text not null,payload jsonb not null,livemode boolean not null,processing_status text not null);`)
+await db.exec(await readFile(root+'supabase/migrations/20260915210341_addon_payment_and_monthly_billing.sql','utf8'))
+await db.exec(await readFile(root+'supabase/migrations/20260915211050_addon_billing_visibility_hardening.sql','utf8'))
+console.log('Continuation and draft-visibility migrations applied successfully.')
+await db.exec(await readFile(root+'tests/addon-payments-rls.sql','utf8'))
+console.log('Payment/monthly/VAT/idempotency/authorization assertions passed; fixtures rolled back.')
 await db.close()

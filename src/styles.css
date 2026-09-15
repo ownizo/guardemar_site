@@ -591,3 +591,6 @@ h1,h2,h3 { font-family:'Manrope',sans-serif; color:var(--navy); letter-spacing:-
   .addon-summary dd { margin-bottom: .7rem; }
   .addon-property-card { padding: 1rem; }
 }
+.addon-payment-filters { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1rem; }
+.addon-payment-review .form-actions { flex-wrap:wrap; }
+@media(max-width:650px) { .addon-payment-filters { grid-template-columns:minmax(0,1fr); } }
