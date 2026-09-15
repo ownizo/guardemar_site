@@ -30,8 +30,8 @@ export const standardPages: Record<string, StandardPage> = {
   },
   services: {
     eyebrow: 'Service Directory', title: 'Specific support around the core home watch routine.',
-    description: 'Use this directory to review key holding, contractor access, arrival preparation, property handover and post-weather visual checks.',
-    aside: 'Home Watch Algarve remains the primary commercial service. These guides explain individual supporting tasks.',
+    description: 'Use this directory to review key holding, contractor access, arrival preparation, property handover, post-weather visual checks and optional additional services.',
+    aside: 'Home Watch Algarve remains the primary commercial service. Optional additional services sit outside the CARE, CARE+ and COMPLETE plans.',
     sections: [
       { title: 'Begin with the inspection service', paragraphs: ['The recurring relationship is defined on the Home Watch Algarve page. This directory avoids repeating that full explanation and instead sets out the scope of additional services.'] },
       { title: 'Support when something needs to happen', paragraphs: ['Owners can review a focused guide for a delivery, trade appointment, meter reading, post-departure check, handover or weather-related concern. Availability and fees are confirmed before attendance.'] },
