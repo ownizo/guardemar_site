@@ -44,6 +44,7 @@ import { Route as AreasIndexRouteImport } from './routes/areas.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as LocaleIndexRouteImport } from './routes/$locale.index'
 import { Route as PortalSubscriptionsRouteImport } from './routes/portal.subscriptions'
+import { Route as PortalServicesRouteImport } from './routes/portal.services'
 import { Route as PortalPropertiesRouteImport } from './routes/portal.properties'
 import { Route as PortalLoginRouteImport } from './routes/portal.login'
 import { Route as PortalInspectionsRouteImport } from './routes/portal.inspections'
@@ -56,22 +57,27 @@ import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as AreasAreaRouteImport } from './routes/areas.$area'
 import { Route as AdminTeamRouteImport } from './routes/admin.team'
 import { Route as AdminSubscriptionsRouteImport } from './routes/admin.subscriptions'
+import { Route as AdminServicesRouteImport } from './routes/admin.services'
 import { Route as AdminPropertiesRouteImport } from './routes/admin.properties'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminInspectionsRouteImport } from './routes/admin.inspections'
 import { Route as AdminClientsRouteImport } from './routes/admin.clients'
+import { Route as AdminAddOnPaymentsRouteImport } from './routes/admin.add-on-payments'
 import { Route as AboutHugoGoncalvesRouteImport } from './routes/about.hugo-goncalves'
 import { Route as LocalePlansRouteImport } from './routes/$locale.plans'
 import { Route as LocaleHomeWatchAlgarveRouteImport } from './routes/$locale.home-watch-algarve'
 import { Route as PortalSubscriptionsNewRouteImport } from './routes/portal.subscriptions_.new'
 import { Route as PortalSubscriptionsIdRouteImport } from './routes/portal.subscriptions_.$id'
+import { Route as PortalServicesServiceCodeRouteImport } from './routes/portal.services_.$serviceCode'
 import { Route as PortalInspectionsIdRouteImport } from './routes/portal.inspections_.$id'
 import { Route as BlogCategoryCategoryRouteImport } from './routes/blog.category.$category'
 import { Route as AdminTeamIdRouteImport } from './routes/admin.team_.$id'
 import { Route as AdminSubscriptionsIdRouteImport } from './routes/admin.subscriptions_.$id'
+import { Route as AdminServicesIdRouteImport } from './routes/admin.services_.$id'
 import { Route as AdminPropertiesIdRouteImport } from './routes/admin.properties_.$id'
 import { Route as AdminInspectionsIdRouteImport } from './routes/admin.inspections_.$id'
 import { Route as AdminClientsIdRouteImport } from './routes/admin.clients_.$id'
+import { Route as PortalServicesRequestsIdRouteImport } from './routes/portal.services_.requests.$id'
 
 const VacantPropertyInspectionsAlgarveRoute =
   VacantPropertyInspectionsAlgarveRouteImport.update({
@@ -253,6 +259,11 @@ const PortalSubscriptionsRoute = PortalSubscriptionsRouteImport.update({
   path: '/subscriptions',
   getParentRoute: () => PortalRoute,
 } as any)
+const PortalServicesRoute = PortalServicesRouteImport.update({
+  id: '/services',
+  path: '/services',
+  getParentRoute: () => PortalRoute,
+} as any)
 const PortalPropertiesRoute = PortalPropertiesRouteImport.update({
   id: '/properties',
   path: '/properties',
@@ -314,6 +325,11 @@ const AdminSubscriptionsRoute = AdminSubscriptionsRouteImport.update({
   path: '/subscriptions',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminServicesRoute = AdminServicesRouteImport.update({
+  id: '/services',
+  path: '/services',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminPropertiesRoute = AdminPropertiesRouteImport.update({
   id: '/properties',
   path: '/properties',
@@ -332,6 +348,11 @@ const AdminInspectionsRoute = AdminInspectionsRouteImport.update({
 const AdminClientsRoute = AdminClientsRouteImport.update({
   id: '/clients',
   path: '/clients',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAddOnPaymentsRoute = AdminAddOnPaymentsRouteImport.update({
+  id: '/add-on-payments',
+  path: '/add-on-payments',
   getParentRoute: () => AdminRoute,
 } as any)
 const AboutHugoGoncalvesRoute = AboutHugoGoncalvesRouteImport.update({
@@ -359,6 +380,12 @@ const PortalSubscriptionsIdRoute = PortalSubscriptionsIdRouteImport.update({
   path: '/subscriptions/$id',
   getParentRoute: () => PortalRoute,
 } as any)
+const PortalServicesServiceCodeRoute =
+  PortalServicesServiceCodeRouteImport.update({
+    id: '/services_/$serviceCode',
+    path: '/services/$serviceCode',
+    getParentRoute: () => PortalRoute,
+  } as any)
 const PortalInspectionsIdRoute = PortalInspectionsIdRouteImport.update({
   id: '/inspections_/$id',
   path: '/inspections/$id',
@@ -379,6 +406,11 @@ const AdminSubscriptionsIdRoute = AdminSubscriptionsIdRouteImport.update({
   path: '/subscriptions/$id',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminServicesIdRoute = AdminServicesIdRouteImport.update({
+  id: '/services_/$id',
+  path: '/services/$id',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminPropertiesIdRoute = AdminPropertiesIdRouteImport.update({
   id: '/properties_/$id',
   path: '/properties/$id',
@@ -394,6 +426,12 @@ const AdminClientsIdRoute = AdminClientsIdRouteImport.update({
   path: '/clients/$id',
   getParentRoute: () => AdminRoute,
 } as any)
+const PortalServicesRequestsIdRoute =
+  PortalServicesRequestsIdRouteImport.update({
+    id: '/services_/requests/$id',
+    path: '/services/requests/$id',
+    getParentRoute: () => PortalRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -428,10 +466,12 @@ export interface FileRoutesByFullPath {
   '/$locale/home-watch-algarve': typeof LocaleHomeWatchAlgarveRoute
   '/$locale/plans': typeof LocalePlansRoute
   '/about/hugo-goncalves': typeof AboutHugoGoncalvesRoute
+  '/admin/add-on-payments': typeof AdminAddOnPaymentsRoute
   '/admin/clients': typeof AdminClientsRoute
   '/admin/inspections': typeof AdminInspectionsRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/properties': typeof AdminPropertiesRoute
+  '/admin/services': typeof AdminServicesRoute
   '/admin/subscriptions': typeof AdminSubscriptionsRoute
   '/admin/team': typeof AdminTeamRoute
   '/areas/$area': typeof AreasAreaRoute
@@ -444,6 +484,7 @@ export interface FileRoutesByFullPath {
   '/portal/inspections': typeof PortalInspectionsRoute
   '/portal/login': typeof PortalLoginRoute
   '/portal/properties': typeof PortalPropertiesRoute
+  '/portal/services': typeof PortalServicesRoute
   '/portal/subscriptions': typeof PortalSubscriptionsRoute
   '/$locale/': typeof LocaleIndexRoute
   '/admin/': typeof AdminIndexRoute
@@ -453,12 +494,15 @@ export interface FileRoutesByFullPath {
   '/admin/clients/$id': typeof AdminClientsIdRoute
   '/admin/inspections/$id': typeof AdminInspectionsIdRoute
   '/admin/properties/$id': typeof AdminPropertiesIdRoute
+  '/admin/services/$id': typeof AdminServicesIdRoute
   '/admin/subscriptions/$id': typeof AdminSubscriptionsIdRoute
   '/admin/team/$id': typeof AdminTeamIdRoute
   '/blog/category/$category': typeof BlogCategoryCategoryRoute
   '/portal/inspections/$id': typeof PortalInspectionsIdRoute
+  '/portal/services/$serviceCode': typeof PortalServicesServiceCodeRoute
   '/portal/subscriptions/$id': typeof PortalSubscriptionsIdRoute
   '/portal/subscriptions/new': typeof PortalSubscriptionsNewRoute
+  '/portal/services/requests/$id': typeof PortalServicesRequestsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -491,10 +535,12 @@ export interface FileRoutesByTo {
   '/$locale/home-watch-algarve': typeof LocaleHomeWatchAlgarveRoute
   '/$locale/plans': typeof LocalePlansRoute
   '/about/hugo-goncalves': typeof AboutHugoGoncalvesRoute
+  '/admin/add-on-payments': typeof AdminAddOnPaymentsRoute
   '/admin/clients': typeof AdminClientsRoute
   '/admin/inspections': typeof AdminInspectionsRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/properties': typeof AdminPropertiesRoute
+  '/admin/services': typeof AdminServicesRoute
   '/admin/subscriptions': typeof AdminSubscriptionsRoute
   '/admin/team': typeof AdminTeamRoute
   '/areas/$area': typeof AreasAreaRoute
@@ -507,6 +553,7 @@ export interface FileRoutesByTo {
   '/portal/inspections': typeof PortalInspectionsRoute
   '/portal/login': typeof PortalLoginRoute
   '/portal/properties': typeof PortalPropertiesRoute
+  '/portal/services': typeof PortalServicesRoute
   '/portal/subscriptions': typeof PortalSubscriptionsRoute
   '/$locale': typeof LocaleIndexRoute
   '/admin': typeof AdminIndexRoute
@@ -516,12 +563,15 @@ export interface FileRoutesByTo {
   '/admin/clients/$id': typeof AdminClientsIdRoute
   '/admin/inspections/$id': typeof AdminInspectionsIdRoute
   '/admin/properties/$id': typeof AdminPropertiesIdRoute
+  '/admin/services/$id': typeof AdminServicesIdRoute
   '/admin/subscriptions/$id': typeof AdminSubscriptionsIdRoute
   '/admin/team/$id': typeof AdminTeamIdRoute
   '/blog/category/$category': typeof BlogCategoryCategoryRoute
   '/portal/inspections/$id': typeof PortalInspectionsIdRoute
+  '/portal/services/$serviceCode': typeof PortalServicesServiceCodeRoute
   '/portal/subscriptions/$id': typeof PortalSubscriptionsIdRoute
   '/portal/subscriptions/new': typeof PortalSubscriptionsNewRoute
+  '/portal/services/requests/$id': typeof PortalServicesRequestsIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -557,10 +607,12 @@ export interface FileRoutesById {
   '/$locale/home-watch-algarve': typeof LocaleHomeWatchAlgarveRoute
   '/$locale/plans': typeof LocalePlansRoute
   '/about/hugo-goncalves': typeof AboutHugoGoncalvesRoute
+  '/admin/add-on-payments': typeof AdminAddOnPaymentsRoute
   '/admin/clients': typeof AdminClientsRoute
   '/admin/inspections': typeof AdminInspectionsRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/properties': typeof AdminPropertiesRoute
+  '/admin/services': typeof AdminServicesRoute
   '/admin/subscriptions': typeof AdminSubscriptionsRoute
   '/admin/team': typeof AdminTeamRoute
   '/areas/$area': typeof AreasAreaRoute
@@ -573,6 +625,7 @@ export interface FileRoutesById {
   '/portal/inspections': typeof PortalInspectionsRoute
   '/portal/login': typeof PortalLoginRoute
   '/portal/properties': typeof PortalPropertiesRoute
+  '/portal/services': typeof PortalServicesRoute
   '/portal/subscriptions': typeof PortalSubscriptionsRoute
   '/$locale/': typeof LocaleIndexRoute
   '/admin/': typeof AdminIndexRoute
@@ -582,12 +635,15 @@ export interface FileRoutesById {
   '/admin/clients_/$id': typeof AdminClientsIdRoute
   '/admin/inspections_/$id': typeof AdminInspectionsIdRoute
   '/admin/properties_/$id': typeof AdminPropertiesIdRoute
+  '/admin/services_/$id': typeof AdminServicesIdRoute
   '/admin/subscriptions_/$id': typeof AdminSubscriptionsIdRoute
   '/admin/team_/$id': typeof AdminTeamIdRoute
   '/blog/category/$category': typeof BlogCategoryCategoryRoute
   '/portal/inspections_/$id': typeof PortalInspectionsIdRoute
+  '/portal/services_/$serviceCode': typeof PortalServicesServiceCodeRoute
   '/portal/subscriptions_/$id': typeof PortalSubscriptionsIdRoute
   '/portal/subscriptions_/new': typeof PortalSubscriptionsNewRoute
+  '/portal/services_/requests/$id': typeof PortalServicesRequestsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -624,10 +680,12 @@ export interface FileRouteTypes {
     | '/$locale/home-watch-algarve'
     | '/$locale/plans'
     | '/about/hugo-goncalves'
+    | '/admin/add-on-payments'
     | '/admin/clients'
     | '/admin/inspections'
     | '/admin/login'
     | '/admin/properties'
+    | '/admin/services'
     | '/admin/subscriptions'
     | '/admin/team'
     | '/areas/$area'
@@ -640,6 +698,7 @@ export interface FileRouteTypes {
     | '/portal/inspections'
     | '/portal/login'
     | '/portal/properties'
+    | '/portal/services'
     | '/portal/subscriptions'
     | '/$locale/'
     | '/admin/'
@@ -649,12 +708,15 @@ export interface FileRouteTypes {
     | '/admin/clients/$id'
     | '/admin/inspections/$id'
     | '/admin/properties/$id'
+    | '/admin/services/$id'
     | '/admin/subscriptions/$id'
     | '/admin/team/$id'
     | '/blog/category/$category'
     | '/portal/inspections/$id'
+    | '/portal/services/$serviceCode'
     | '/portal/subscriptions/$id'
     | '/portal/subscriptions/new'
+    | '/portal/services/requests/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -687,10 +749,12 @@ export interface FileRouteTypes {
     | '/$locale/home-watch-algarve'
     | '/$locale/plans'
     | '/about/hugo-goncalves'
+    | '/admin/add-on-payments'
     | '/admin/clients'
     | '/admin/inspections'
     | '/admin/login'
     | '/admin/properties'
+    | '/admin/services'
     | '/admin/subscriptions'
     | '/admin/team'
     | '/areas/$area'
@@ -703,6 +767,7 @@ export interface FileRouteTypes {
     | '/portal/inspections'
     | '/portal/login'
     | '/portal/properties'
+    | '/portal/services'
     | '/portal/subscriptions'
     | '/$locale'
     | '/admin'
@@ -712,12 +777,15 @@ export interface FileRouteTypes {
     | '/admin/clients/$id'
     | '/admin/inspections/$id'
     | '/admin/properties/$id'
+    | '/admin/services/$id'
     | '/admin/subscriptions/$id'
     | '/admin/team/$id'
     | '/blog/category/$category'
     | '/portal/inspections/$id'
+    | '/portal/services/$serviceCode'
     | '/portal/subscriptions/$id'
     | '/portal/subscriptions/new'
+    | '/portal/services/requests/$id'
   id:
     | '__root__'
     | '/'
@@ -752,10 +820,12 @@ export interface FileRouteTypes {
     | '/$locale/home-watch-algarve'
     | '/$locale/plans'
     | '/about/hugo-goncalves'
+    | '/admin/add-on-payments'
     | '/admin/clients'
     | '/admin/inspections'
     | '/admin/login'
     | '/admin/properties'
+    | '/admin/services'
     | '/admin/subscriptions'
     | '/admin/team'
     | '/areas/$area'
@@ -768,6 +838,7 @@ export interface FileRouteTypes {
     | '/portal/inspections'
     | '/portal/login'
     | '/portal/properties'
+    | '/portal/services'
     | '/portal/subscriptions'
     | '/$locale/'
     | '/admin/'
@@ -777,12 +848,15 @@ export interface FileRouteTypes {
     | '/admin/clients_/$id'
     | '/admin/inspections_/$id'
     | '/admin/properties_/$id'
+    | '/admin/services_/$id'
     | '/admin/subscriptions_/$id'
     | '/admin/team_/$id'
     | '/blog/category/$category'
     | '/portal/inspections_/$id'
+    | '/portal/services_/$serviceCode'
     | '/portal/subscriptions_/$id'
     | '/portal/subscriptions_/new'
+    | '/portal/services_/requests/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -1073,6 +1147,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PortalSubscriptionsRouteImport
       parentRoute: typeof PortalRoute
     }
+    '/portal/services': {
+      id: '/portal/services'
+      path: '/services'
+      fullPath: '/portal/services'
+      preLoaderRoute: typeof PortalServicesRouteImport
+      parentRoute: typeof PortalRoute
+    }
     '/portal/properties': {
       id: '/portal/properties'
       path: '/properties'
@@ -1157,6 +1238,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminSubscriptionsRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/services': {
+      id: '/admin/services'
+      path: '/services'
+      fullPath: '/admin/services'
+      preLoaderRoute: typeof AdminServicesRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/properties': {
       id: '/admin/properties'
       path: '/properties'
@@ -1183,6 +1271,13 @@ declare module '@tanstack/react-router' {
       path: '/clients'
       fullPath: '/admin/clients'
       preLoaderRoute: typeof AdminClientsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/add-on-payments': {
+      id: '/admin/add-on-payments'
+      path: '/add-on-payments'
+      fullPath: '/admin/add-on-payments'
+      preLoaderRoute: typeof AdminAddOnPaymentsRouteImport
       parentRoute: typeof AdminRoute
     }
     '/about/hugo-goncalves': {
@@ -1220,6 +1315,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PortalSubscriptionsIdRouteImport
       parentRoute: typeof PortalRoute
     }
+    '/portal/services_/$serviceCode': {
+      id: '/portal/services_/$serviceCode'
+      path: '/services/$serviceCode'
+      fullPath: '/portal/services/$serviceCode'
+      preLoaderRoute: typeof PortalServicesServiceCodeRouteImport
+      parentRoute: typeof PortalRoute
+    }
     '/portal/inspections_/$id': {
       id: '/portal/inspections_/$id'
       path: '/inspections/$id'
@@ -1248,6 +1350,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminSubscriptionsIdRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/services_/$id': {
+      id: '/admin/services_/$id'
+      path: '/services/$id'
+      fullPath: '/admin/services/$id'
+      preLoaderRoute: typeof AdminServicesIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/properties_/$id': {
       id: '/admin/properties_/$id'
       path: '/properties/$id'
@@ -1269,6 +1378,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminClientsIdRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/portal/services_/requests/$id': {
+      id: '/portal/services_/requests/$id'
+      path: '/services/requests/$id'
+      fullPath: '/portal/services/requests/$id'
+      preLoaderRoute: typeof PortalServicesRequestsIdRouteImport
+      parentRoute: typeof PortalRoute
+    }
   }
 }
 
@@ -1283,31 +1399,37 @@ const AboutRouteChildren: AboutRouteChildren = {
 const AboutRouteWithChildren = AboutRoute._addFileChildren(AboutRouteChildren)
 
 interface AdminRouteChildren {
+  AdminAddOnPaymentsRoute: typeof AdminAddOnPaymentsRoute
   AdminClientsRoute: typeof AdminClientsRoute
   AdminInspectionsRoute: typeof AdminInspectionsRoute
   AdminLoginRoute: typeof AdminLoginRoute
   AdminPropertiesRoute: typeof AdminPropertiesRoute
+  AdminServicesRoute: typeof AdminServicesRoute
   AdminSubscriptionsRoute: typeof AdminSubscriptionsRoute
   AdminTeamRoute: typeof AdminTeamRoute
   AdminIndexRoute: typeof AdminIndexRoute
   AdminClientsIdRoute: typeof AdminClientsIdRoute
   AdminInspectionsIdRoute: typeof AdminInspectionsIdRoute
   AdminPropertiesIdRoute: typeof AdminPropertiesIdRoute
+  AdminServicesIdRoute: typeof AdminServicesIdRoute
   AdminSubscriptionsIdRoute: typeof AdminSubscriptionsIdRoute
   AdminTeamIdRoute: typeof AdminTeamIdRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminAddOnPaymentsRoute: AdminAddOnPaymentsRoute,
   AdminClientsRoute: AdminClientsRoute,
   AdminInspectionsRoute: AdminInspectionsRoute,
   AdminLoginRoute: AdminLoginRoute,
   AdminPropertiesRoute: AdminPropertiesRoute,
+  AdminServicesRoute: AdminServicesRoute,
   AdminSubscriptionsRoute: AdminSubscriptionsRoute,
   AdminTeamRoute: AdminTeamRoute,
   AdminIndexRoute: AdminIndexRoute,
   AdminClientsIdRoute: AdminClientsIdRoute,
   AdminInspectionsIdRoute: AdminInspectionsIdRoute,
   AdminPropertiesIdRoute: AdminPropertiesIdRoute,
+  AdminServicesIdRoute: AdminServicesIdRoute,
   AdminSubscriptionsIdRoute: AdminSubscriptionsIdRoute,
   AdminTeamIdRoute: AdminTeamIdRoute,
 }
@@ -1333,11 +1455,14 @@ interface PortalRouteChildren {
   PortalInspectionsRoute: typeof PortalInspectionsRoute
   PortalLoginRoute: typeof PortalLoginRoute
   PortalPropertiesRoute: typeof PortalPropertiesRoute
+  PortalServicesRoute: typeof PortalServicesRoute
   PortalSubscriptionsRoute: typeof PortalSubscriptionsRoute
   PortalIndexRoute: typeof PortalIndexRoute
   PortalInspectionsIdRoute: typeof PortalInspectionsIdRoute
+  PortalServicesServiceCodeRoute: typeof PortalServicesServiceCodeRoute
   PortalSubscriptionsIdRoute: typeof PortalSubscriptionsIdRoute
   PortalSubscriptionsNewRoute: typeof PortalSubscriptionsNewRoute
+  PortalServicesRequestsIdRoute: typeof PortalServicesRequestsIdRoute
 }
 
 const PortalRouteChildren: PortalRouteChildren = {
@@ -1346,11 +1471,14 @@ const PortalRouteChildren: PortalRouteChildren = {
   PortalInspectionsRoute: PortalInspectionsRoute,
   PortalLoginRoute: PortalLoginRoute,
   PortalPropertiesRoute: PortalPropertiesRoute,
+  PortalServicesRoute: PortalServicesRoute,
   PortalSubscriptionsRoute: PortalSubscriptionsRoute,
   PortalIndexRoute: PortalIndexRoute,
   PortalInspectionsIdRoute: PortalInspectionsIdRoute,
+  PortalServicesServiceCodeRoute: PortalServicesServiceCodeRoute,
   PortalSubscriptionsIdRoute: PortalSubscriptionsIdRoute,
   PortalSubscriptionsNewRoute: PortalSubscriptionsNewRoute,
+  PortalServicesRequestsIdRoute: PortalServicesRequestsIdRoute,
 }
 
 const PortalRouteWithChildren =

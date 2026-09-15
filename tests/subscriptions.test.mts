@@ -47,7 +47,7 @@ test('annual savings are exactly ten per cent without months-free wording', asyn
 
 test('public plan pricing derives from the canonical subscription configuration', async () => {
   const site = await source('../src/config/site.ts')
-  assert.match(site, /import \{ subscriptionPlans \} from '@\/config\/subscriptions'/)
+  assert.match(site, /import \{ subscriptionPlans \} from '(?:@\/config\/subscriptions|\.\/subscriptions\.ts)'/)
   assert.match(site, /price: subscriptionPlans\.care\.monthlyAmount \/ 100/)
   assert.doesNotMatch(site, /price: (79|129|189), annualPrice:/)
 })
