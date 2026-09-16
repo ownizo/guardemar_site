@@ -119,7 +119,7 @@ export const addonServiceCatalogue = [
     fee: '€60 + VAT',
   },
   {
-    id: 'external-provider', name: 'External Provider', icon: 'wrench', adminOnly: true,
+    id: 'external-provider', name: 'External Provider Service', icon: 'wrench', adminOnly: true,
     description: 'An individually described external provider payment arranged by Guardemar.',
     fee: 'Individually agreed',
   },
