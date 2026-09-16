@@ -24,12 +24,29 @@ function HomePage() {
           </div>
           <p className="territory-line">Western Algarve — from Carvoeiro to Sagres.</p>
         </div>
-        <div className="hero-visual" role="img" aria-label="Abstract architectural view inspired by a contemporary Algarve villa">
-          <div className="sun-disc" />
-          <div className="villa-plane villa-plane-one" />
-          <div className="villa-plane villa-plane-two" />
-          <div className="pool-plane" />
-          <div className="hero-caption"><span>01</span> A trusted local presence in Portugal</div>
+        <div className="hero-visual">
+          <picture>
+            <source
+              type="image/avif"
+              srcSet="/images/guardemar-coastal-villa-hero-720.avif 720w, /images/guardemar-coastal-villa-hero-1200.avif 1200w, /images/guardemar-coastal-villa-hero-1844.avif 1844w"
+              sizes="(max-width: 640px) 100vw, (max-width: 980px) calc(100vw - 40px), (min-width: 1220px) 578px, 49vw"
+            />
+            <source
+              type="image/webp"
+              srcSet="/images/guardemar-coastal-villa-hero-720.webp 720w, /images/guardemar-coastal-villa-hero-1200.webp 1200w, /images/guardemar-coastal-villa-hero-1844.webp 1844w"
+              sizes="(max-width: 640px) 100vw, (max-width: 980px) calc(100vw - 40px), (min-width: 1220px) 578px, 49vw"
+            />
+            <img
+              className="hero-image"
+              src="/images/guardemar-coastal-villa-hero-1200.webp"
+              alt="Luxury coastal villa overlooking the Atlantic in the Algarve"
+              width="1844"
+              height="853"
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
+            />
+          </picture>
         </div>
       </section>
 
