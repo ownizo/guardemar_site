@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto'
 import { addonServiceCatalogue } from '../../src/config/optional-services.ts'
 import { shoppingPaymentMessage } from '../../src/lib/portal/addons.ts'
-import { checked } from './_addon-shared.mts'
+import { checked, isStripeHostedCheckoutUrl } from './_addon-shared.mts'
 import { environment, HttpError, stripeRequest, type AuthContext } from './_subscription-shared.mts'
 import { queueAddonBillingEmail, deliverAddonBillingEmail } from './_addon-email.mts'
 
@@ -28,7 +28,7 @@ export function assertAddonMetadata(metadata: Record<string, any>, payment: Bill
 }
 export function verifyAddonOpenSession(session: BillingRow, payment: BillingRow, subscription: BillingRow | null, attempt: BillingRow) {
   assertAddonMetadata(session.metadata ?? {}, payment, subscription)
-  if (!session.livemode || session.status !== 'open' || session.payment_status === 'paid' || session.subscription || session.mode !== (subscription ? 'subscription' : 'payment') || session.currency !== 'eur' || session.amount_total !== payment.amount || session.metadata.addon_checkout_attempt_id !== attempt.id || (attempt.stripe_checkout_session_id && attempt.stripe_checkout_session_id !== session.id) || (payment.stripe_customer_id && session.customer !== payment.stripe_customer_id) || !session.url?.startsWith('https://checkout.stripe.com/')) throw new HttpError(409, 'Only the matching unpaid, open Stripe Checkout may be sent.')
+  if (!session.livemode || session.status !== 'open' || session.payment_status === 'paid' || session.subscription || session.mode !== (subscription ? 'subscription' : 'payment') || session.currency !== 'eur' || session.amount_total !== payment.amount || session.metadata.addon_checkout_attempt_id !== attempt.id || (attempt.stripe_checkout_session_id && attempt.stripe_checkout_session_id !== session.id) || (payment.stripe_customer_id && session.customer !== payment.stripe_customer_id) || !isStripeHostedCheckoutUrl(session.url)) throw new HttpError(409, 'Only the matching unpaid, open Stripe Checkout may be sent.')
   if (payment.payment_category === 'guardemar_service' && session.total_details?.amount_tax !== payment.amount_tax) throw new HttpError(409, 'Checkout gross amount/VAT does not match the agreed amount.')
   if (payment.payment_category === 'external_provider' && session.total_details?.amount_tax) throw new HttpError(409, 'Unexpected External Provider tax calculation.')
 }
@@ -136,7 +136,7 @@ export async function sendAddonPayment(auth: AuthContext, paymentId: string, act
   if (!session) {
     payment = await prepareConfiguration(database, payment, dependencies.stripe)
     session = await dependencies.stripe<BillingRow>('/checkout/sessions', { method: 'POST', body: buildAddonCheckout(payment, subscription, attempt), idempotencyKey: attempt.idempotency_key })
-    if (!session.livemode || session.status !== 'open' || !session.url?.startsWith('https://checkout.stripe.com/')) throw new HttpError(409, 'Stripe Checkout state could not be confirmed.')
+    if (!session.livemode || session.status !== 'open' || !isStripeHostedCheckoutUrl(session.url)) throw new HttpError(409, 'Stripe Checkout state could not be confirmed.')
     verifyAddonOpenSession(session, payment, subscription, attempt)
     checked(await database.rpc('record_addon_checkout', { actor: auth.user.id, attempt_id: attempt.id, lease, session_id: session.id, session_url: session.url, expiry: new Date(session.expires_at * 1000).toISOString() }))
   }

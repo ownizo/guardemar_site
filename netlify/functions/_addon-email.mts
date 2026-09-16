@@ -2,7 +2,7 @@ import { Resend } from 'resend'
 import { addonServiceCatalogue } from '../../src/config/optional-services.ts'
 import { business } from '../../src/config/site.ts'
 import { shoppingPaymentMessage } from '../../src/lib/portal/addons.ts'
-import { checked, escapeHtml } from './_addon-shared.mts'
+import { checked, escapeHtml, isStripeHostedCheckoutUrl } from './_addon-shared.mts'
 import { environment, HttpError, type AuthContext } from './_subscription-shared.mts'
 
 export function billingEmailEnvelope(payment: Record<string, any>, kind: 'link' | 'confirmed' | 'activated', url?: string) {
@@ -15,7 +15,7 @@ export function billingEmailEnvelope(payment: Record<string, any>, kind: 'link' 
   const amountLabel = monthly ? 'Monthly amount' : 'Final amount'
   const taxLabel = payment.payment_category === 'guardemar_service' ? 'VAT included (23%)' : 'Final charge. External provider tax treatment is recorded separately.'
   const cta = monthly ? 'Set up monthly payment' : 'Proceed to secure payment'
-  if (kind === 'link' && !url?.startsWith('https://checkout.stripe.com/')) throw new HttpError(409, 'Invalid secure payment URL.')
+  if (kind === 'link' && !isStripeHostedCheckoutUrl(url)) throw new HttpError(409, 'Invalid secure payment URL.')
   const text = `${name ? `Dear ${name},` : 'Hello,'}\n\n${copy}\n\nService: ${service}\n${payment.properties?.display_name ? `Property: ${payment.properties.display_name}\n` : ''}Description: ${payment.description}\n${amountLabel}: ${total}\n${taxLabel}\nBilling frequency: ${monthly ? 'Monthly recurring' : 'One-time'}\n${payment.service_code === 'pre-arrival-shopping' ? `\n${shoppingPaymentMessage}\n` : ''}\nPayments are non-refundable once paid.\nYour payment is processed securely by Stripe.${kind === 'link' ? `\n\n${cta}: ${url}` : ''}\n\nKind regards,\nGUARDEMAR`
   return { from: `GUARDEMAR <${business.email}>`, to: [payment.customer_email], subject, text, html: `<div style="font-family:Arial,sans-serif;color:#06275a;line-height:1.7"><h1>${escapeHtml(subject)}</h1><p style="white-space:pre-wrap">${escapeHtml(text)}</p>${kind === 'link' ? `<p><a href="${escapeHtml(url)}" style="background:#06275a;color:white;padding:14px 20px;text-decoration:none;display:inline-block">${cta}</a></p>` : ''}</div>` }
 }

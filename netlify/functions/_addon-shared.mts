@@ -3,6 +3,17 @@ import { optionalServices } from '../../src/config/optional-services.ts'
 import { business } from '../../src/config/site.ts'
 import { environment, HttpError, type AuthContext } from './_subscription-shared.mts'
 
+// Stripe may serve Checkout through the account's verified custom domain. Keep
+// this allow-list exact so payment links can never become an open redirect.
+export function isStripeHostedCheckoutUrl(value: unknown) {
+  try {
+    const url = new URL(String(value))
+    return url.protocol === 'https:' && ['checkout.stripe.com', 'checkout.guardemar.com'].includes(url.hostname) && url.pathname.startsWith('/')
+  } catch {
+    return false
+  }
+}
+
 export function checked<T>(result: { data: T; error: { code?: string; message?: string } | null }): T {
   if (result.error) {
     const status = result.error.code === '42501' ? 403 : ['22023','40001','23505'].includes(result.error.code ?? '') ? 409 : 500
