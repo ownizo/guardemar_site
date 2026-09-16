@@ -124,6 +124,15 @@ test('staff review uses compare status, internal note and controlled transitions
   for (const transitions of Object.values(operationalTransitions)) assert.equal(transitions.includes('paid'), false)
   assert.equal(addonReviewSchema.safeParse({ expectedStatus: 'requested', status: 'invented', internalNote: '' }).success, false)
 })
+test('Admin dashboard alert endpoint returns new request references directly', async () => {
+  const result = await invoke('admin/alerts', 'GET', undefined, 'admin')
+  assert.equal(result.response.status, 200)
+  assert.equal(result.body.newRequests.length, 1)
+  assert.equal(result.body.newRequests[0].request_reference, 'GSR-TEST')
+  const requestQuery = result.calls.find((call) => call.table === 'addon_requests')
+  assert.ok(requestQuery.steps.some((step: any[]) => step[0] === 'eq' && step[1] === 'status' && step[2] === 'requested'))
+  assert.equal((await invoke('admin/alerts', 'GET', undefined, 'customer')).response.status, 403)
+})
 test('payment draft uses explicitly admin-entered amount, EUR and linked request', async () => {
   const input = { requestId, idempotencyKey: generic().idempotencyKey, email: 'test@example.invalid', amountEur: '123.45', description: 'Reviewed request', currency: 'EUR' }
   assert.equal(addonPaymentDraftSchema.parse(input).amountEur, 12345)
@@ -146,6 +155,7 @@ test('UI navigation, detail/confirmation wording and mobile shopping layout', ()
   const ui = readFileSync('src/components/portal/addon-services.tsx', 'utf8'); assert.ok(ui.includes('View service')); assert.ok(ui.includes('SEND REQUEST')); assert.ok(ui.includes('Request received')); assert.ok(ui.includes('Shopping expenses: Additional')); assert.ok(ui.includes('type="radio"')); assert.ok(ui.includes('placeholder="e.g. Still water 1.5L"'))
   assert.ok(priceDisclaimer.includes('confirm the final amount before payment')); assert.ok(requestConfirmation.includes('contact you')); assert.ok(requestConfirmation.includes('secure payment link'))
   const css = readFileSync('src/styles.css', 'utf8'); assert.ok(css.includes('.addon-shopping-card .admin-form')); assert.ok(css.includes('grid-template-columns: minmax(0, 1fr)'))
+  const dashboard = readFileSync('src/components/portal/addon-management.tsx', 'utf8'); assert.ok(dashboard.includes('New Optional Service Requests')); assert.ok(dashboard.includes("addonApi<{newRequests: AddonRequest[]; alerts: typeof alerts}>('admin/alerts')")); assert.ok(dashboard.includes('Review all requests'))
 })
 test('admin notification email contains request/customer/property and stable Resend key once', async () => {
   const { db } = mockDatabase({ sentEmail: false }); const messages: any[] = []

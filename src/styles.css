@@ -577,7 +577,16 @@ h1,h2,h3 { font-family:'Manrope',sans-serif; color:var(--navy); letter-spacing:-
 .addon-summary dd { margin: 0; overflow-wrap: anywhere; }
 .addon-detail-pair { display: contents; }
 .addon-observations { white-space: pre-wrap; overflow-wrap: anywhere; }
-.addon-alerts { margin: 1.5rem 0; }
+.addon-alerts { margin: 1.5rem 0; overflow: hidden; }
+.addon-alerts.has-new-requests { border-color: #d8b76d; box-shadow: inset 4px 0 0 #b8862f; }
+.addon-alert-heading { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 1rem; margin-bottom: 1.25rem; }
+.addon-alert-heading h2, .addon-alert-heading p { margin: 0; }
+.addon-alert-heading .private-eyebrow { margin-bottom: .3rem; }
+.addon-alert-heading > div > p:last-child { margin-top: .35rem; color: #667985; }
+.addon-alert-icon { display: grid; place-items: center; width: 3rem; height: 3rem; border-radius: 50%; background: #fff4d8; color: #8b621d; }
+.addon-alert-icon svg { width: 1.35rem; }
+.addon-alert-count { display: grid; place-items: center; min-width: 2.5rem; height: 2.5rem; padding: 0 .65rem; border-radius: 999px; background: var(--private-navy); color: white; font-weight: 800; }
+.addon-payment-alerts { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--private-line); }
 .addon-filter { display: grid; gap: .5rem; max-width: 42rem; margin: 1.5rem 0; }
 .addon-filter select { width: 100%; padding: .8rem; border: 1px solid #dfe5ea; border-radius: .4rem; background: white; }
 .addon-request-form input, .addon-request-form textarea, .addon-request-form select { min-width: 0; width: 100%; }
@@ -590,6 +599,8 @@ h1,h2,h3 { font-family:'Manrope',sans-serif; color:var(--navy); letter-spacing:-
   .addon-summary { grid-template-columns: minmax(0, 1fr); gap: .4rem; }
   .addon-summary dd { margin-bottom: .7rem; }
   .addon-property-card { padding: 1rem; }
+  .addon-alert-heading { grid-template-columns: auto minmax(0, 1fr); }
+  .addon-alert-count { grid-column: 2; justify-self: start; }
 }
 .addon-payment-filters { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1rem; }
 .addon-payment-review .form-actions { flex-wrap:wrap; }
