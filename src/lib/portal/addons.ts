@@ -87,6 +87,7 @@ export type AddonPayment = {
   amount_semantics: 'unapproved' | 'vat_included' | 'external_final'; payment_category: 'guardemar_service' | 'external_provider';
   payment_type: 'one_time' | 'monthly'; payment_status: string; created_at: string; paid_at: string | null;
   customer_email?: string; clients?: { first_name: string; last_name: string };
+  addon_requests?: { request_reference: string; status: AddonStatus } | null;
   addon_subscriptions?: { status: string; activated_at: string | null }[];
   paymentUrl?: string | null;
 }

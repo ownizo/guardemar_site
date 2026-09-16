@@ -20,7 +20,7 @@ export function ServiceRequests({ requests, admin = false }: { requests: AddonRe
         <p>{request.request_reference}<br />{request.properties?.display_name} · {new Intl.DateTimeFormat('en-GB', { dateStyle: 'medium' }).format(new Date(request.created_at))}</p>
         {admin && <p>{request.clients?.first_name} {request.clients?.last_name}</p>}
         {monthly && <p>Monthly payment: {addonPaymentStatusLabels[monthly.status] ?? monthly.status}</p>}
-      </div><span className="private-pill">{addonStatusLabels[request.status]}</span>
+      </div><span className="private-pill">{admin && request.status === 'paid' ? 'Payment processed' : addonStatusLabels[request.status]}</span>
     </article>
   })}</div>
 }

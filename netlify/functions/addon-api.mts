@@ -9,8 +9,14 @@ import { stripeRequest } from './_subscription-shared.mts'
 import { checked, requireAddonAccess, sendAddonAdminEmail } from './_addon-shared.mts'
 
 const columns = 'id,request_reference,client_id,property_id,service_code,status,published_price_snapshot,published_price_note_snapshot,customer_notes,service_details,created_at,updated_at,properties(display_name,locality),addon_subscriptions(status,activated_at)'
-const paymentsColumns = 'id,addon_request_id,service_code,payment_type,payment_category,description,currency,amount,amount_semantics,amount_net,amount_tax,payment_status,created_at,paid_at,addon_subscriptions(status,activated_at)'
-function normalisePayment(payment: any) { return { ...payment, addon_subscriptions: Array.isArray(payment.addon_subscriptions) ? payment.addon_subscriptions : payment.addon_subscriptions ? [payment.addon_subscriptions] : [] } }
+const paymentsColumns = 'id,addon_request_id,service_code,payment_type,payment_category,description,currency,amount,amount_semantics,amount_net,amount_tax,payment_status,created_at,paid_at,addon_requests(request_reference,status),addon_subscriptions(status,activated_at)'
+function normalisePayment(payment: any) {
+  return {
+    ...payment,
+    addon_requests: Array.isArray(payment.addon_requests) ? payment.addon_requests[0] ?? null : payment.addon_requests ?? null,
+    addon_subscriptions: Array.isArray(payment.addon_subscriptions) ? payment.addon_subscriptions : payment.addon_subscriptions ? [payment.addon_subscriptions] : [],
+  }
+}
 function staff(auth: AuthContext) { if (auth.role !== 'staff' && auth.role !== 'admin') throw new HttpError(403, 'Staff access is required.', 'AUTHORIZATION_ERROR') }
 export async function handleAddonRequest(req: Request, dependencies: { authenticate: typeof authenticate; sendEmail: typeof sendAddonAdminEmail; sendPayment?: typeof sendAddonPayment } = { authenticate, sendEmail: sendAddonAdminEmail }) {
   try {
@@ -44,11 +50,12 @@ export async function handleAddonRequest(req: Request, dependencies: { authentic
       return json({ request }, { status: 201 })
     }
     if (req.method === 'GET' && path === 'admin/alerts') {
+      const newRequests = checked(await database.from('addon_requests').select(`${columns},clients(first_name,last_name,email,phone)`).eq('status', 'requested').order('created_at', { ascending: false }).limit(20)) ?? []
       const events = checked(await database.from('audit_events').select('id,event_type,entity_id,metadata,created_at').in('event_type', ['ADDON_PAYMENT_CONFIRMED','ADDON_SUBSCRIPTION_ACTIVATED','ADDON_SUBSCRIPTION_PAST_DUE']).order('created_at', { ascending: false }).limit(20)) ?? []
       const ids = [...new Set(events.map((event) => event.metadata?.paymentId ?? event.entity_id))]
       const payments = ids.length ? checked(await database.from('addon_payments').select('id,addon_request_id,service_code,description,customer_email,clients(first_name,last_name),properties(display_name)').in('id', ids)) ?? [] : []
       const labels: Record<string,string> = { ADDON_PAYMENT_CONFIRMED: 'Add-on payment received', ADDON_SUBSCRIPTION_ACTIVATED: 'Monthly Add-on activated', ADDON_SUBSCRIPTION_PAST_DUE: 'Monthly Add-on payment past due' }
-      return json({ alerts: events.map((event) => ({ id: event.id, label: labels[event.event_type], created_at: event.created_at, payment: payments.find((payment) => payment.id === (event.metadata?.paymentId ?? event.entity_id)) })) })
+      return json({ newRequests, alerts: events.map((event) => ({ id: event.id, label: labels[event.event_type], created_at: event.created_at, payment: payments.find((payment) => payment.id === (event.metadata?.paymentId ?? event.entity_id)) })) })
     }
     if (req.method === 'GET' && path === 'admin/billing-options') {
       return json({ ...billingConfiguration(), clients: checked(await database.from('clients').select('id,first_name,last_name,email').eq('active', true).order('last_name').limit(500)), services: addonServiceCatalogue })
