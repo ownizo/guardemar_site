@@ -6,7 +6,7 @@ import { authenticate, HttpError, json, type AuthContext } from './_subscription
 import { addonServiceCatalogue } from '../../src/config/optional-services.ts'
 import { billingConfiguration, sendAddonPayment } from './_addon-billing.mts'
 import { stripeRequest } from './_subscription-shared.mts'
-import { checked, requireAddonAccess, sendAddonAdminEmail } from './_addon-shared.mts'
+import { checked, isStripeHostedCheckoutUrl, requireAddonAccess, sendAddonAdminEmail } from './_addon-shared.mts'
 
 const columns = 'id,request_reference,client_id,property_id,service_code,status,published_price_snapshot,published_price_note_snapshot,customer_notes,service_details,created_at,updated_at,properties(display_name,locality),addon_subscriptions(status,activated_at)'
 const paymentsColumns = 'id,addon_request_id,service_code,payment_type,payment_category,description,currency,amount,amount_semantics,amount_net,amount_tax,payment_status,created_at,paid_at,addon_requests(request_reference,status),addon_subscriptions(status,activated_at)'
@@ -98,7 +98,7 @@ export async function handleAddonRequest(req: Request, dependencies: { authentic
       }
       if (['paid','cancelled'].includes(payment.payment_status) || !payment.stripe_checkout_session_id) throw new HttpError(409, 'This payment link is unavailable.')
       const session = await stripeRequest<Record<string, any>>(`/checkout/sessions/${encodeURIComponent(payment.stripe_checkout_session_id)}`)
-      if (!session.livemode || session.status !== 'open' || session.payment_status === 'paid' || session.metadata?.addon_payment_id !== payment.id || session.metadata?.payment_domain !== 'addon' || !session.url?.startsWith('https://checkout.stripe.com/')) throw new HttpError(409, 'This payment link is unavailable.')
+      if (!session.livemode || session.status !== 'open' || session.payment_status === 'paid' || session.metadata?.addon_payment_id !== payment.id || session.metadata?.payment_domain !== 'addon' || !isStripeHostedCheckoutUrl(session.url)) throw new HttpError(409, 'This payment link is unavailable.')
       return json({ url: session.url })
     }
     const match = path.match(/^(?:admin\/)?requests\/([\w-]+)$/)
