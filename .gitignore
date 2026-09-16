@@ -4,3 +4,4 @@ dist/
 !.netlify/features/
 !.netlify/features/netlify-forms
 !.netlify/results.md
+supabase/.temp/

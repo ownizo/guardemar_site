@@ -1,6 +1,7 @@
 import type { Config } from '@netlify/functions'
 import { Resend } from 'resend'
 
+import { dispatchAddonOrCore } from './_addon-webhook.mts'
 import { formatEuro, subscriptionPlans } from '../../src/config/subscriptions.ts'
 import { environment, HttpError, json, serviceDatabase, stripeRequest, verifyStripePrice, verifyStripeSignature, verifyStripeTaxRate } from './_subscription-shared.mts'
 
@@ -97,13 +98,13 @@ async function sendEmail(database: ReturnType<typeof serviceDatabase>, local: Re
   const property = await database.from('properties').select('display_name').eq('id', local.property_id).single()
   requireDatabase(client, 'subscription email client lookup')
   requireDatabase(property, 'subscription email property lookup')
-  const name = escapeHtml(`${client.data.first_name} ${client.data.last_name}`.trim())
-  const propertyName = escapeHtml(property.data.display_name)
+  const name = escapeHtml(`${client.data!.first_name} ${client.data!.last_name}`.trim())
+  const propertyName = escapeHtml(property.data!.display_name)
   const plan = subscriptionPlans[local.plan_code as keyof typeof subscriptionPlans]
   const action = actionUrl?.startsWith('https://') ? `<p><a href="${escapeHtml(actionUrl)}" style="display:inline-block;padding:12px 18px;background:#06275a;color:#fff;text-decoration:none;font-weight:bold">Review secure payment</a></p>` : ''
   const html = `<div style="font-family:Arial,sans-serif;color:#17324d;line-height:1.6"><h1 style="font-family:Georgia,serif;color:#06275a">${escapeHtml(heading)}</h1><p>Dear ${name},</p><p>${escapeHtml(copy)}</p>${action}<p><strong>Property:</strong> ${propertyName}<br><strong>Plan:</strong> ${escapeHtml(plan.name)}<br><strong>Billing:</strong> ${local.billing_interval === 'month' ? 'Monthly in advance under a 12-month service agreement' : 'Annually in advance under a 12-month service agreement'}<br><strong>Amount:</strong> ${escapeHtml(formatEuro(local.gross_amount))} including ${escapeHtml(local.tax_display_name)}</p><p>Kind regards,<br>GUARDEMAR<br>Private Property Care</p></div>`
   const resend = new Resend(resendKey)
-  await resend.emails.send({ from: 'GUARDEMAR <info@guardemar.com>', to: [client.data.email], bcc: ['info@guardemar.com'], subject, html }, { idempotencyKey })
+  await resend.emails.send({ from: 'GUARDEMAR <info@guardemar.com>', to: [client.data!.email], bcc: ['info@guardemar.com'], subject, html }, { idempotencyKey })
 }
 
 async function audit(database: ReturnType<typeof serviceDatabase>, event: StripeEvent, localId: string, eventType: string, metadata: Record<string, unknown> = {}) {
@@ -292,7 +293,7 @@ export default async (req: Request) => {
       requireDatabase(retryUpdate, 'webhook retry claim')
     }
     try {
-      await processEvent(database, event)
+      await dispatchAddonOrCore(database, event, processEvent)
       const processedUpdate = await database.from('stripe_webhook_events').update({ processing_status: 'processed', processed_at: new Date().toISOString(), processing_error: null }).eq('stripe_event_id', event.id)
       requireDatabase(processedUpdate, 'webhook completion write')
       return json({ received: true })

@@ -17,6 +17,7 @@ export type OptionalService = {
   name: string
   icon: OptionalServiceIcon
   description: string
+  adminOnly?: boolean
   fee: string
   extraCost?: string
 }
@@ -28,7 +29,7 @@ export type OptionalServiceGroup = {
   serviceIds: readonly string[]
 }
 
-export const optionalServices = [
+export const addonServiceCatalogue = [
   {
     id: 'mail-care',
     name: 'Mail Care',
@@ -40,7 +41,7 @@ export const optionalServices = [
     id: 'pre-arrival-shopping',
     name: 'Pre-Arrival Shopping',
     icon: 'shopping',
-    description: 'Send Guardemar a shopping list before you travel and the essentials can be waiting when you arrive. Quantities, preferred brands, acceptable alternatives and special instructions can be included. The Guardemar fee covers the arrangement; the cost of the goods is charged separately.',
+    description: 'Send Guardemar a shopping list before you travel and the essentials can be waiting when you arrive. Quantities, preferred brands, acceptable alternatives and special instructions can be included. The Guardemar service fee is charged separately. The cost of your shopping will be handled through the Guardemar client account.',
     fee: '€80 + VAT',
     extraCost: 'shopping expenses additional',
   },
@@ -117,7 +118,15 @@ export const optionalServices = [
     description: 'An extraordinary visual property check after a significant storm, heavy rainfall or other relevant weather event, with an update on visible conditions. This can be useful when the next scheduled inspection is still some time away. It is not a structural survey, engineering assessment or a guarantee that concealed damage will be identified.',
     fee: '€60 + VAT',
   },
+  {
+    id: 'external-provider', name: 'External Provider', icon: 'wrench', adminOnly: true,
+    description: 'An individually described external provider payment arranged by Guardemar.',
+    fee: 'Individually agreed',
+  },
 ] as const satisfies readonly OptionalService[]
+
+// Marketing and customer requests retain the twelve publicly offered services.
+export const optionalServices: readonly OptionalService[] = addonServiceCatalogue.filter((service) => !('adminOnly' in service && service.adminOnly))
 
 export const optionalServiceGroups = [
   {

@@ -544,3 +544,53 @@ h1,h2,h3 { font-family:'Manrope',sans-serif; color:var(--navy); letter-spacing:-
 .baseline-acknowledgement-block button{margin-top:.4rem}
 
 @media(max-width:560px){.baseline-review-heading{flex-direction:column}.baseline-condition-heading{flex-direction:column}.baseline-comment form{flex-direction:column}}
+
+/* Optional Services: personal requests, not a shopping checkout. */
+.addon-intro { max-width: 48rem; margin-bottom: 2rem; line-height: 1.7; }
+.addon-service-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; }
+.addon-service-card { display: flex; flex-direction: column; align-items: flex-start; gap: 1rem; margin: 0; }
+.addon-service-card h2 { font-size: 1.4rem; }
+.addon-service-card p { line-height: 1.65; }
+.addon-service-card .private-secondary { margin-top: auto; }
+.addon-price { display: grid; gap: .35rem; }
+.addon-price strong { font-size: 1.25rem; color: var(--navy); }
+.addon-price span { font-size: .9rem; }
+.addon-history { margin-top: 3rem; }
+.addon-history > h2 { margin-bottom: 1.5rem; }
+.addon-back { display: inline-block; margin-bottom: 1.5rem; }
+.addon-description { max-width: 55rem; }
+.addon-description p { margin: 1rem 0; line-height: 1.75; }
+.addon-request-form { max-width: 55rem; }
+.addon-request-form fieldset { border: 0; padding: 0; min-width: 0; }
+.addon-request-form legend { font-size: 1.4rem; font-weight: 600; margin-bottom: 1rem; }
+.addon-properties { margin-bottom: 2rem; }
+.addon-property-card { display: flex; align-items: center; gap: 1rem; padding: 1.5rem; background: white; border: 1px solid #dfe5ea; border-radius: .75rem; cursor: pointer; }
+.addon-property-card:has(input:checked) { border-color: var(--navy); box-shadow: inset 0 0 0 1px var(--navy); }
+.addon-property-card small, .addon-summary small { display: block; margin-top: .4rem; }
+.addon-shopping-list { display: grid; gap: 1.25rem; margin: 1.5rem 0; }
+.addon-shopping-card { padding: 1.5rem; border: 1px solid #dfe5ea; border-radius: .75rem; min-width: 0; }
+.addon-shopping-card h3 { margin-bottom: 1rem; }
+.addon-shopping-card .private-secondary { margin-top: 1rem; }
+.addon-arrival { margin-top: 2rem; }
+.addon-summary { display: grid; grid-template-columns: minmax(8rem, 1fr) minmax(0, 3fr); gap: .8rem 1.5rem; margin: 1rem 0 2rem; }
+.addon-summary dt { font-weight: 600; }
+.addon-summary dd { margin: 0; overflow-wrap: anywhere; }
+.addon-detail-pair { display: contents; }
+.addon-observations { white-space: pre-wrap; overflow-wrap: anywhere; }
+.addon-alerts { margin: 1.5rem 0; }
+.addon-filter { display: grid; gap: .5rem; max-width: 42rem; margin: 1.5rem 0; }
+.addon-filter select { width: 100%; padding: .8rem; border: 1px solid #dfe5ea; border-radius: .4rem; background: white; }
+.addon-request-form input, .addon-request-form textarea, .addon-request-form select { min-width: 0; width: 100%; }
+.addon-request-form input[type=radio] { width: auto; flex-shrink: 0; }
+@media (max-width: 1100px) { .addon-service-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 650px) {
+  .addon-service-grid { grid-template-columns: minmax(0, 1fr); }
+  .addon-shopping-card { padding: 1rem; }
+  .addon-shopping-card .admin-form, .addon-request-form .admin-form { grid-template-columns: minmax(0, 1fr); }
+  .addon-summary { grid-template-columns: minmax(0, 1fr); gap: .4rem; }
+  .addon-summary dd { margin-bottom: .7rem; }
+  .addon-property-card { padding: 1rem; }
+}
+.addon-payment-filters { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1rem; }
+.addon-payment-review .form-actions { flex-wrap:wrap; }
+@media(max-width:650px) { .addon-payment-filters { grid-template-columns:minmax(0,1fr); } }

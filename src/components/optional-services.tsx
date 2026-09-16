@@ -16,7 +16,7 @@ const icons = {
   storm: CloudRain,
 } satisfies Record<OptionalServiceIcon, LucideIcon>
 
-function ServiceIcon({ name }: { name: OptionalServiceIcon }) {
+export function ServiceIcon({ name }: { name: OptionalServiceIcon }) {
   const Icon = icons[name]
   return <Icon size={22} strokeWidth={1.6} aria-hidden="true" />
 }
