@@ -40,7 +40,7 @@ const trustItems = [
   { icon: LockKeyhole, title: 'Data protection', text: 'Property, contact and access information is limited to the service purpose, handled under GDPR principles and shared only where authorised or legally required.' },
 ] as const
 
-export function TrustSection() { return <section className="section trust-section"><div className="shell"><PageIntro eyebrow="Trust and access" title="Clear controls around your home and information." text="Property care depends on disciplined access, documented handling and clear communication whenever something needs attention." /><div className="trust-detail-grid">{trustItems.map(({ icon: Icon, title, text }) => <article key={title}><Icon size={22}/><h3>{title}</h3><p>{text}</p></article>)}</div></div></section> }
+export function TrustSection() { return <section className="section trust-section"><div className="shell"><PageIntro eyebrow="Trust and access" title="Clear controls around your home and information." text="Second-home management depends on disciplined access, a written record, and a quote in your hands before anyone starts work." /><div className="trust-detail-grid">{trustItems.map(({ icon: Icon, title, text }) => <article key={title}><Icon size={22}/><h3>{title}</h3><p>{text}</p></article>)}</div></div></section> }
 
 const differenceItems = [
   { icon: Home, title: 'Property-first, not booking-first', text: 'Traditional holiday-rental management is organised around guests, turnovers and reviews. Guardemar is organised around the property itself — its condition, access, maintenance needs and readiness while the owner is elsewhere.' },

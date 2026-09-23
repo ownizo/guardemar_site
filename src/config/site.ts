@@ -16,7 +16,7 @@ export const legalEntity = {
 
 export const operationalContact = {
   name: 'GUARDEMAR',
-  descriptor: 'Private Property Care',
+  descriptor: 'Second-home management',
   address: {
     street: 'Varandas de São João',
     unit: 'Lote 4, 2º E',
@@ -40,7 +40,7 @@ export const business = {
   addressLines: operationalContact.address.addressLines,
   territory: 'Western Algarve — from Carvoeiro to Sagres.',
   schema: { '@context': 'https://schema.org', '@graph': [
-    { '@type': ['ProfessionalService', 'LocalBusiness', 'Organization'], '@id': 'https://guardemar.com/#business', name: 'GUARDEMAR', legalName: legalEntity.legalName, taxID: legalEntity.taxId, brand: { '@type': 'Brand', name: legalEntity.tradingName }, description: 'Private property care and home watch services for holiday homes and second homes in the Western Algarve, Portugal.', url: 'https://guardemar.com/', logo: 'https://guardemar.com/guardemar-logo.svg', priceRange: '€79–€189 per month', telephone: legalEntity.phone, email: legalEntity.contactEmail, address: { '@type': 'PostalAddress', streetAddress: `${operationalContact.address.street}, ${operationalContact.address.unit}`, addressLocality: operationalContact.address.city, addressCountry: 'PT' }, areaServed: ['Carvoeiro', 'Ferragudo', 'Portimão', 'Alvor', 'Lagos', 'Praia da Luz', 'Burgau', 'Salema', 'Vila do Bispo', 'Sagres'].map((name) => ({ '@type': 'Place', name })) },
+    { '@type': ['ProfessionalService', 'LocalBusiness', 'Organization'], '@id': 'https://guardemar.com/#business', name: 'GUARDEMAR', legalName: legalEntity.legalName, taxID: legalEntity.taxId, brand: { '@type': 'Brand', name: legalEntity.tradingName }, description: 'Second-home management for privately used holiday homes in the Western Algarve, Portugal. Inspections, key holding and contractor coordination. Not a rental manager.', url: 'https://guardemar.com/', logo: 'https://guardemar.com/guardemar-logo.svg', priceRange: '€79–€189 per month', telephone: legalEntity.phone, email: legalEntity.contactEmail, address: { '@type': 'PostalAddress', streetAddress: `${operationalContact.address.street}, ${operationalContact.address.unit}`, addressLocality: operationalContact.address.city, addressCountry: 'PT' }, areaServed: ['Carvoeiro', 'Ferragudo', 'Portimão', 'Alvor', 'Lagos', 'Praia da Luz', 'Burgau', 'Salema', 'Vila do Bispo', 'Sagres'].map((name) => ({ '@type': 'Place', name })) },
     { '@type': 'WebSite', '@id': 'https://guardemar.com/#website', url: 'https://guardemar.com', name: 'GUARDEMAR', publisher: { '@id': 'https://guardemar.com/#business' }, inLanguage: 'en-GB' },
   ] },
 }
@@ -59,18 +59,28 @@ export const founder = {
     jobTitle: 'Founder',
     worksFor: { '@id': 'https://guardemar.com/#business' },
     alumniOf: { '@type': 'CollegeOrUniversity', name: 'University of Hertfordshire' },
-    knowsAbout: ['Private property care', 'Risk management', 'International business', 'Travel technology'],
+    knowsAbout: ['Second-home management', 'Risk management', 'International business', 'Travel technology'],
   },
 } as const
 
 export const navigation = [
-  { label: 'Home Watch', href: '/home-watch-algarve/' }, { label: 'Property Care', href: '/property-care/' }, { label: 'Services', href: '/services/' },
-  { label: 'Plans', href: '/plans/' }, { label: 'Areas', href: '/areas/' },
-  { label: 'How It Works', href: '/how-it-works/' }, { label: 'Insights', href: '/blog/' },
-  { label: 'About', href: '/about/' }, { label: 'Contact', href: '/contact/' },
+  { label: 'Management', href: '/property-management-algarve/' },
+  { label: 'Inspections', href: '/home-watch-algarve/' },
+  { label: 'Plans', href: '/plans/' },
+  { label: 'Areas', href: '/areas/' },
+  { label: 'For agents', href: '/for-agents/' },
+  { label: 'How it works', href: '/how-it-works/' },
 ] as const
 
-export const trustPoints = ['Regular inspections', 'Photo reports', 'Local issue response', 'Contractor coordination', 'Secure key holding', 'Arrival preparation']
+export const footerLinks = [
+  ...navigation,
+  { label: 'Insights', href: '/blog/' },
+  { label: 'Services', href: '/services/' },
+  { label: 'About', href: '/about/' },
+  { label: 'Contact', href: '/contact/' },
+] as const
+
+export const trustPoints = ['Scheduled inspections', 'Photo reports', 'Key holding', 'Pool, garden and cleaning coordination', 'Quotes sent to you first', 'Arrival preparation']
 
 export const plans = [
   { name: subscriptionPlans.care.name, price: subscriptionPlans.care.monthlyAmount / 100, annualPrice: subscriptionPlans.care.yearlyAmount / 100, annualSaving: subscriptionPlans.care.annualDiscountAmount / 100, description: 'For owners who want a reliable monthly check.', popular: false, highlights: ['1 scheduled inspection per month', 'Secure key holding', 'Interior and exterior visual checks', 'Inspection photographs', 'Digital visit report', 'Issue notification'], items: subscriptionPlans.care.scope },
@@ -83,9 +93,9 @@ export const services = [
 ]
 
 export const faqs = [
-  ['What is a home watch service?', 'A scheduled, visual inspection of an unoccupied or intermittently occupied home. Guardemar checks agreed areas, documents the condition and reports anything requiring attention.'],
-  ['Is Guardemar the same as a property management company?', 'Not in the holiday-rental sense. Traditional property management often focuses on guests and bookings. Guardemar focuses on the property itself.'],
-  ['Do you manage holiday rentals?', 'Guardemar is not primarily a rental manager or booking operator. We care for privately owned holiday homes and second homes while their owners are away.'],
+  ['Is Guardemar property management?', 'Yes, for a second home that is not run as a rental. Guardemar manages the house while you are away: inspections, keys, a written report, and coordination of the pool, garden or cleaning companies you already use. We do not take bookings, host guests or run an Alojamento Local.'],
+  ['Do you manage holiday rentals?', 'No. If the home is primarily let to guests, you need a rental manager. Guardemar is for private use.'],
+  ['What is a home watch visit?', 'It is the inspection inside the management: a scheduled walk-through, photographs and a written status. It is how the house is checked, not a separate company.'],
   ['How often should my property be checked?', 'That depends on the home, season, systems and risk profile. Monthly, fortnightly and weekly options are available, with a recommendation made after assessment.'],
   ['What happens if you find a leak?', 'We document the issue, contact the owner, take reasonable agreed steps to limit further damage and coordinate a suitable qualified professional where authorised.'],
   ['Can you arrange a plumber or electrician?', 'Yes. Guardemar can coordinate licensed or qualified third-party professionals. Specialist work is not performed by Guardemar unless explicitly stated and appropriately qualified.'],

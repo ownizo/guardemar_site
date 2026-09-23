@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { AnalyticsLink } from '@/components/site'
 import { CookieConsent } from '@/components/cookie-consent'
 import { GoogleAnalytics } from '@/components/google-analytics'
-import { business, legalEntity, navigation } from '@/config/site'
+import { business, footerLinks, legalEntity, navigation } from '@/config/site'
 import { openCookieSettings } from '@/lib/consent'
 import '../styles.css'
 
@@ -14,7 +14,7 @@ export const Route = createRootRoute({
     meta: [
       { charSet: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: 'GUARDEMAR | Private Property Care' },
+      { title: 'GUARDEMAR | Second-home management' },
       { name: 'theme-color', content: '#06275A' },
       { property: 'og:site_name', content: 'GUARDEMAR' },
       { property: 'og:locale', content: 'en_GB' },
@@ -38,7 +38,7 @@ function Header() {
     <header className="site-header">
       <div className="shell header-inner">
         <Link to="/" className="wordmark" aria-label="Guardemar home">
-          <img src="/guardemar-logo.svg" alt="GUARDEMAR — Private Property Care" width="180" height="42" />
+          <img src="/guardemar-logo.svg" alt="GUARDEMAR — second-home management, Western Algarve" width="180" height="42" />
         </Link>
         <nav className={open ? 'main-nav open' : 'main-nav'} aria-label="Primary navigation">
           {navigation.map((item) => <a key={item.href} href={item.href} onClick={() => setOpen(false)}>{item.label}</a>)}
@@ -58,8 +58,8 @@ function Footer() {
   return (
     <footer className="site-footer">
       <div className="shell footer-grid">
-        <div><p className="footer-mark">GUARDEMAR</p><p>Private Property Care</p><p className="footer-tagline">Here when you&apos;re away.</p></div>
-        <div><h2>Explore</h2>{navigation.map((item) => <a key={item.href} href={item.href}>{item.label}</a>)}<Link to="/portal/login">Client Login</Link></div>
+        <div><p className="footer-mark">GUARDEMAR</p><p>Second-home management</p><p className="footer-tagline">Here when you&apos;re away.</p><p>Western Algarve. Not a rental company.</p></div>
+        <div><h2>Explore</h2>{footerLinks.map((item) => <a key={item.href} href={item.href}>{item.label}</a>)}<Link to="/portal/login">Client Login</Link></div>
         <div><h2>Service area</h2><p>Western Algarve<br />from Carvoeiro to Sagres.</p><a href="/areas/">View all areas</a></div>
         <div><h2>Contact</h2><AnalyticsLink href={business.phoneHref} event="phone_click">{business.phone}</AnalyticsLink><AnalyticsLink href={business.emailHref} event="email_click">{business.email}</AnalyticsLink><p>{business.addressLines.join(', ')}</p></div>
       </div>
@@ -76,5 +76,5 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 }
 
 function NotFound() {
-  return <div className="not-found shell"><p className="eyebrow">404</p><h1>This page is away.</h1><p>The property care information you need may have moved.</p><Link to="/" className="button primary">Return home</Link></div>
+  return <div className="not-found shell"><p className="eyebrow">404</p><h1>This page is away.</h1><p>The page you need may have moved.</p><Link to="/" className="button primary">Return home</Link></div>
 }

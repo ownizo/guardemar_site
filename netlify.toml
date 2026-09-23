@@ -43,6 +43,56 @@
   status = 301
 
 [[redirects]]
+  from = "/property-care"
+  to = "/property-management-algarve/"
+  status = 301
+
+[[redirects]]
+  from = "/property-care/"
+  to = "/property-management-algarve/"
+  status = 301
+
+[[redirects]]
+  from = "/second-home-care-algarve"
+  to = "/property-management-algarve/"
+  status = 301
+
+[[redirects]]
+  from = "/second-home-care-algarve/"
+  to = "/property-management-algarve/"
+  status = 301
+
+[[redirects]]
+  from = "/holiday-home-care"
+  to = "/property-management-algarve/"
+  status = 301
+
+[[redirects]]
+  from = "/holiday-home-care/"
+  to = "/property-management-algarve/"
+  status = 301
+
+[[redirects]]
+  from = "/holiday-home-checks-algarve"
+  to = "/home-watch-algarve/"
+  status = 301
+
+[[redirects]]
+  from = "/holiday-home-checks-algarve/"
+  to = "/home-watch-algarve/"
+  status = 301
+
+[[redirects]]
+  from = "/vacant-property-inspections-algarve"
+  to = "/home-watch-algarve/"
+  status = 301
+
+[[redirects]]
+  from = "/vacant-property-inspections-algarve/"
+  to = "/home-watch-algarve/"
+  status = 301
+
+[[redirects]]
   from = "/posts/:slug"
   to = "/blog/:slug"
   status = 301

@@ -6,7 +6,7 @@ import { plans, trustPoints } from '@/config/site'
 import { futureLanguageAlternates, pageHead } from '@/lib/seo'
 
 export const Route = createFileRoute('/')({
-  head: () => pageHead({ title: 'Private Property Care in the Western Algarve | Guardemar', description: 'Scheduled home watch inspections, photographic reports and trusted local coordination for holiday homes and second homes from Carvoeiro to Sagres.', path: '/', alternates: futureLanguageAlternates('/') }),
+  head: () => pageHead({ title: 'Second-Home Management in the Western Algarve | Guardemar', description: 'Property management for second homes from Carvoeiro to Sagres that are not holiday lets. Inspections, keys, reports and local coordination. No guests.', path: '/', alternates: futureLanguageAlternates('/') }),
   component: HomePage,
 })
 
@@ -15,9 +15,9 @@ function HomePage() {
     <>
       <section className="hero shell">
         <div className="hero-copy reveal">
-          <p className="eyebrow">Private Property Care</p>
-          <h1>Here when<br />you&apos;re away.</h1>
-          <p className="hero-lede">Your home in Portugal should still be looked after when you&apos;re not here. Guardemar provides scheduled inspections, documented reports and trusted local coordination across the Western Algarve.</p>
+          <p className="eyebrow">Second-home management</p>
+          <h1>Managed while<br />you&apos;re away.</h1>
+          <p className="hero-lede">Your house in the Western Algarve still needs someone when you are not in Portugal. Guardemar manages privately used second homes: inspections, keys, a report after every visit, and the people who look after the pool, garden and cleaning. We do not take guests.</p>
           <div className="button-row">
             <ButtonLink to="/contact/" event="assessment_form_start">Request a Property Assessment</ButtonLink>
             <ButtonLink href="https://wa.me/351928226570" variant="text" event="whatsapp_click">WhatsApp Guardemar <ArrowRight size={16} /></ButtonLink>
@@ -67,14 +67,14 @@ function HomePage() {
 
       <section className="section section-blue">
         <div className="shell">
-          <PageIntro eyebrow="What Guardemar does" title="Actual human presence. Clearly documented." text="We inspect the property, identify problems early, document its condition and coordinate the right local professional when action is needed." light />
+          <PageIntro eyebrow="What Guardemar does" title="One person responsible for the house. A record after every visit." text="We inspect the property, tell you what has changed, and coordinate the right local professional when you approve the next step." light />
           <div className="feature-grid">
             <article><ClipboardCheck /><h3>Structured inspections</h3><p>A consistent, property-specific checklist rather than an informal look around.</p></article>
             <article><ShieldCheck /><h3>Early intervention</h3><p>Issues are prioritised and reported, giving owners the information needed to act.</p></article>
             <article><KeyRound /><h3>Local coordination</h3><p>Controlled access and coordination with trusted, qualified contractors where required.</p></article>
             <article><CloudRain /><h3>Weather response</h3><p>Post-weather visual checks according to plan, local conditions and availability.</p></article>
           </div>
-          <ButtonLink to="/property-care/" variant="light">Explore Property Care <ArrowRight size={16} /></ButtonLink>
+          <ButtonLink to="/property-management-algarve/" variant="light">See how management works <ArrowRight size={16} /></ButtonLink>
         </div>
       </section>
 
@@ -82,14 +82,14 @@ function HomePage() {
         <div>
           <SectionHeading eyebrow="Digital reporting" title="No vague updates. A documented inspection after every visit." />
           <p className="section-text">Owners receive a clear digital record with the visit date, checklist status, observations, photographs, issues detected and recommended next steps.</p>
-          <ButtonLink to="/home-watch-algarve/" variant="outline">See how Home Watch works</ButtonLink>
+          <ButtonLink to="/home-watch-algarve/" variant="outline">See what an inspection includes</ButtonLink>
         </div>
         <ReportPreview />
       </section>
 
       <section className="section warm-section">
         <div className="shell">
-          <PageIntro eyebrow="Care plans" title="Choose the right level of oversight." text="Straightforward plans, adapted after a first property assessment. No repair work is implied or included unless separately agreed." />
+          <PageIntro eyebrow="Management plans" title="Choose how often we come." text="Three frequencies, confirmed after we see the house. Repairs are done by your trades, and only after you approve the quote. Nothing in the monthly fee is a holiday-let service." />
           <div className="plans-grid">
             {plans.map((plan) => (
               <article className={`plan-card ${plan.popular ? 'popular' : ''}`} key={plan.name}>
@@ -112,6 +112,19 @@ function HomePage() {
           {['Property assessment', 'Property profile', 'Secure key handover', 'Scheduled inspections', 'Report & action'].map((step, index) => <li key={step}><span>0{index + 1}</span><strong>{step}</strong></li>)}
         </ol>
         <ButtonLink to="/how-it-works/" variant="text">See how it works <ArrowRight size={16} /></ButtonLink>
+      </section>
+
+      <section className="section warm-section">
+        <div className="shell founder-story">
+          <div>
+            <p className="eyebrow">Buying agents and lawyers</p>
+            <h2>The useful moment is the week after completion.</h2>
+          </div>
+          <div>
+            <p>If you have just sold a house to someone who lives abroad, and they do not want guests in it, introduce them here. We will not ask them to list it.</p>
+            <ButtonLink to="/for-agents/" variant="outline">For agents and lawyers</ButtonLink>
+          </div>
+        </div>
       </section>
 
       <TrustSection />

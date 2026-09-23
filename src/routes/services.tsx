@@ -6,8 +6,8 @@ import { pageHead } from '@/lib/seo'
 
 export const Route = createFileRoute('/services')({
   head: () => pageHead({
-    title: 'Property Care Service Directory | Guardemar',
-    description: 'Home watch supporting guides and optional additional services for holiday homes and second homes in the Western Algarve.',
+    title: 'Second-Home Management Services | Guardemar',
+    description: 'Key holding, contractor access, arrival preparation, handover and weather checks for privately used second homes in the Western Algarve.',
     path: '/services/',
   }),
   component: Services,
@@ -37,7 +37,7 @@ function Services() {
             headingId="additional-services-heading"
             eyebrow="Additional services"
             title="More ways to look after your home while you are away."
-            intro="These optional services sit outside the CARE, CARE+ and COMPLETE plans. They can be arranged when a particular need arises, in addition to the scheduled property-care routine."
+            intro="These optional services sit outside the CARE, CARE+ and COMPLETE plans. They can be arranged when a particular need arises. Third-party costs are separate."
           />
         </div>
       </section>

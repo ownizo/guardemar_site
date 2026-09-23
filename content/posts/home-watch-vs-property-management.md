@@ -1,7 +1,7 @@
 ---
 date: 2026-08-07
-title: "Home Watch vs Property Management: What’s the Difference?"
-summary: "The practical distinction between looking after a property and managing bookings, guests and rental income."
+title: "Rental management and second-home management are not the same service"
+summary: "If you searched for property management and do not want guests, you are looking for second-home management. The inspection is only how the house is checked."
 categories: ["Property Care", "Ownership"]
 slug: "home-watch-vs-property-management"
 author: "Hugo Gonçalves"
@@ -19,10 +19,10 @@ Home watch is organised around the condition of an unoccupied or intermittently 
 
 This is particularly useful when a property is primarily for private use, sits empty for weeks or months, or already has separate gardening, pool and cleaning providers.
 
-## Where property care fits
+## Where Guardemar sits
 
-Property care combines structured [home watch inspections](/home-watch-algarve/) with practical coordination. If a leak is visible, the role is to notify the owner and help arrange a suitable plumber — not to imply that the inspector is the plumber. If a pool looks unusually low, the pool professional can be contacted.
+The visit is a home watch inspection: a person in the house, a checklist, photographs, and a status. That is how we see the property. It is not a separate product.
 
-Traditional property management often focuses on guests and bookings. Guardemar focuses on the property itself. That does not make one service universally better; it helps owners choose the service that matches how they use the home.
+Second-home management is the relationship around that visit. Keys, a report you can keep, and coordination of the pool, garden or cleaning company you already use. A quote is sent to you before work starts. There are no bookings, no guest messages and no Alojamento Local.
 
-If your Algarve property is not run as a rental business, read our explanation of [property management without rental management](/property-management-algarve/) or [talk to Guardemar](/contact/).
+If the house is mainly let, choose a rental manager. If it is for you, read [second-home management in the Western Algarve](/property-management-algarve/) or [talk to Guardemar](/contact/).

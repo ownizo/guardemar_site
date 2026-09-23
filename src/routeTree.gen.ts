@@ -30,6 +30,7 @@ import { Route as HomeWatchAlgarveRouteImport } from './routes/home-watch-algarv
 import { Route as HomeWatchRouteImport } from './routes/home-watch'
 import { Route as HolidayHomeChecksAlgarveRouteImport } from './routes/holiday-home-checks-algarve'
 import { Route as HolidayHomeCareRouteImport } from './routes/holiday-home-care'
+import { Route as ForAgentsRouteImport } from './routes/for-agents'
 import { Route as CookiePolicyRouteImport } from './routes/cookie-policy'
 import { Route as ContractorAccessAlgarveRouteImport } from './routes/contractor-access-algarve'
 import { Route as ContactRouteImport } from './routes/contact'
@@ -187,6 +188,11 @@ const HolidayHomeChecksAlgarveRoute =
 const HolidayHomeCareRoute = HolidayHomeCareRouteImport.update({
   id: '/holiday-home-care',
   path: '/holiday-home-care',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForAgentsRoute = ForAgentsRouteImport.update({
+  id: '/for-agents',
+  path: '/for-agents',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CookiePolicyRoute = CookiePolicyRouteImport.update({
@@ -449,6 +455,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRouteWithChildren
   '/contractor-access-algarve': typeof ContractorAccessAlgarveRoute
   '/cookie-policy': typeof CookiePolicyRoute
+  '/for-agents': typeof ForAgentsRoute
   '/holiday-home-care': typeof HolidayHomeCareRoute
   '/holiday-home-checks-algarve': typeof HolidayHomeChecksAlgarveRoute
   '/home-watch': typeof HomeWatchRoute
@@ -520,6 +527,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRouteWithChildren
   '/contractor-access-algarve': typeof ContractorAccessAlgarveRoute
   '/cookie-policy': typeof CookiePolicyRoute
+  '/for-agents': typeof ForAgentsRoute
   '/holiday-home-care': typeof HolidayHomeCareRoute
   '/holiday-home-checks-algarve': typeof HolidayHomeChecksAlgarveRoute
   '/home-watch': typeof HomeWatchRoute
@@ -592,6 +600,7 @@ export interface FileRoutesById {
   '/contact': typeof ContactRouteWithChildren
   '/contractor-access-algarve': typeof ContractorAccessAlgarveRoute
   '/cookie-policy': typeof CookiePolicyRoute
+  '/for-agents': typeof ForAgentsRoute
   '/holiday-home-care': typeof HolidayHomeCareRoute
   '/holiday-home-checks-algarve': typeof HolidayHomeChecksAlgarveRoute
   '/home-watch': typeof HomeWatchRoute
@@ -666,6 +675,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/contractor-access-algarve'
     | '/cookie-policy'
+    | '/for-agents'
     | '/holiday-home-care'
     | '/holiday-home-checks-algarve'
     | '/home-watch'
@@ -737,6 +747,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/contractor-access-algarve'
     | '/cookie-policy'
+    | '/for-agents'
     | '/holiday-home-care'
     | '/holiday-home-checks-algarve'
     | '/home-watch'
@@ -808,6 +819,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/contractor-access-algarve'
     | '/cookie-policy'
+    | '/for-agents'
     | '/holiday-home-care'
     | '/holiday-home-checks-algarve'
     | '/home-watch'
@@ -881,6 +893,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRouteWithChildren
   ContractorAccessAlgarveRoute: typeof ContractorAccessAlgarveRoute
   CookiePolicyRoute: typeof CookiePolicyRoute
+  ForAgentsRoute: typeof ForAgentsRoute
   HolidayHomeCareRoute: typeof HolidayHomeCareRoute
   HolidayHomeChecksAlgarveRoute: typeof HolidayHomeChecksAlgarveRoute
   HomeWatchRoute: typeof HomeWatchRoute
@@ -1060,6 +1073,13 @@ declare module '@tanstack/react-router' {
       path: '/holiday-home-care'
       fullPath: '/holiday-home-care'
       preLoaderRoute: typeof HolidayHomeCareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/for-agents': {
+      id: '/for-agents'
+      path: '/for-agents'
+      fullPath: '/for-agents'
+      preLoaderRoute: typeof ForAgentsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cookie-policy': {
@@ -1515,6 +1535,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRouteWithChildren,
   ContractorAccessAlgarveRoute: ContractorAccessAlgarveRoute,
   CookiePolicyRoute: CookiePolicyRoute,
+  ForAgentsRoute: ForAgentsRoute,
   HolidayHomeCareRoute: HolidayHomeCareRoute,
   HolidayHomeChecksAlgarveRoute: HolidayHomeChecksAlgarveRoute,
   HomeWatchRoute: HomeWatchRoute,

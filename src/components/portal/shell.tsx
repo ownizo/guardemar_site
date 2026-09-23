@@ -50,7 +50,7 @@ export function PrivateShell({ area, profile, title, eyebrow, children, action }
     </aside>
     {open && <button className="private-scrim" onClick={() => setOpen(false)} aria-label="Close navigation" />}
     <div className="private-main">
-      <header className="private-topbar"><button className="private-menu" onClick={() => setOpen(true)} aria-label="Open navigation"><Menu /></button><span>GUARDEMAR</span><span className="private-topbar-area">{area === 'admin' ? 'Operations' : 'Private Property Care'}</span></header>
+      <header className="private-topbar"><button className="private-menu" onClick={() => setOpen(true)} aria-label="Open navigation"><Menu /></button><span>GUARDEMAR</span><span className="private-topbar-area">{area === 'admin' ? 'Operations' : 'Your home'}</span></header>
       <main className="private-content" id="private-main">
         <div className="private-page-heading"><div>{eyebrow && <p className="private-eyebrow">{eyebrow}</p>}<h1>{title}</h1></div>{action}</div>
         {children}

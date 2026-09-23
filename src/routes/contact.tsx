@@ -6,7 +6,7 @@ import { business, legalEntity, operationalContact } from '@/config/site'
 import { pageHead } from '@/lib/seo'
 
 export const Route = createFileRoute('/contact')({
-  head: () => pageHead({ title: 'Request a Property Assessment | Guardemar', description: 'Tell Guardemar about your Western Algarve property and request a practical first property care assessment.', path: '/contact/' }),
+  head: () => pageHead({ title: 'Request a Property Assessment | Guardemar', description: 'Tell Guardemar about your Western Algarve second home. We manage houses that are not holiday lets.', path: '/contact/' }),
   component: ContactPage,
 })
 

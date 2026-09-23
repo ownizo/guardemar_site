@@ -75,15 +75,15 @@ After deployment, add the domain property in Google Search Console and submit `h
 Inspect and request indexing for these priority URLs first:
 
 1. `/`
-2. `/property-care/`
-3. `/home-watch-algarve/`
-4. `/property-management-algarve/`
-5. `/plans/`
-6. `/inspection-checklist/`
-7. `/areas/lagos/`
-8. `/areas/praia-da-luz/`
-9. `/blog/`
-10. `/blog/looking-after-holiday-home-algarve/`
+2. `/property-management-algarve/`
+3. `/plans/`
+4. `/areas/lagos/`
+5. `/areas/praia-da-luz/`
+6. `/home-watch-algarve/`
+7. `/for-agents/`
+8. `/blog/second-home-management-western-algarve/`
+9. `/contact/`
+10. `/how-it-works/`
 
 Use URL Inspection to confirm the selected canonical, mobile rendering and indexing status. Resubmit the sitemap after significant route changes rather than after minor copy edits.
 

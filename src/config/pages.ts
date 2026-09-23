@@ -8,13 +8,11 @@ export type StandardPage = {
 
 export const standardPages: Record<string, StandardPage> = {
   'property-care': {
-    eyebrow: 'Property Care', title: 'The wider care framework around a regularly inspected home.',
-    description: 'Property care combines the core home watch inspection with authorised access, issue coordination and practical support before, during and after an owner’s absence.',
-    aside: 'Start with Home Watch Algarve for the primary inspection service, then add support that fits the property.',
+    eyebrow: 'Second-home management', title: 'This page has moved.',
+    description: 'Property care is the old name. The service is second-home management for privately used homes in the Western Algarve: inspections, keys, reports and coordination. Not a rental operation.',
+    aside: 'The current explanation is on the second-home management page.',
     sections: [
-      { title: 'The core service is home watch', paragraphs: ['Scheduled inspections provide the recurring record of visible property condition. The Home Watch Algarve page explains the inspection method, reporting and escalation process in detail.'] },
-      { title: 'Property care adds practical continuity', paragraphs: ['Around that inspection routine, Guardemar can hold keys, coordinate approved contractor access, check the home before an arrival and record visible follow-up after agreed work.'], bullets: ['Secure key handling', 'Authorised property access', 'Arrival and departure support', 'Issue and contractor coordination', 'Property-specific records', 'Owner communication'] },
-      { title: 'A supporting role, not technical replacement', paragraphs: ['Guardemar provides visual oversight and coordination. Cleaning, gardening, pool maintenance and regulated or technical work remain the responsibility of suitable third-party professionals.'] },
+      { title: 'Same work, the name owners actually search', paragraphs: ['Guardemar still visits the house, writes the report and coordinates the people you already use. We do not take bookings or guests.', 'Start with the management page. The inspection itself is explained separately.'] },
     ],
   },
   'home-watch': {
@@ -29,13 +27,12 @@ export const standardPages: Record<string, StandardPage> = {
     ],
   },
   services: {
-    eyebrow: 'Service Directory', title: 'Specific support around the core home watch routine.',
-    description: 'Use this directory to review key holding, contractor access, arrival preparation, property handover, post-weather visual checks and optional additional services.',
-    aside: 'Home Watch Algarve remains the primary commercial service. Optional additional services sit outside the CARE, CARE+ and COMPLETE plans.',
+    eyebrow: 'What we can arrange', title: 'Services around the management of a second home.',
+    description: 'Key holding, contractor access, arrival preparation, handover and post-weather checks. Optional services sit outside the monthly plans.',
+    aside: 'The management relationship is the plan. These pages explain a single job inside it.',
     sections: [
-      { title: 'Begin with the inspection service', paragraphs: ['The recurring relationship is defined on the Home Watch Algarve page. This directory avoids repeating that full explanation and instead sets out the scope of additional services.'] },
-      { title: 'Support when something needs to happen', paragraphs: ['Owners can review a focused guide for a delivery, trade appointment, meter reading, post-departure check, handover or weather-related concern. Availability and fees are confirmed before attendance.'] },
-      { title: 'Qualified work stays with qualified people', paragraphs: ['Guardemar coordinates cleaning, gardening, pool maintenance, air-conditioning service, plumbing, electrical work, pest control, painting and other services. Regulated or technical work is assigned to appropriately qualified third parties.'] },
+      { title: 'Start with the house, not a booking', paragraphs: ['Second-home management is the service. An inspection is how we see the property. The guides below are for one specific need: keys, a trade visit, an arrival, a handover or weather.'] },
+      { title: 'Qualified work stays with qualified people', paragraphs: ['Guardemar coordinates cleaning, gardening, pool maintenance and regulated trades. We pass you the quote. We do not approve it unless you have said so, and we do not certify the work.'] },
     ],
   },
   'how-it-works': {
@@ -51,23 +48,20 @@ export const standardPages: Record<string, StandardPage> = {
     ],
   },
   'holiday-home-care': {
-    eyebrow: 'Holiday Home Care Algarve', title: 'Your holiday home should be ready for holidays — not surprises.',
-    description: 'Guardemar provides holiday home care across the Western Algarve for owners who use their Portuguese property personally rather than operating it as a full-time rental.',
-    aside: 'Scheduled care for a home that may sit empty between owner visits.',
+    eyebrow: 'Second-home management', title: 'A holiday home you use yourself is still a house that needs managing.',
+    description: 'Guardemar manages privately used holiday homes across the Western Algarve. Inspections, keys and coordination. No guest operation.',
+    aside: 'If the house is mainly let, this is the wrong company.',
     sections: [
-      { title: 'What changes while a holiday home is empty', paragraphs: ['Water systems sit unused. Humidity can build. A shutter can loosen, a fridge can fail or irrigation can stop. Mail gathers and small signs of damage remain unseen. Regular checks put a person back into that gap.'] },
-      { title: 'Before you arrive', paragraphs: ['A pre-arrival visit can confirm the property is accessible and visually in order. Water, power, hot water and air conditioning can be checked as agreed, with cleaning or specialist follow-up coordinated in advance.'] },
-      { title: 'After you leave', paragraphs: ['A post-departure check can confirm doors, windows and agreed systems are left as intended, making the next period of vacancy easier to manage.'] },
+      { title: 'What changes while the house is empty', paragraphs: ['Water sits unused. Humidity builds. A shutter loosens or irrigation stops. The management is a person in that gap, on a schedule, with a report.'] },
+      { title: 'Read the current service', paragraphs: ['The full explanation is the second-home management page. Plan frequency is on the plans page.'] },
     ],
   },
   'second-home-care-algarve': {
-    eyebrow: 'Second Home Care Portugal', title: 'Stay connected to your Algarve home from another country.',
-    description: 'Owning a second home abroad should not depend on informal favours. Guardemar provides consistent property inspections and a reliable local point of contact.',
-    aside: 'For international owners spending weeks or months away from Portugal.',
+    eyebrow: 'Second-home management', title: 'Second-home care is the same service, under the name people search.',
+    description: 'Guardemar manages second homes in the Western Algarve for owners who live abroad. Not rental management.',
+    aside: 'Use the management page as the reference.',
     sections: [
-      { title: 'Continuity matters', paragraphs: ['The value of second-home care is not only a single inspection. It is the continuity of a person who knows the property, recognises changes and keeps a useful history of observations and action.'] },
-      { title: 'Designed for overseas ownership', paragraphs: ['Reports are concise, photographic and easy to review remotely. Contractor visits can be coordinated and arrival preparation arranged, reducing the number of separate contacts an owner must manage.'] },
-      { title: 'Apartments, townhouses and villas', paragraphs: ['Service scope reflects the property. An apartment may need mail, internal moisture and building-access checks. A villa may add gates, terraces, irrigation, pool condition and a larger exterior.'] },
+      { title: 'One relationship', paragraphs: ['Inspections, keys, reports and coordination of your existing pool, garden and cleaning companies. The current page for that offer is second-home management.'] },
     ],
   },
   'property-management-algarve': {
@@ -101,7 +95,7 @@ export const standardPages: Record<string, StandardPage> = {
   about: {
     eyebrow: 'About Guardemar', title: 'Someone local. Someone accountable.',
     description: 'Guardemar was created around a simple idea: if you own a home in Portugal, you should always know how it is — even when you are thousands of kilometres away.',
-    aside: 'A modern property care service grounded in human presence and clear documentation.',
+    aside: 'A modern second-home management service: a person on site, and a record of what they found.',
     sections: [
       { title: 'Why Guardemar exists', paragraphs: ['Property owners abroad should not have to rely on neighbours, informal contacts or fragmented contractors to know whether their home is okay. Guardemar provides one accountable local point of contact.'] },
       { title: 'How trust is earned', paragraphs: ['Trust is not created by invented customer counts or vague promises. It comes from turning up, following the agreed process, documenting what was found, communicating clearly and respecting the boundary between inspection and specialist work.'], bullets: ['Accountability', 'Documentation', 'Preventive care', 'Clear communication', 'Local knowledge', 'A trusted professional network', 'Human presence'] },
