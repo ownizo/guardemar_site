@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as VacantPropertyInspectionsAlgarveRouteImport } from './routes/vacant-property-inspections-algarve'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as StormPropertyChecksAlgarveRouteImport } from './routes/storm-property-checks-algarve'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as SecondHomeCareAlgarveRouteImport } from './routes/second-home-care-algarve'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
@@ -98,6 +99,11 @@ const StormPropertyChecksAlgarveRoute =
     path: '/storm-property-checks-algarve',
     getParentRoute: () => rootRouteImport,
   } as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ServicesRoute = ServicesRouteImport.update({
   id: '/services',
   path: '/services',
@@ -474,6 +480,7 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/second-home-care-algarve': typeof SecondHomeCareAlgarveRoute
   '/services': typeof ServicesRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/storm-property-checks-algarve': typeof StormPropertyChecksAlgarveRoute
   '/terms': typeof TermsRoute
   '/vacant-property-inspections-algarve': typeof VacantPropertyInspectionsAlgarveRoute
@@ -545,6 +552,7 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/second-home-care-algarve': typeof SecondHomeCareAlgarveRoute
   '/services': typeof ServicesRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/storm-property-checks-algarve': typeof StormPropertyChecksAlgarveRoute
   '/terms': typeof TermsRoute
   '/vacant-property-inspections-algarve': typeof VacantPropertyInspectionsAlgarveRoute
@@ -619,6 +627,7 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/second-home-care-algarve': typeof SecondHomeCareAlgarveRoute
   '/services': typeof ServicesRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/storm-property-checks-algarve': typeof StormPropertyChecksAlgarveRoute
   '/terms': typeof TermsRoute
   '/vacant-property-inspections-algarve': typeof VacantPropertyInspectionsAlgarveRoute
@@ -694,6 +703,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/second-home-care-algarve'
     | '/services'
+    | '/sitemap.xml'
     | '/storm-property-checks-algarve'
     | '/terms'
     | '/vacant-property-inspections-algarve'
@@ -765,6 +775,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/second-home-care-algarve'
     | '/services'
+    | '/sitemap.xml'
     | '/storm-property-checks-algarve'
     | '/terms'
     | '/vacant-property-inspections-algarve'
@@ -838,6 +849,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/second-home-care-algarve'
     | '/services'
+    | '/sitemap.xml'
     | '/storm-property-checks-algarve'
     | '/terms'
     | '/vacant-property-inspections-algarve'
@@ -912,6 +924,7 @@ export interface RootRouteChildren {
   ResetPasswordRoute: typeof ResetPasswordRoute
   SecondHomeCareAlgarveRoute: typeof SecondHomeCareAlgarveRoute
   ServicesRoute: typeof ServicesRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   StormPropertyChecksAlgarveRoute: typeof StormPropertyChecksAlgarveRoute
   TermsRoute: typeof TermsRoute
   VacantPropertyInspectionsAlgarveRoute: typeof VacantPropertyInspectionsAlgarveRoute
@@ -947,6 +960,13 @@ declare module '@tanstack/react-router' {
       path: '/storm-property-checks-algarve'
       fullPath: '/storm-property-checks-algarve'
       preLoaderRoute: typeof StormPropertyChecksAlgarveRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/services': {
@@ -1554,6 +1574,7 @@ const rootRouteChildren: RootRouteChildren = {
   ResetPasswordRoute: ResetPasswordRoute,
   SecondHomeCareAlgarveRoute: SecondHomeCareAlgarveRoute,
   ServicesRoute: ServicesRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   StormPropertyChecksAlgarveRoute: StormPropertyChecksAlgarveRoute,
   TermsRoute: TermsRoute,
   VacantPropertyInspectionsAlgarveRoute: VacantPropertyInspectionsAlgarveRoute,
@@ -1572,10 +1593,11 @@ export const routeTree = rootRouteImport
   ._addFileTypes<FileRouteTypes>()
 
 import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
+import type { startInstance } from './start.ts'
 declare module '@tanstack/react-start' {
   interface Register {
     ssr: true
     router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
   }
 }

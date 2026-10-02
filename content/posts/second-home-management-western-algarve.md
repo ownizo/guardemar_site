@@ -1,6 +1,7 @@
 ---
 date: 2026-09-23
 title: "Second-home management in the Western Algarve, without guests"
+seoTitle: "Second-Home Management, Western Algarve"
 summary: "What to ask for when you own a house between Carvoeiro and Sagres, live somewhere else, and do not want a rental company."
 categories: ["Ownership", "Guides"]
 slug: "second-home-management-western-algarve"

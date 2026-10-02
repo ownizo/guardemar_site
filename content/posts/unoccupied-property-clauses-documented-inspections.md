@@ -1,6 +1,7 @@
 ---
 date: 2026-09-04
 title: "Unoccupied Property Clauses: Why Documented Inspections Matter to Your Insurer"
+seoTitle: "Unoccupied Property Clauses in Portugal"
 summary: "A practical guide to vacancy conditions, inspection records and the limits of what documented home watch visits can prove."
 categories: ["Vacant Homes", "Property Risks", "Insurance Documentation"]
 slug: "unoccupied-property-clauses-documented-inspections"

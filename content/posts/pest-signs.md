@@ -1,7 +1,9 @@
 ---
 date: 2026-09-15
-title: "Pest Signs in an Empty Algarve Home"
-summary: "What a visual inspection can note about insects and other pests, and why treatment stays with a specialist."
+title: "Pest Signs and Pest Control in an Empty Algarve Home"
+seoTitle: "Pest Control in Empty Algarve Homes: Signs to Watch"
+updated: 2026-10-02
+summary: "The pests Algarve owners most often meet, the signs a visual inspection can record, and when to call a pest-control company."
 categories: ["Property Risks", "Vacant Homes"]
 slug: "pest-signs-empty-algarve-home"
 author: "Hugo Gonçalves"
@@ -24,6 +26,19 @@ On a scheduled visit, without moving heavy furniture or opening wall voids, it i
 Photograph the sign, note the room, and compare with last time. A single ant is not a reportable crisis. A trail that was not there last month is a reason to tell the owner.
 
 Do not disturb nests, spray unidentified chemicals or block holes as amateur treatment. That can make the specialist’s job harder and can be unsafe.
+
+## Pests Algarve owners commonly meet
+
+Every house is different, but a few problems come up again and again in the Western Algarve:
+
+- **Ants** — the most frequent visitor, especially around kitchens and terrace doors in warmer months.
+- **Cockroaches** — drawn to drains, kitchens and garages, often more visible after a house has been closed in hot weather.
+- **Wasps** — nests under eaves, inside shutter boxes and in outdoor light fittings, usually from late spring.
+- **Pine processionary caterpillars** — in late winter and spring they leave pine trees in nose-to-tail lines. Their hairs can cause serious irritation in people and are dangerous to dogs, so nests and processions are for a specialist, never for handling.
+- **Termites** — subterranean termites are present in parts of Portugal. Soft or hollow-sounding timber, small mud tubes or swarming winged insects indoors should be checked by a professional.
+- **Rodents** — droppings or gnawed packaging in garages, utility rooms and lofts.
+
+A visual inspection can spot many of these signs early. Identification and treatment belong with a licensed pest-control company.
 
 ## Empty houses give pests time
 

@@ -1,6 +1,7 @@
 ---
-date: 2026-06-26
+date: 2026-09-03
 title: "How Often Should an Empty Property in Portugal Be Inspected?"
+seoTitle: "How Often to Inspect an Empty Property, Portugal"
 summary: "A sensible way to choose between monthly, fortnightly and weekly property inspections."
 categories: ["Inspections", "Ownership"]
 slug: "how-often-inspect-empty-property-portugal"

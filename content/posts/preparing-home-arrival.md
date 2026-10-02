@@ -1,5 +1,5 @@
 ---
-date: 2026-04-03
+date: 2026-09-03
 title: "Preparing Your Algarve Home Before You Arrive"
 summary: "A pre-arrival checklist that leaves time to solve issues before your flight lands."
 categories: ["Arrivals", "Guides"]

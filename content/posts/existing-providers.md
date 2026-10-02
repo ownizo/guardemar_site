@@ -1,6 +1,7 @@
 ---
 date: 2026-09-15
 title: "Working with Your Existing Pool, Garden and Cleaning Team"
+seoTitle: "Working with Your Pool, Garden and Cleaning Team"
 summary: "How a property-care contact can coordinate the specialists you already use, without taking over their work."
 categories: ["Property Care", "Ownership"]
 slug: "working-with-existing-pool-garden-cleaners"

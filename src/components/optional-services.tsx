@@ -1,4 +1,5 @@
 import { Car, CloudRain, KeyRound, Mail, Package, PhoneCall, Plane, Shirt, ShoppingBasket, Sparkles, Trees, Wrench, type LucideIcon } from 'lucide-react'
+import { formatEuro, withVat } from '@/config/site'
 import { optionalServiceGroups, optionalServicesInGroup, type OptionalService, type OptionalServiceIcon } from '@/config/optional-services'
 
 const icons = {
@@ -21,6 +22,16 @@ export function ServiceIcon({ name }: { name: OptionalServiceIcon }) {
   return <Icon size={22} strokeWidth={1.6} aria-hidden="true" />
 }
 
+// Fees are stored net ("€60 + VAT"). Public pages show the VAT-inclusive
+// consumer price first, with the net fee alongside.
+export function publicFee(fee: string) {
+  const match = fee.match(/^€(\d+(?:\.\d+)?)(\/month)?\s*\+\s*VAT$/)
+  if (!match) return { gross: fee, net: null }
+  const net = Number(match[1])
+  const period = match[2] ?? ''
+  return { gross: `${formatEuro(withVat(net))}${period} incl. VAT`, net: `${formatEuro(net)}${period} + VAT` }
+}
+
 function OptionalServiceCard({ service, showPrice }: { service: OptionalService; showPrice: boolean }) {
   return (
     <article className="optional-card">
@@ -29,7 +40,8 @@ function OptionalServiceCard({ service, showPrice }: { service: OptionalService;
       <p>{service.description}</p>
       {showPrice ? (
         <p className="optional-price">
-          <strong>{service.fee}</strong>
+          <strong>{publicFee(service.fee).gross}</strong>
+          {publicFee(service.fee).net ? <span>({publicFee(service.fee).net})</span> : null}
           {service.extraCost ? <span>{service.extraCost}</span> : null}
         </p>
       ) : null}

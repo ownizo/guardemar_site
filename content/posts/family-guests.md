@@ -1,6 +1,7 @@
 ---
 date: 2026-09-15
 title: "When Family and Guests Use the House Between Your Stays"
+seoTitle: "Family and Guests Using Your Holiday Home"
 summary: "How to keep keys, condition and instructions intact when relatives or friends use an Algarve second home."
 categories: ["Ownership", "Security"]
 slug: "family-guests-using-holiday-home"
