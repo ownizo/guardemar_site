@@ -1,6 +1,7 @@
 ---
-date: 2026-04-17
+date: 2026-09-03
 title: "Property Care in Praia da Luz: A Guide for Overseas Owners"
+seoTitle: "Property Care in Praia da Luz"
 summary: "How regular inspections support villas, townhouses and apartments left empty in Praia da Luz."
 categories: ["Local Guides", "Property Care"]
 slug: "property-care-praia-da-luz-guide"

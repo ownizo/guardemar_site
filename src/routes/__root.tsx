@@ -14,7 +14,7 @@ export const Route = createRootRoute({
     meta: [
       { charSet: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: 'GUARDEMAR | Second-home management' },
+      { title: 'Guardemar | Second-home care, Western Algarve' },
       { name: 'theme-color', content: '#06275A' },
       { property: 'og:site_name', content: 'GUARDEMAR' },
       { property: 'og:locale', content: 'en_GB' },
@@ -58,7 +58,7 @@ function Footer() {
   return (
     <footer className="site-footer">
       <div className="shell footer-grid">
-        <div><p className="footer-mark">GUARDEMAR</p><p>Second-home management</p><p className="footer-tagline">Here when you&apos;re away.</p><p>Western Algarve. Not a rental company.</p></div>
+        <div><p className="footer-mark">GUARDEMAR</p><p>Second-home management</p><p className="footer-tagline">Here when you&apos;re away.</p><p>Western Algarve, Carvoeiro to Sagres.</p></div>
         <div><h2>Explore</h2>{footerLinks.map((item) => <a key={item.href} href={item.href}>{item.label}</a>)}<Link to="/portal/login">Client Login</Link></div>
         <div><h2>Service area</h2><p>Western Algarve<br />from Carvoeiro to Sagres.</p><a href="/areas/">View all areas</a></div>
         <div><h2>Contact</h2><AnalyticsLink href={business.phoneHref} event="phone_click">{business.phone}</AnalyticsLink><AnalyticsLink href={business.emailHref} event="email_click">{business.email}</AnalyticsLink><p>{business.addressLines.join(', ')}</p></div>

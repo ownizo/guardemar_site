@@ -23,7 +23,7 @@ Riverside apartments may add condominium access, lifts, garages and building rul
 
 Hillside villas above the village typically add gates, terraces, pools and gardens. That is a different inspection. Exterior systems keep running after the owner leaves. Irrigation can dry a slope or wet a wall. Pool appearance can change between specialist visits. Terrace furniture and pots can move in wind.
 
-A gardener or pool company may already attend. Their job is not to open every bathroom or look under the kitchen sink. Structured [holiday home checks](/holiday-home-checks-algarve/) give the owner one record across the whole property.
+A gardener or pool company may already attend. Their job is not to open every bathroom or look under the kitchen sink. Structured [holiday home checks](/home-watch-algarve/) give the owner one record across the whole property.
 
 From safe ground, the visit can also note obvious drainage paths on a slope, displaced covers and whether gates still close as instructed. It cannot become a landscaping survey or a geotechnical opinion.
 

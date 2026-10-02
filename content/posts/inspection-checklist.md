@@ -1,6 +1,7 @@
 ---
-date: 2026-07-10
+date: 2026-09-03
 title: "The Holiday Home Inspection Checklist Every Algarve Owner Should Have"
+seoTitle: "Holiday Home Inspection Checklist, Algarve"
 summary: "The essential categories that turn a casual property visit into a consistent and useful inspection."
 categories: ["Inspections", "Guides"]
 slug: "holiday-home-inspection-checklist-algarve"

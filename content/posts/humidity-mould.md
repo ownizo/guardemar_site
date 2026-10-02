@@ -1,6 +1,7 @@
 ---
-date: 2026-06-12
+date: 2026-09-03
 title: "Humidity and Mould in Algarve Holiday Homes: What Owners Should Know"
+seoTitle: "Humidity and Mould in Algarve Holiday Homes"
 summary: "How vacancy, ventilation and building conditions can combine to create moisture concerns."
 categories: ["Property Risks", "Vacant Homes"]
 slug: "humidity-mould-algarve-holiday-homes"

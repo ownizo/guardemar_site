@@ -2,11 +2,11 @@ import { createFileRoute } from '@tanstack/react-router'
 import { ArrowRight, Check, ClipboardCheck, CloudRain, KeyRound, ShieldCheck } from 'lucide-react'
 
 import { AssessmentCta, ButtonLink, PageIntro, PropertyFocusSection, ReportPreview, SectionHeading, TrustSection } from '@/components/site'
-import { plans, trustPoints } from '@/config/site'
-import { futureLanguageAlternates, pageHead } from '@/lib/seo'
+import { formatEuro, plans, trustPoints, vatNote } from '@/config/site'
+import { pageHead } from '@/lib/seo'
 
 export const Route = createFileRoute('/')({
-  head: () => pageHead({ title: 'Second-Home Management in the Western Algarve | Guardemar', description: 'Property management for second homes from Carvoeiro to Sagres that are not holiday lets. Inspections, keys, reports and local coordination. No guests.', path: '/', alternates: futureLanguageAlternates('/') }),
+  head: () => pageHead({ title: 'Second Home Care & Key Holding, Western Algarve | Guardemar', description: 'Guardemar looks after second homes from Carvoeiro to Sagres while you are away: scheduled home watch visits, key holding and a photo report after every visit.', path: '/' }),
   component: HomePage,
 })
 
@@ -15,9 +15,9 @@ function HomePage() {
     <>
       <section className="hero shell">
         <div className="hero-copy reveal">
-          <p className="eyebrow">Second-home management</p>
-          <h1>Managed while<br />you&apos;re away.</h1>
-          <p className="hero-lede">Your house in the Western Algarve still needs someone when you are not in Portugal. Guardemar manages privately used second homes: inspections, keys, a report after every visit, and the people who look after the pool, garden and cleaning. We do not take guests.</p>
+          <p className="eyebrow">Second-home care · Western Algarve</p>
+          <h1>Your Algarve home, looked after while you&apos;re away.</h1>
+          <p className="hero-lede">Scheduled home watch visits, secure key holding and a photo report after every visit, from Carvoeiro to Sagres. One local contact who knows the house, and who coordinates the pool, garden and cleaning companies you already use.</p>
           <div className="button-row">
             <ButtonLink to="/contact/" event="assessment_form_start">Request a Property Assessment</ButtonLink>
             <ButtonLink href="https://wa.me/351928226570" variant="text" event="whatsapp_click">WhatsApp Guardemar <ArrowRight size={16} /></ButtonLink>
@@ -89,20 +89,20 @@ function HomePage() {
 
       <section className="section warm-section">
         <div className="shell">
-          <PageIntro eyebrow="Management plans" title="Choose how often we come." text="Three frequencies, confirmed after we see the house. Repairs are done by your trades, and only after you approve the quote. Nothing in the monthly fee is a holiday-let service." />
+          <PageIntro eyebrow="Management plans" title="Choose how often we come." text="Monthly, twice a month or weekly, confirmed after we have seen the house. Repairs are carried out by your trades, and only after you have approved the quote." />
           <div className="plans-grid">
             {plans.map((plan) => (
               <article className={`plan-card ${plan.popular ? 'popular' : ''}`} key={plan.name}>
                 {plan.popular && <span className="popular-label">Most popular</span>}
                 <p className="eyebrow">{plan.name}</p>
-                <div className="price">From <strong>€{plan.price}</strong><span>/month</span></div>
+                <div className="price">From <strong>{formatEuro(plan.grossPrice)}</strong><span>/month incl. VAT</span></div>
                 <p>{plan.description}</p>
                 <ul>{plan.highlights.map((item) => <li key={item}><Check size={15} />{item}</li>)}</ul>
                 <ButtonLink to="/plans/" variant={plan.popular ? 'primary' : 'outline'} event="plan_cta_click">View plan details</ButtonLink>
               </article>
             ))}
           </div>
-          <p className="pricing-note">Prices shown are indicative and may be subject to VAT and property-specific assessment. Custom plans are available for larger villas, estates and properties with complex requirements.</p>
+          <p className="pricing-note">{vatNote} The plan is confirmed after we have seen the property. Custom plans are available for larger villas, estates and properties with complex requirements.</p>
         </div>
       </section>
 

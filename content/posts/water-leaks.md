@@ -1,6 +1,7 @@
 ---
-date: 2026-05-15
+date: 2026-09-03
 title: "Why Small Water Leaks Are a Major Risk in Vacant Homes"
+seoTitle: "Small Water Leaks in Vacant Homes"
 summary: "The reason detection time matters when no one is living in the property."
 categories: ["Property Risks", "Vacant Homes"]
 slug: "small-water-leaks-vacant-homes"

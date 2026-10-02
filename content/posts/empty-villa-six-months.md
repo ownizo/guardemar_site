@@ -1,6 +1,7 @@
 ---
-date: 2026-07-24
+date: 2026-09-03
 title: "What Happens to an Algarve Villa When It Is Empty for Six Months?"
+seoTitle: "An Algarve Villa Empty for Six Months"
 summary: "Why water, humidity, exterior systems and small changes deserve attention during a long vacant period."
 categories: ["Vacant Homes", "Villas"]
 slug: "empty-algarve-villa-six-months"

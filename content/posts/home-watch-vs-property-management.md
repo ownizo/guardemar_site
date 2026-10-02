@@ -1,6 +1,7 @@
 ---
-date: 2026-08-07
+date: 2026-09-03
 title: "Rental management and second-home management are not the same service"
+seoTitle: "Home Watch vs Property Management"
 summary: "If you searched for property management and do not want guests, you are looking for second-home management. The inspection is only how the house is checked."
 categories: ["Property Care", "Ownership"]
 slug: "home-watch-vs-property-management"

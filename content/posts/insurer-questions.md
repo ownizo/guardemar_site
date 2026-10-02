@@ -1,6 +1,7 @@
 ---
 date: 2026-09-15
 title: "Questions to Ask Your Insurer About a Second Home in Portugal"
+seoTitle: "Questions to Ask Your Insurer: Second Home Portugal"
 summary: "A list of questions for your insurer or adviser — not a summary of what any policy will do."
 categories: ["Insurance Documentation", "Ownership"]
 slug: "questions-to-ask-insurer-second-home-portugal"

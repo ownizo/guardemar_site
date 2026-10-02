@@ -1,6 +1,7 @@
 ---
-date: 2026-05-01
+date: 2026-09-03
 title: "Owning a Second Home in Lagos: A Practical Maintenance Guide"
+seoTitle: "Second Home in Lagos: Maintenance Guide"
 summary: "Property care considerations for apartments, marina homes and villas around Lagos and Porto de Mós."
 categories: ["Local Guides", "Ownership"]
 slug: "second-home-lagos-maintenance-guide"

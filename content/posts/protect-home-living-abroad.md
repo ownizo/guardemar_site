@@ -1,5 +1,5 @@
 ---
-date: 2026-05-29
+date: 2026-09-03
 title: "How to Protect Your Algarve Home While Living Abroad"
 summary: "A practical system covering access, inspections, contractors, reporting and arrival planning."
 categories: ["Ownership", "Guides"]

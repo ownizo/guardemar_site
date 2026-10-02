@@ -1,6 +1,7 @@
 ---
-date: 2026-02-20
+date: 2026-09-03
 title: "Key Holding in Portugal: What Overseas Property Owners Should Know"
+seoTitle: "Key Holding in Portugal for Overseas Owners"
 summary: "Good practice for coding, storing, authorising and recording access to a second home."
 categories: ["Security", "Ownership"]
 slug: "key-holding-portugal-overseas-owners"

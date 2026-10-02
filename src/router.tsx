@@ -9,6 +9,10 @@ export const getRouter = () => {
     routeTree,
     scrollRestoration: true,
     defaultPreloadStaleTime: 0,
+    // Keep URLs exactly as linked. The default ('never') made the server
+    // 307-redirect every canonical "/page/" URL to "/page"; public pages are
+    // normalised to the trailing-slash form in src/start.ts instead.
+    trailingSlash: 'preserve',
   })
 
   return router

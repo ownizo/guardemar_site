@@ -1,5 +1,5 @@
 ---
-date: 2026-03-20
+date: 2026-09-03
 title: "What to Check After a Storm in the Algarve"
 summary: "A safe, visual post-weather checklist for owners concerned about an empty property."
 categories: ["Weather", "Property Risks"]

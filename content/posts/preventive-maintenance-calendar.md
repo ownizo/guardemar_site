@@ -1,6 +1,7 @@
 ---
-date: 2026-01-23
+date: 2026-09-03
 title: "A Preventive Maintenance Calendar for an Algarve Second Home"
+seoTitle: "Algarve Second Home Maintenance Calendar"
 summary: "How to organise recurring property tasks without confusing inspections with specialist maintenance."
 categories: ["Maintenance", "Ownership"]
 slug: "preventive-maintenance-calendar-algarve-second-home"

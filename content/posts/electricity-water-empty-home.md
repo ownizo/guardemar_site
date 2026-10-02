@@ -1,6 +1,7 @@
 ---
-date: 2026-03-06
+date: 2026-09-03
 title: "Should You Leave Electricity and Water On in an Empty Holiday Home?"
+seoTitle: "Leave Electricity and Water On in an Empty Home?"
 summary: "Why the answer depends on appliances, safety systems, insurance, season and the individual property."
 categories: ["Property Risks", "Ownership"]
 slug: "electricity-water-empty-holiday-home"

@@ -41,10 +41,5 @@ export function pageHead({ title, description, path, image = defaultImage, type 
   }
 }
 
-export const futureLanguageAlternates = (path: string) => [
-  { hrefLang: 'en-GB', path },
-  { hrefLang: 'de', path: `/de${path}` },
-  { hrefLang: 'nl', path: `/nl${path}` },
-  { hrefLang: 'fr', path: `/fr${path}` },
-  { hrefLang: 'x-default', path },
-]
+// Add hreflang alternates only once a professionally translated page is
+// live and indexable. Never point them at the noindex placeholder routes.

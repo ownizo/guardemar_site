@@ -17,14 +17,23 @@ export const legalEntity = {
 export const operationalContact = {
   name: 'GUARDEMAR',
   descriptor: 'Second-home management',
+  // Base locality only. Guardemar holds client keys, so no street address
+  // for the operational base is ever published on the site or in schema.
   address: {
-    street: 'Varandas de São João',
-    unit: 'Lote 4, 2º E',
     city: 'Lagos',
+    region: 'Algarve',
     country: 'Portugal',
-    addressLines: ['Varandas de São João', 'Lote 4, 2º E', 'Lagos', 'Portugal'],
+    addressLines: ['Lagos, Algarve', 'Portugal'],
   },
 } as const
+
+// Consumer prices must be shown inclusive of VAT. Net amounts stay the
+// commercial source of truth (Stripe, fee schedule); public pages display
+// the gross figure with the net amount alongside.
+export const vatRate = 0.23
+export const withVat = (net: number) => Math.round(net * (1 + vatRate) * 100) / 100
+export const formatEuro = (amount: number) => `€${amount.toLocaleString('en-IE', { minimumFractionDigits: Number.isInteger(amount) ? 0 : 2, maximumFractionDigits: 2 })}`
+export const vatNote = 'Prices include VAT at 23%.'
 
 export const legalLastUpdated = '13 September 2026'
 
@@ -40,7 +49,7 @@ export const business = {
   addressLines: operationalContact.address.addressLines,
   territory: 'Western Algarve — from Carvoeiro to Sagres.',
   schema: { '@context': 'https://schema.org', '@graph': [
-    { '@type': ['ProfessionalService', 'LocalBusiness', 'Organization'], '@id': 'https://guardemar.com/#business', name: 'GUARDEMAR', legalName: legalEntity.legalName, taxID: legalEntity.taxId, brand: { '@type': 'Brand', name: legalEntity.tradingName }, description: 'Second-home management for privately used holiday homes in the Western Algarve, Portugal. Inspections, key holding and contractor coordination. Not a rental manager.', url: 'https://guardemar.com/', logo: 'https://guardemar.com/guardemar-logo.svg', priceRange: '€79–€189 per month', telephone: legalEntity.phone, email: legalEntity.contactEmail, address: { '@type': 'PostalAddress', streetAddress: `${operationalContact.address.street}, ${operationalContact.address.unit}`, addressLocality: operationalContact.address.city, addressCountry: 'PT' }, areaServed: ['Carvoeiro', 'Ferragudo', 'Portimão', 'Alvor', 'Lagos', 'Praia da Luz', 'Burgau', 'Salema', 'Vila do Bispo', 'Sagres'].map((name) => ({ '@type': 'Place', name })) },
+    { '@type': ['ProfessionalService', 'LocalBusiness', 'Organization'], '@id': 'https://guardemar.com/#business', name: 'GUARDEMAR', legalName: legalEntity.legalName, taxID: legalEntity.taxId, brand: { '@type': 'Brand', name: legalEntity.tradingName }, description: 'Second-home management for privately used holiday homes in the Western Algarve, Portugal. Inspections, key holding and contractor coordination. Not a rental manager.', url: 'https://guardemar.com/', logo: 'https://guardemar.com/guardemar-logo.svg', image: 'https://guardemar.com/guardemar-og.png', priceRange: '€97–€232 per month incl. VAT', telephone: legalEntity.phone, email: legalEntity.contactEmail, address: { '@type': 'PostalAddress', addressLocality: operationalContact.address.city, addressRegion: 'Faro', addressCountry: 'PT' }, founder: { '@id': 'https://guardemar.com/about/hugo-goncalves/#person' }, sameAs: [] as string[], areaServed: ['Carvoeiro', 'Ferragudo', 'Portimão', 'Alvor', 'Lagos', 'Praia da Luz', 'Burgau', 'Salema', 'Vila do Bispo', 'Sagres'].map((name) => ({ '@type': 'Place', name })) },
     { '@type': 'WebSite', '@id': 'https://guardemar.com/#website', url: 'https://guardemar.com', name: 'GUARDEMAR', publisher: { '@id': 'https://guardemar.com/#business' }, inLanguage: 'en-GB' },
   ] },
 }
@@ -83,9 +92,9 @@ export const footerLinks = [
 export const trustPoints = ['Scheduled inspections', 'Photo reports', 'Key holding', 'Pool, garden and cleaning coordination', 'Quotes sent to you first', 'Arrival preparation']
 
 export const plans = [
-  { name: subscriptionPlans.care.name, price: subscriptionPlans.care.monthlyAmount / 100, annualPrice: subscriptionPlans.care.yearlyAmount / 100, annualSaving: subscriptionPlans.care.annualDiscountAmount / 100, description: 'For owners who want a reliable monthly check.', popular: false, highlights: ['1 scheduled inspection per month', 'Secure key holding', 'Interior and exterior visual checks', 'Inspection photographs', 'Digital visit report', 'Issue notification'], items: subscriptionPlans.care.scope },
-  { name: subscriptionPlans.care_plus.name, price: subscriptionPlans.care_plus.monthlyAmount / 100, annualPrice: subscriptionPlans.care_plus.yearlyAmount / 100, annualSaving: subscriptionPlans.care_plus.annualDiscountAmount / 100, description: 'For more regular oversight and practical coordination.', popular: true, highlights: ['2 scheduled inspections per month', 'Everything in CARE', 'Ventilation and water circulation', 'Pool and irrigation visual checks', 'Contractor access coordination', 'Pre-arrival basic check'], items: subscriptionPlans.care_plus.scope },
-  { name: subscriptionPlans.complete.name, price: subscriptionPlans.complete.monthlyAmount / 100, annualPrice: subscriptionPlans.complete.yearlyAmount / 100, annualSaving: subscriptionPlans.complete.annualDiscountAmount / 100, description: 'Frequent oversight for homes with more moving parts.', popular: false, highlights: ['Weekly scheduled inspections', 'Everything in CARE+', 'Enhanced maintenance oversight', 'Monthly condition summary', 'Arrival preparation coordination', 'Higher service priority'], items: subscriptionPlans.complete.scope },
+  { name: subscriptionPlans.care.name, price: subscriptionPlans.care.monthlyAmount / 100, annualPrice: subscriptionPlans.care.yearlyAmount / 100, annualSaving: subscriptionPlans.care.annualDiscountAmount / 100, grossPrice: withVat(subscriptionPlans.care.monthlyAmount / 100), grossAnnualPrice: withVat(subscriptionPlans.care.yearlyAmount / 100), grossAnnualSaving: withVat(subscriptionPlans.care.annualDiscountAmount / 100), description: 'For owners who want a reliable monthly check.', popular: false, highlights: ['1 scheduled inspection per month', 'Secure key holding', 'Interior and exterior visual checks', 'Inspection photographs', 'Digital visit report', 'Issue notification'], items: subscriptionPlans.care.scope },
+  { name: subscriptionPlans.care_plus.name, price: subscriptionPlans.care_plus.monthlyAmount / 100, annualPrice: subscriptionPlans.care_plus.yearlyAmount / 100, annualSaving: subscriptionPlans.care_plus.annualDiscountAmount / 100, grossPrice: withVat(subscriptionPlans.care_plus.monthlyAmount / 100), grossAnnualPrice: withVat(subscriptionPlans.care_plus.yearlyAmount / 100), grossAnnualSaving: withVat(subscriptionPlans.care_plus.annualDiscountAmount / 100), description: 'For more regular oversight and practical coordination.', popular: true, highlights: ['2 scheduled inspections per month', 'Everything in CARE', 'Ventilation and water circulation', 'Pool and irrigation visual checks', 'Contractor access coordination', 'Pre-arrival basic check'], items: subscriptionPlans.care_plus.scope },
+  { name: subscriptionPlans.complete.name, price: subscriptionPlans.complete.monthlyAmount / 100, annualPrice: subscriptionPlans.complete.yearlyAmount / 100, annualSaving: subscriptionPlans.complete.annualDiscountAmount / 100, grossPrice: withVat(subscriptionPlans.complete.monthlyAmount / 100), grossAnnualPrice: withVat(subscriptionPlans.complete.yearlyAmount / 100), grossAnnualSaving: withVat(subscriptionPlans.complete.annualDiscountAmount / 100), description: 'Frequent oversight for homes with more moving parts.', popular: false, highlights: ['Weekly scheduled inspections', 'Everything in CARE+', 'Enhanced maintenance oversight', 'Monthly condition summary', 'Arrival preparation coordination', 'Higher service priority'], items: subscriptionPlans.complete.scope },
 ] as const
 
 export const services = [
@@ -93,33 +102,31 @@ export const services = [
 ]
 
 export const faqs = [
-  ['Is Guardemar property management?', 'Yes, for a second home that is not run as a rental. Guardemar manages the house while you are away: inspections, keys, a written report, and coordination of the pool, garden or cleaning companies you already use. We do not take bookings, host guests or run an Alojamento Local.'],
-  ['Do you manage holiday rentals?', 'No. If the home is primarily let to guests, you need a rental manager. Guardemar is for private use.'],
-  ['What is a home watch visit?', 'It is the inspection inside the management: a scheduled walk-through, photographs and a written status. It is how the house is checked, not a separate company.'],
-  ['How often should my property be checked?', 'That depends on the home, season, systems and risk profile. Monthly, fortnightly and weekly options are available, with a recommendation made after assessment.'],
-  ['What happens if you find a leak?', 'We document the issue, contact the owner, take reasonable agreed steps to limit further damage and coordinate a suitable qualified professional where authorised.'],
-  ['Can you arrange a plumber or electrician?', 'Yes. Guardemar can coordinate licensed or qualified third-party professionals. Specialist work is not performed by Guardemar unless explicitly stated and appropriately qualified.'],
-  ['Can you let contractors into my property?', 'Yes, by prior owner authorisation. Access can be logged and the property checked after the visit if arranged.'],
-  ['Do you hold keys?', 'Yes. Keys are coded, securely stored and managed with controlled access rather than labelled with a complete property address.'],
-  ['Do you inspect swimming pools and gardens?', 'We can visually check their general condition and obvious warning signs. Professional pool maintenance and gardening are separate services that can be coordinated.'],
-  ['Can you prepare the property before we arrive?', 'Yes. Arrival preparation can include a pre-arrival inspection, ventilation and checks of water, power, hot water, air conditioning, pool and garden condition.'],
-  ['Can you inspect after a storm?', 'Post-weather checks are available according to the selected plan, local conditions, safe access and operational availability. We do not guarantee monitoring of every weather event.'],
-  ['Do you provide reports?', 'Yes. Scheduled inspections include a digital report with status, observations, photographs, issues and recommended next actions.'],
-  ['Which areas do you cover?', 'The Western Algarve, from Carvoeiro to Sagres, including Portimão, Alvor, Lagos, Praia da Luz, Burgau, Salema and Vila do Bispo.'],
-  ['Can you look after apartments as well as villas?', 'Yes. Plans are adapted for apartments, townhouses, villas and larger properties, with or without pools and gardens.'],
-  ['Can you work with my existing gardener or pool company?', 'Yes. Guardemar can coordinate access and communication with existing providers, subject to clear owner instructions and authorisation.'],
-  ['What happens in an emergency?', 'We assess what can safely be observed, contact the owner and coordinate the appropriate emergency or specialist service where authorised. Response depends on availability and is not represented as 24/7 cover.'],
-  ['Do I have to sign a long-term contract?', 'Commercial terms are confirmed with each proposal. Ask us about the current options during your property assessment.'],
+  ['Is Guardemar a property management company?', 'Yes — for second homes you use yourself. We look after the house while you are away: scheduled inspections, key holding, a written photo report after every visit, and coordination of the pool, garden or cleaning companies you already use. Holiday lets are a different business, and we leave them to rental managers.'],
+  ['What is a home watch visit?', 'It is the scheduled inspection at the heart of every plan: a walk-through of the property, photographs and a written status of good, attention or urgent for each area.'],
+  ['How often should my property be checked?', 'It depends on the home, the season and how long it stands empty. Monthly, twice-monthly and weekly plans are available, and we recommend a frequency after seeing the property.'],
+  ['What happens if you find a leak?', 'We photograph it, tell you straight away, take the reasonable first steps you have agreed to limit the damage and, with your approval, bring in a qualified plumber.'],
+  ['Can you arrange a plumber or electrician?', 'Yes. We coordinate licensed, qualified tradespeople — or the ones you already trust — and send you their quote before any work starts. The technical work itself is always done by them.'],
+  ['Can you let contractors into my property?', 'Yes, with your prior authorisation. We open up, record who attended and can check and photograph the property afterwards.'],
+  ['How do you hold keys?', 'Keys are coded rather than labelled with an address, stored securely and used only for purposes you have authorised. Every use is recorded.'],
+  ['Do you check pools and gardens?', 'Yes, visually: water condition, equipment, irrigation and obvious problems. Pool maintenance and gardening stay with your providers, and we coordinate them.'],
+  ['Can you prepare the house before we arrive?', 'Yes. A pre-arrival check covers ventilation, water, power, hot water, air conditioning, pool and garden, so any problem is raised while there is still time to fix it.'],
+  ['Do you check the house after a storm?', 'Yes. CARE+ includes a visual check after severe weather, and COMPLETE gives those checks priority. We go as soon as access is safe; for CARE, a storm check can be added as an optional service.'],
+  ['What does the report look like?', 'A digital report for every visit: date and time, the status of each area, photographs, observations and a recommended next step. You can see past reports in the client portal at any time.'],
+  ['Which areas do you cover?', 'The Western Algarve, from Carvoeiro to Sagres, including Ferragudo, Portimão, Alvor, Lagos, Praia da Luz, Burgau, Salema and Vila do Bispo.'],
+  ['Do you look after apartments as well as villas?', 'Yes. We look after apartments, townhouses, villas and larger estates, with or without pools and gardens.'],
+  ['Can you work with my existing gardener or pool company?', 'Yes, and we encourage it. We coordinate access and communication with the people who already know the house.'],
+  ['What happens in an emergency?', 'We attend to see what is happening, contact you and call the right emergency or specialist service with your authorisation. We are a small local team, so emergency attendance depends on availability rather than a 24/7 guarantee.'],
+  ['Is there a minimum contract term?', 'Yes. Plans run on a 12-month service agreement. You can pay monthly, or annually in advance with a 10% discount. Renewal and ending terms are set out in the Service Order and General Terms.'],
+  ['Do you manage holiday rentals?', 'No. If the home is mainly let to guests, a rental manager is the better fit. Guardemar is for homes in private use.'],
 ] as const
 
 export const planFaqs = [
   ...faqs,
-  ['Who actually enters my property?', 'Access is limited to Guardemar and to any person specifically authorised under the agreed service arrangements. Where third-party access is required — for example a contractor approved by the owner — it is coordinated in accordance with the owner’s instructions and the service agreement.'],
-  ['What happens if you are ill or away?', 'Visits are scheduled and planned in advance. If a scheduled visit needs to be rescheduled, the owner is informed and a revised date is agreed as part of the normal service arrangements, so a property is never simply left unchecked without communication.'],
-  ['Are you insured?', 'Guardemar maintains such professional liability insurance as it considers appropriate from time to time; current cover details can be confirmed on request. Guardemar does not sell insurance or provide insurance advice, and inspection reports do not replace the owner’s own home insurance arrangements.'],
-  ['How are my keys stored and who can authorise access?', 'Keys are coded rather than labelled with a full property address and stored securely. Access is limited to authorised purposes; the owner defines who may be admitted and under what circumstances.'],
-  ['What happens if something is damaged during a visit?', 'The condition is documented, the owner is informed and the circumstances are reviewed promptly. Any responsibility, repair or insurance process depends on the facts and the applicable service and policy terms.'],
-  ['Is there a minimum contract term?', 'Yes. Both Monthly Billing and Annual Billing are based on a 12-month Guardemar Service Agreement. Monthly Billing is a payment frequency, not a monthly contract. Renewal and ending provisions are set out in the accepted Service Order and General Terms.'],
+  ['Who actually enters my property?', 'Guardemar and anyone you have specifically authorised — for example a contractor you approved. Nobody else.'],
+  ['What happens if you are ill or away?', 'Visits are planned in advance. If one has to move, we tell you and agree a new date, so the house is never left unchecked without you knowing.'],
+  ['Are you insured?', 'Ask us and we will confirm Guardemar’s current liability cover in writing. Our reports do not replace your own home insurance, and Guardemar does not sell insurance or give insurance advice.'],
+  ['What happens if something is damaged during a visit?', 'We document it, tell you immediately and review what happened. Any repair or claim then follows the service terms and the relevant insurance policy.'],
 ] as const
 
 export const areas = {

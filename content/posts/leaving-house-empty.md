@@ -1,6 +1,7 @@
 ---
 date: 2026-09-15
 title: "How to Leave an Empty Algarve Home: A Practical Closing List"
+seoTitle: "Closing Checklist for an Empty Algarve Home"
 summary: "A property-specific checklist for shutters, waste, appliances, access and instructions — without a universal on-or-off rule."
 categories: ["Ownership", "Property Risks"]
 slug: "how-to-leave-empty-algarve-home"

@@ -1,6 +1,7 @@
 ---
-date: 2026-08-20
+date: 2026-09-03
 title: "The Complete Guide to Looking After a Holiday Home in the Algarve"
+seoTitle: "Looking After a Holiday Home in the Algarve"
 summary: "A practical framework for inspections, preventive care and local coordination when your Algarve home is empty."
 categories: ["Property Care", "Guides"]
 slug: "looking-after-holiday-home-algarve"
@@ -90,4 +91,4 @@ The value of repeated reports grows over time. They can show whether a stain is 
 
 Keep annual servicing, condominium responsibilities, warranties and contractor contacts in the property file. Guardemar can coordinate access and communication, whilst the relevant specialist remains responsible for technical advice and workmanship.
 
-If you need one local point of contact, explore [home watch in the Algarve](/home-watch-algarve/), review [holiday home care in the Algarve](/holiday-home-care/) or [request a property assessment](/contact/).
+If you need one local point of contact, explore [home watch in the Algarve](/home-watch-algarve/), review [holiday home care in the Algarve](/property-management-algarve/) or [request a property assessment](/contact/).
