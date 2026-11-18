@@ -38,6 +38,6 @@ Pool filling and topping up have also been subject to restrictions in some perio
 
 ## Visual checks help
 
-A failed irrigation zone, a burst dripper line or a programme running at midday are easy to miss from abroad. During [holiday home checks](/holiday-home-checks-algarve/), the visible condition of the garden and irrigation is recorded and photographed. Guardemar does not reprogramme irrigation systems unless specifically agreed, and does not give legal advice on water rules.
+A failed irrigation zone, a burst dripper line or a programme running at midday are easy to miss from abroad. During [holiday home checks](/home-watch-algarve/), the visible condition of the garden and irrigation is recorded and photographed. Guardemar does not reprogramme irrigation systems unless specifically agreed, and does not give legal advice on water rules.
 
 For more on garden care during absences, read [irrigation and gardens during a long absence](/blog/irrigation-gardens-long-absence-algarve/), or [request a property assessment](/contact/).

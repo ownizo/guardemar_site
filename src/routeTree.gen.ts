@@ -23,6 +23,7 @@ import { Route as PropertyCareRouteImport } from './routes/property-care'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as PortalRouteImport } from './routes/portal'
 import { Route as PlansRouteImport } from './routes/plans'
+import { Route as LlmsDottxtRouteImport } from './routes/llms[.]txt'
 import { Route as KeyHoldingAlgarveRouteImport } from './routes/key-holding-algarve'
 import { Route as InspectionChecklistRouteImport } from './routes/inspection-checklist'
 import { Route as IRouteImport } from './routes/i'
@@ -153,6 +154,11 @@ const PortalRoute = PortalRouteImport.update({
 const PlansRoute = PlansRouteImport.update({
   id: '/plans',
   path: '/plans',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LlmsDottxtRoute = LlmsDottxtRouteImport.update({
+  id: '/llms.txt',
+  path: '/llms.txt',
   getParentRoute: () => rootRouteImport,
 } as any)
 const KeyHoldingAlgarveRoute = KeyHoldingAlgarveRouteImport.update({
@@ -470,6 +476,7 @@ export interface FileRoutesByFullPath {
   '/i': typeof IRoute
   '/inspection-checklist': typeof InspectionChecklistRoute
   '/key-holding-algarve': typeof KeyHoldingAlgarveRoute
+  '/llms.txt': typeof LlmsDottxtRoute
   '/plans': typeof PlansRoute
   '/portal': typeof PortalRouteWithChildren
   '/privacy-policy': typeof PrivacyPolicyRoute
@@ -543,6 +550,7 @@ export interface FileRoutesByTo {
   '/i': typeof IRoute
   '/inspection-checklist': typeof InspectionChecklistRoute
   '/key-holding-algarve': typeof KeyHoldingAlgarveRoute
+  '/llms.txt': typeof LlmsDottxtRoute
   '/plans': typeof PlansRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/property-care': typeof PropertyCareRoute
@@ -617,6 +625,7 @@ export interface FileRoutesById {
   '/i': typeof IRoute
   '/inspection-checklist': typeof InspectionChecklistRoute
   '/key-holding-algarve': typeof KeyHoldingAlgarveRoute
+  '/llms.txt': typeof LlmsDottxtRoute
   '/plans': typeof PlansRoute
   '/portal': typeof PortalRouteWithChildren
   '/privacy-policy': typeof PrivacyPolicyRoute
@@ -693,6 +702,7 @@ export interface FileRouteTypes {
     | '/i'
     | '/inspection-checklist'
     | '/key-holding-algarve'
+    | '/llms.txt'
     | '/plans'
     | '/portal'
     | '/privacy-policy'
@@ -766,6 +776,7 @@ export interface FileRouteTypes {
     | '/i'
     | '/inspection-checklist'
     | '/key-holding-algarve'
+    | '/llms.txt'
     | '/plans'
     | '/privacy-policy'
     | '/property-care'
@@ -839,6 +850,7 @@ export interface FileRouteTypes {
     | '/i'
     | '/inspection-checklist'
     | '/key-holding-algarve'
+    | '/llms.txt'
     | '/plans'
     | '/portal'
     | '/privacy-policy'
@@ -914,6 +926,7 @@ export interface RootRouteChildren {
   IRoute: typeof IRoute
   InspectionChecklistRoute: typeof InspectionChecklistRoute
   KeyHoldingAlgarveRoute: typeof KeyHoldingAlgarveRoute
+  LlmsDottxtRoute: typeof LlmsDottxtRoute
   PlansRoute: typeof PlansRoute
   PortalRoute: typeof PortalRouteWithChildren
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
@@ -1037,6 +1050,13 @@ declare module '@tanstack/react-router' {
       path: '/plans'
       fullPath: '/plans'
       preLoaderRoute: typeof PlansRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/llms.txt': {
+      id: '/llms.txt'
+      path: '/llms.txt'
+      fullPath: '/llms.txt'
+      preLoaderRoute: typeof LlmsDottxtRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/key-holding-algarve': {
@@ -1564,6 +1584,7 @@ const rootRouteChildren: RootRouteChildren = {
   IRoute: IRoute,
   InspectionChecklistRoute: InspectionChecklistRoute,
   KeyHoldingAlgarveRoute: KeyHoldingAlgarveRoute,
+  LlmsDottxtRoute: LlmsDottxtRoute,
   PlansRoute: PlansRoute,
   PortalRoute: PortalRouteWithChildren,
   PrivacyPolicyRoute: PrivacyPolicyRoute,

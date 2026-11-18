@@ -50,6 +50,6 @@ For a wider view, see [should you leave electricity and water on in an empty hol
 
 ## How Guardemar helps
 
-During [vacant property inspections](/vacant-property-inspections-algarve/), the visible electrical status can be checked where agreed in the property profile. Guardemar records what it sees, follows the owner's written instructions and arranges an electrician through [contractor access](/contractor-access-algarve/) where authorised. It does not carry out electrical work.
+During [vacant property inspections](/home-watch-algarve/), the visible electrical status can be checked where agreed in the property profile. Guardemar records what it sees, follows the owner's written instructions and arranges an electrician through [contractor access](/contractor-access-algarve/) where authorised. It does not carry out electrical work.
 
 To set out those instructions properly, [request a property assessment](/contact/).

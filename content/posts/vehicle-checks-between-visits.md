@@ -54,4 +54,4 @@ Ask your local garage what preparation it recommends before you leave, and keep 
 
 The optional Vehicle Care service, listed on the [services page](/services/), covers agreed visual checks and, where specifically agreed and legally and operationally permitted, basic measures to help keep a vehicle ready. It does not include mechanical maintenance, repairs, roadworthiness, a guaranteed battery condition, or moving the vehicle unless separately and expressly approved.
 
-If the car stays at the house, it can be added to [holiday home checks](/holiday-home-checks-algarve/) and [arrival preparation](/arrival-preparation-algarve/). [Request a property assessment](/contact/) to discuss it.
+If the car stays at the house, it can be added to [holiday home checks](/home-watch-algarve/) and [arrival preparation](/arrival-preparation-algarve/). [Request a property assessment](/contact/) to discuss it.

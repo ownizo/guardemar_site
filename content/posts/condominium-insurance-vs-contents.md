@@ -49,4 +49,4 @@ Read [holiday home insurance in Portugal](/blog/holiday-home-insurance-portugal-
 
 Make sure the administrator has your current contact details and those of your local keyholder. In an emergency affecting the building, they need to reach someone who can open your apartment.
 
-Guardemar does not give insurance advice. Through [key holding](/key-holding-algarve/) and [vacant property inspections](/vacant-property-inspections-algarve/), it can be the local contact and keep a dated record. For apartments specifically, read [empty apartments in Portimão and Praia da Rocha](/blog/empty-apartments-portimao-praia-da-rocha/), or [request a property assessment](/contact/).
+Guardemar does not give insurance advice. Through [key holding](/key-holding-algarve/) and [vacant property inspections](/home-watch-algarve/), it can be the local contact and keep a dated record. For apartments specifically, read [empty apartments in Portimão and Praia da Rocha](/blog/empty-apartments-portimao-praia-da-rocha/), or [request a property assessment](/contact/).

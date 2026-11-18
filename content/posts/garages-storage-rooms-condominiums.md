@@ -40,7 +40,7 @@ Garage doors and gates often stop working after power cuts or storms. Keep spare
 
 ## Visual checks while you are away
 
-Owners often never see their garage space between visits. During [vacant property inspections](/vacant-property-inspections-algarve/), garages and storage rooms can be included where keys are provided and the owner has asked for it. Visible damp, water on the floor and signs of interference can be recorded and photographed. Guardemar does not open safes or inventory contents.
+Owners often never see their garage space between visits. During [vacant property inspections](/home-watch-algarve/), garages and storage rooms can be included where keys are provided and the owner has asked for it. Visible damp, water on the floor and signs of interference can be recorded and photographed. Guardemar does not open safes or inventory contents.
 
 For apartments in particular, read [villa vs apartment: what actually needs checking](/blog/villa-vs-apartment-what-to-check/) and [empty apartments in Portimão and Praia da Rocha](/blog/empty-apartments-portimao-praia-da-rocha/). For a car kept in the garage, see [leaving a car in Portugal while you are abroad](/blog/leaving-car-portugal-while-abroad/).
 

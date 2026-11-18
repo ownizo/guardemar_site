@@ -47,6 +47,6 @@ If children or guests use the pool, ask the company to report damaged covers, fe
 
 ## Independent visual checks
 
-Pool companies see the pool. They rarely look at the rest of the property, and owners abroad have no way to confirm what they see. Guardemar's optional pool and garden contractor check, listed on the [services page](/services/), provides a visual update after a contractor has attended. Regular [holiday home checks](/holiday-home-checks-algarve/) include the visible pool condition. This is observation, not water testing or technical inspection.
+Pool companies see the pool. They rarely look at the rest of the property, and owners abroad have no way to confirm what they see. Guardemar's optional pool and garden contractor check, listed on the [services page](/services/), provides a visual update after a contractor has attended. Regular [holiday home checks](/home-watch-algarve/) include the visible pool condition. This is observation, not water testing or technical inspection.
 
 For leaving a pool while you are away, read [leaving a pool while you are away](/blog/leaving-pool-while-away-algarve/), or [request a property assessment](/contact/).

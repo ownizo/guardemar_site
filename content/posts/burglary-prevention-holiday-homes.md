@@ -42,7 +42,7 @@ Neighbours who know you and have your contact details are often the first to not
 
 ## Regular visits
 
-A property visited regularly looks visited. Doors are tried, windows checked and the post collected. Changes are photographed and reported. Guardemar's [vacant property inspections](/vacant-property-inspections-algarve/) and [key holding](/key-holding-algarve/) follow an agreed checklist. They do not guarantee that an intrusion will be detected or prevented, and Guardemar is not a security company.
+A property visited regularly looks visited. Doors are tried, windows checked and the post collected. Changes are photographed and reported. Guardemar's [vacant property inspections](/home-watch-algarve/) and [key holding](/key-holding-algarve/) follow an agreed checklist. They do not guarantee that an intrusion will be detected or prevented, and Guardemar is not a security company.
 
 ## If something happens
 

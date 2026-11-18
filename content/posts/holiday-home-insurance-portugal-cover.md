@@ -46,7 +46,7 @@ Whatever the policy says, a clear record of the property's condition makes claim
 
 ## Where Guardemar fits
 
-Guardemar is not an insurer and does not give insurance advice. Its [vacant property inspections](/vacant-property-inspections-algarve/) produce dated photo reports that owners can keep in their own records. Whether those reports meet a policy condition depends on the policy and the insurer.
+Guardemar is not an insurer and does not give insurance advice. Its [vacant property inspections](/home-watch-algarve/) produce dated photo reports that owners can keep in their own records. Whether those reports meet a policy condition depends on the policy and the insurer.
 
 For specific claim types, read [water damage claims](/blog/water-damage-claims-documenting-algarve-home/), [storm damage claims](/blog/storm-damage-claims-algarve-practical-sequence/) and [condominium insurance vs your own contents policy](/blog/condominium-building-insurance-vs-contents-policy/).
 

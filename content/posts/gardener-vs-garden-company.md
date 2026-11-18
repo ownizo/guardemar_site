@@ -41,6 +41,6 @@ Rural and semi-rural plots may have land-clearing obligations that go beyond ord
 
 ## Knowing the work is done
 
-Owners abroad often only discover problems at the next visit. An independent visual check helps. Guardemar's optional pool and garden contractor check, listed on the [services page](/services/), provides a visual update after a contractor has attended. Regular [holiday home checks](/holiday-home-checks-algarve/) also include the visible condition of the garden and irrigation. This is observation, not horticultural or technical inspection.
+Owners abroad often only discover problems at the next visit. An independent visual check helps. Guardemar's optional pool and garden contractor check, listed on the [services page](/services/), provides a visual update after a contractor has attended. Regular [holiday home checks](/home-watch-algarve/) also include the visible condition of the garden and irrigation. This is observation, not horticultural or technical inspection.
 
 Guardemar works alongside your existing gardener rather than replacing them. Read [working with your existing pool, garden and cleaning team](/blog/working-with-existing-pool-garden-cleaners/), or [request a property assessment](/contact/).

@@ -36,6 +36,6 @@ A pump running dry or cycling constantly can fail. A burst irrigation pipe fed b
 
 Boreholes are typically part of the irrigation system, so they belong in the same written instructions: what runs, when, and who may turn it off. Read [irrigation and gardens during a long absence](/blog/irrigation-gardens-long-absence-algarve/) and the current [Algarve garden watering rules](/blog/algarve-garden-watering-rules/).
 
-During [holiday home checks](/holiday-home-checks-algarve/), the visible condition of the garden, irrigation and accessible pump areas can be recorded where agreed. Guardemar does not service pumps, test water or advise on licensing. Qualified specialists are arranged through [contractor access](/contractor-access-algarve/) when the owner authorises it.
+During [holiday home checks](/home-watch-algarve/), the visible condition of the garden, irrigation and accessible pump areas can be recorded where agreed. Guardemar does not service pumps, test water or advise on licensing. Qualified specialists are arranged through [contractor access](/contractor-access-algarve/) when the owner authorises it.
 
 To add your borehole to a property profile, [request a property assessment](/contact/).
