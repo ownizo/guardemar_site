@@ -35,7 +35,7 @@ export const withVat = (net: number) => Math.round(net * (1 + vatRate) * 100) / 
 export const formatEuro = (amount: number) => `€${amount.toLocaleString('en-IE', { minimumFractionDigits: Number.isInteger(amount) ? 0 : 2, maximumFractionDigits: 2 })}`
 export const vatNote = 'Prices include VAT at 23%.'
 
-export const legalLastUpdated = '13 September 2026'
+export const legalLastUpdated = '21 November 2026'
 
 export const business = {
   name: 'GUARDEMAR',
