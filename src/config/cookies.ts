@@ -10,7 +10,7 @@ export const cookieCategories = {
   },
   analytics: {
     title: 'Analytics',
-    description: `Helps us understand how the website is used. Loads Google Analytics 4 (measurement ID ${googleAnalyticsMeasurementId}) and its ${googleAnalyticsCookieNames.slice(0, 2).join(' and ')} cookies only after you allow this category.`,
+    description: `Helps us understand how the website is used. Loads Google Analytics 4 (measurement ID ${googleAnalyticsMeasurementId}) and its ${googleAnalyticsCookieNames.slice(0, 2).join(' and ')} cookies only after you allow this category, and lets our own visit counter keep a random session identifier to group the pages of one visit.`,
   },
 } as const
 

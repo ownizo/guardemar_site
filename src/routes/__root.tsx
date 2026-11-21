@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { AnalyticsLink } from '@/components/site'
 import { CookieConsent } from '@/components/cookie-consent'
 import { GoogleAnalytics } from '@/components/google-analytics'
+import { SiteVisitCounter } from '@/components/site-visit-counter'
 import { business, footerLinks, legalEntity, navigation } from '@/config/site'
 import { openCookieSettings } from '@/lib/consent'
 import '../styles.css'
@@ -72,7 +73,7 @@ function Footer() {
 function RootDocument({ children }: { children: React.ReactNode }) {
   const pathname = useRouterState({ select: (state) => state.location.pathname })
   const isPrivateArea = pathname.startsWith('/portal') || pathname.startsWith('/admin') || pathname.startsWith('/reset-password')
-  return <html lang="en-GB"><head><HeadContent /></head><body>{isPrivateArea ? <main id="main">{children}</main> : <><a className="skip-link" href="#main">Skip to content</a><Header /><main id="main">{children}</main><Footer /><CookieConsent /><GoogleAnalytics /></>}<Scripts /></body></html>
+  return <html lang="en-GB"><head><HeadContent /></head><body>{isPrivateArea ? <main id="main">{children}</main> : <><a className="skip-link" href="#main">Skip to content</a><Header /><main id="main">{children}</main><Footer /><CookieConsent /><GoogleAnalytics /><SiteVisitCounter /></>}<Scripts /></body></html>
 }
 
 function NotFound() {
