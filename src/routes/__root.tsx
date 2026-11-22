@@ -16,12 +16,13 @@ export const Route = createRootRoute({
       { charSet: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { title: 'Guardemar | Second-home care, Western Algarve' },
-      { name: 'theme-color', content: '#06275A' },
+      { name: 'theme-color', content: '#18252A' },
       { property: 'og:site_name', content: 'GUARDEMAR' },
       { property: 'og:locale', content: 'en_GB' },
     ],
     links: [
-      { rel: 'icon', href: '/favicon.ico', type: 'image/x-icon' },
+      { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' },
+      { rel: 'icon', href: '/favicon.ico', sizes: '32x32' },
       { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
       { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' },
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Manrope:wght@400;500;600;700&display=swap' },
@@ -39,7 +40,7 @@ function Header() {
     <header className="site-header">
       <div className="shell header-inner">
         <Link to="/" className="wordmark" aria-label="Guardemar home">
-          <img src="/guardemar-logo.svg" alt="GUARDEMAR — second-home management, Western Algarve" width="180" height="42" />
+          <img src="/guardemar-wordmark-light.svg" alt="GUARDEMAR — second-home management, Western Algarve" width="200" height="21" />
         </Link>
         <nav className={open ? 'main-nav open' : 'main-nav'} aria-label="Primary navigation">
           {navigation.map((item) => <a key={item.href} href={item.href} onClick={() => setOpen(false)}>{item.label}</a>)}
@@ -59,7 +60,7 @@ function Footer() {
   return (
     <footer className="site-footer">
       <div className="shell footer-grid">
-        <div><p className="footer-mark">GUARDEMAR</p><p>Second-home management</p><p className="footer-tagline">Here when you&apos;re away.</p><p>Western Algarve, Carvoeiro to Sagres.</p></div>
+        <div><img className="footer-logo" src="/guardemar-logo-light.svg" alt="GUARDEMAR — Private Property Care" width="240" height="38" /><p>Second-home management</p><p className="footer-tagline">Here when you&apos;re away.</p><p>Western Algarve, Carvoeiro to Sagres.</p></div>
         <div><h2>Explore</h2>{footerLinks.map((item) => <a key={item.href} href={item.href}>{item.label}</a>)}<Link to="/portal/login">Client Login</Link></div>
         <div><h2>Service area</h2><p>Western Algarve<br />from Carvoeiro to Sagres.</p><a href="/areas/">View all areas</a></div>
         <div><h2>Contact</h2><AnalyticsLink href={business.phoneHref} event="phone_click">{business.phone}</AnalyticsLink><AnalyticsLink href={business.emailHref} event="email_click">{business.email}</AnalyticsLink><p>{business.addressLines.join(', ')}</p></div>
