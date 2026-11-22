@@ -23,7 +23,7 @@ Production marketing and editorial website for GUARDEMAR, a private property car
 - Show consumer prices including VAT (use `withVat`/`formatEuro` from `src/config/site.ts`), with the net figure alongside where useful.
 - Never publish a street address for the operational base: Guardemar holds client keys.
 - Internal links to public pages must use the trailing-slash form.
-- Use the existing navy, ocean blue, sand and white design tokens from `src/styles.css`.
+- Use the "Private Estate" palette tokens from `src/styles.css`: carvão `--navy` #18252A, bronze `--bronze` #BB9467 (deeper `--ocean` #8C6A42 for small text on light), champanhe `--champagne` #F4F0E7, azul ardósia `--slate` #667A81. Use `/guardemar-wordmark-light.svg` / `/guardemar-logo-light.svg` on dark backgrounds and `/guardemar-logo.svg` on light ones.
 - Keep client-side JavaScript limited to interactions that need it.
 - Do not invent testimonials, accreditations, customer counts or commercial terms.
 - Distinguish visual inspection and coordination from regulated technical work.
