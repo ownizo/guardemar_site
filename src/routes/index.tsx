@@ -29,20 +29,20 @@ function HomePage() {
           <picture>
             <source
               type="image/avif"
-              srcSet="/images/guardemar-coastal-villa-hero-720.avif 720w, /images/guardemar-coastal-villa-hero-1200.avif 1200w, /images/guardemar-coastal-villa-hero-1844.avif 1844w"
+              srcSet="/images/guardemar-pool-hero-720.avif 720w, /images/guardemar-pool-hero-1200.avif 1200w, /images/guardemar-pool-hero-1600.avif 1600w"
               sizes="(max-width: 640px) 100vw, (max-width: 980px) calc(100vw - 40px), (min-width: 1220px) 578px, 49vw"
             />
             <source
               type="image/webp"
-              srcSet="/images/guardemar-coastal-villa-hero-720.webp 720w, /images/guardemar-coastal-villa-hero-1200.webp 1200w, /images/guardemar-coastal-villa-hero-1844.webp 1844w"
+              srcSet="/images/guardemar-pool-hero-720.webp 720w, /images/guardemar-pool-hero-1200.webp 1200w, /images/guardemar-pool-hero-1600.webp 1600w"
               sizes="(max-width: 640px) 100vw, (max-width: 980px) calc(100vw - 40px), (min-width: 1220px) 578px, 49vw"
             />
             <img
-              className="hero-image"
-              src="/images/guardemar-coastal-villa-hero-1200.webp"
-              alt="Luxury coastal villa overlooking the Atlantic in the Algarve"
-              width="1844"
-              height="853"
+              className="hero-image hero-image-pool"
+              src="/images/guardemar-pool-hero-1200.webp"
+              alt="Infinity pool beside a white wall with an opening framing the sea"
+              width="1600"
+              height="2133"
               loading="eager"
               fetchPriority="high"
               decoding="async"
