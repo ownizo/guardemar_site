@@ -21,6 +21,111 @@ export default [
     "readingTime": 3
   },
   {
+    "title": "Air-Conditioning Servicing Before an Algarve Summer",
+    "summary": "Why air-conditioning in a second home is worth servicing before the season, and how to arrange it from abroad.",
+    "categories": [
+      "Maintenance",
+      "Contractors"
+    ],
+    "slug": "air-conditioning-servicing-before-summer-algarve",
+    "date": "2026-11-18",
+    "seoTitle": "Air-Conditioning Servicing Before Summer",
+    "author": "Hugo Gonçalves",
+    "content": "Air-conditioning that has been switched off for six months does not always switch back on smoothly. Filters collect dust, drains block, outdoor units corrode in the salt air and remote controls lose their batteries. Owners often find out on the first hot day, when every technician in the region is already busy.\n\n## Why servicing matters in a second home\n\nIn a home that is lived in all year, problems with air-conditioning appear gradually. In a second home, they all appear at once, usually on arrival. A service before the season gives time to order parts and repair faults before anyone travels.\n\nAir-conditioning units also help with humidity when used in dehumidifying mode. If you rely on that during absences, the system needs to be working properly. See [humidity and mould in Algarve holiday homes](/blog/humidity-mould-algarve-holiday-homes/).\n\n## What a service usually covers\n\nAsk your technician what is included. A typical service may cover:\n\n- cleaning or replacing filters\n- cleaning indoor units and checking the drainage\n- checking outdoor units for corrosion, debris and secure mounting\n- checking operation in cooling, heating and dehumidifying modes\n- reporting anything that needs repair\n\nWork on refrigerant circuits is regulated and must be carried out by suitably qualified technicians.\n\n## When to book\n\nIn the Western Algarve, demand rises sharply from May. Booking in March or April is usually easier. For homes used at Christmas or in winter, a check of the heating mode in October or November makes sense.\n\n## Outdoor units in coastal homes\n\nOutdoor units on terraces and roofs near the sea are exposed to salt, sand and wind. Ask the technician to look at fixings, panels and connections. See [salt air, shutters and outdoor metalwork](/blog/salt-air-shutters-outdoor-metalwork-algarve/).\n\n## Arranging it while you are away\n\nThe technician needs access to every room with a unit and sometimes to the roof or the electrical panel. Guardemar's [contractor access](/contractor-access-algarve/) service provides authorised access, records attendance and photographs the visible state afterwards where agreed. Guardemar does not service or certify air-conditioning systems.\n\n[Arrival preparation](/arrival-preparation-algarve/) can include checking that agreed systems switch on before you travel, so any concern can be raised with a specialist in time.\n\nFor the full year, see the [preventive maintenance calendar](/blog/preventive-maintenance-calendar-algarve-second-home/), or [request a property assessment](/contact/).",
+    "_meta": {
+      "filePath": "air-conditioning-servicing.md",
+      "fileName": "air-conditioning-servicing.md",
+      "directory": ".",
+      "extension": "md",
+      "path": "air-conditioning-servicing"
+    },
+    "readingTime": 3
+  },
+  {
+    "title": "Alarm Monitoring in the Algarve: What Happens When the Alarm Goes Off",
+    "summary": "How monitored alarms usually work for second homes, the role of keyholders and how to avoid an alarm that nobody responds to.",
+    "categories": [
+      "Security",
+      "Vacant Homes"
+    ],
+    "slug": "alarm-monitoring-algarve-what-happens",
+    "date": "2026-11-18",
+    "seoTitle": "Alarm Monitoring: When the Alarm Goes Off",
+    "author": "Hugo Gonçalves",
+    "content": "Most owners install an alarm for peace of mind. Fewer think carefully about what happens next. When the alarm triggers at three in the morning, who is told, who goes to the property, and who has the key?\n\n## Monitored and unmonitored alarms\n\nAn **unmonitored** alarm sounds a siren and, perhaps, sends a notification to the owner's phone. If the owner is abroad, the response depends on whether they can reach someone locally.\n\nA **monitored** alarm is connected to a monitoring centre operated by a private security company. When the alarm triggers, the centre follows an agreed procedure. Depending on the contract, that may include trying to verify the alarm, calling the owner and keyholders, and alerting the police where appropriate.\n\nIn Portugal, private security companies, including those that provide alarm monitoring, operate under licensing and supervision by the PSP. Ask your provider about its licence and the response it actually provides.\n\n## Questions to ask your alarm company\n\n- What happens when an alarm is triggered, step by step?\n- Does the centre verify alarms, for example with cameras or sensors?\n- Does the service include a patrol or guard response, or only phone calls?\n- Who are the keyholders on the contact list, and in what order are they called?\n- What happens if nobody on the list answers?\n- Is there battery backup, and is a power cut reported?\n- Who resets the system after an event?\n\n## The keyholder gap\n\nMany alarm contracts assume there is someone nearby who can attend, open the door and reset the system. For overseas owners, that is often the weakest link: a neighbour who is away, a former cleaner whose number changed, or nobody at all.\n\nA professional keyholder can be named on the contact list, with clear written authority. Guardemar does not monitor alarms and is not a security company. Through [key holding](/key-holding-algarve/), it can be an authorised contact who attends under the owner's instructions, subject to availability. The optional emergency call-out on the [services page](/services/) is not 24-hour cover or an emergency-services response.\n\n## False alarms\n\nInsects, pets, curtains moving in a draught, power fluctuations and storms all cause false alarms. Repeated false alarms are a nuisance and can undermine response. If your alarm triggers often, ask the installer to review sensor positions and settings.\n\n## Alarms and insurance\n\nSome insurers ask about alarms, and some policies include conditions about using them. Read [questions to ask your insurer about a second home in Portugal](/blog/questions-to-ask-insurer-second-home-portugal/).\n\n## Alarms do not see everything\n\nAn alarm detects intrusion. It does not detect a slow leak, damp or a failed fridge. Read [cameras and alarms vs a physical property visit](/blog/cameras-alarms-vs-physical-property-visit/), or [request a property assessment](/contact/).",
+    "_meta": {
+      "filePath": "alarm-monitoring.md",
+      "fileName": "alarm-monitoring.md",
+      "directory": ".",
+      "extension": "md",
+      "path": "alarm-monitoring"
+    },
+    "readingTime": 3
+  },
+  {
+    "title": "Algarve Garden Watering Rules: What Second-Home Owners Need to Know",
+    "summary": "How drought measures have affected private gardens and pools in the Algarve, and how owners abroad can keep up with changing rules.",
+    "categories": [
+      "Gardens",
+      "Ownership"
+    ],
+    "slug": "algarve-garden-watering-rules",
+    "date": "2026-11-18",
+    "seoTitle": "Algarve Garden Watering Rules for Owners",
+    "author": "Hugo Gonçalves",
+    "content": "Few subjects have caused as much confusion among Algarve homeowners in recent years as water. Between 2023 and 2025, drought led to a series of national and municipal measures, some of them directly affecting private gardens, lawns and pools. Owners who live abroad often heard about them late, through neighbours or news reports.\n\nThe situation in 2026 is different. Wet winters have refilled the region's reservoirs. But the rules are reviewed regularly, and the past few years show how quickly they can change.\n\n## What happened during the drought\n\nIn February 2024, the government approved a resolution with restrictions that applied across the Algarve. Among them was a ban on using mains water, or drinkable water from other natural sources, to water gardens and lawns on private property, with limited exceptions such as keeping trees alive. Several municipalities, including Lagoa, Portimão and Faro, added their own measures for public gardens, fountains and pools.\n\nFor an owner abroad, the practical consequence was simple: an automatic irrigation system watering a lawn could put the property in breach of the rules without anyone noticing.\n\n## Where things stand now\n\nBy mid-2026, the region's reservoirs were reported to be well filled, and day-to-day restrictions for residents and visitors had eased. The authorities have continued to review the drought situation at regular intervals, which means measures can return if conditions change.\n\nOwners should not rely on what applied last year. Check the current position with your municipality (câmara municipal) or water supplier before each season.\n\n## Practical steps for owners abroad\n\n- Ask your gardener or irrigation installer to show you exactly what is watered, when and from which source.\n- Keep a written note of the irrigation programme for each zone.\n- Make sure someone can change or switch off the programme quickly if new restrictions are announced.\n- Consider whether a lawn is still the right choice. Many owners are moving towards drought-tolerant planting that needs far less water.\n- If the property has a borehole, understand the licensing position. Read [boreholes (furos) for Algarve gardens](/blog/boreholes-furos-algarve-gardens/).\n\n## Pools\n\nPool filling and topping up have also been subject to restrictions in some periods. Before refilling or draining a pool, check what currently applies locally. See [leaving a pool while you are away](/blog/leaving-pool-while-away-algarve/) and [what a pool maintenance contract should include](/blog/pool-maintenance-contracts-algarve/).\n\n## Visual checks help\n\nA failed irrigation zone, a burst dripper line or a programme running at midday are easy to miss from abroad. During [holiday home checks](/home-watch-algarve/), the visible condition of the garden and irrigation is recorded and photographed. Guardemar does not reprogramme irrigation systems unless specifically agreed, and does not give legal advice on water rules.\n\nFor more on garden care during absences, read [irrigation and gardens during a long absence](/blog/irrigation-gardens-long-absence-algarve/), or [request a property assessment](/contact/).",
+    "_meta": {
+      "filePath": "algarve-garden-watering-rules.md",
+      "fileName": "algarve-garden-watering-rules.md",
+      "directory": ".",
+      "extension": "md",
+      "path": "algarve-garden-watering-rules"
+    },
+    "readingTime": 3
+  },
+  {
+    "title": "Art, Wine and Collections in an Empty Algarve Villa",
+    "summary": "How owners of significant homes can protect artworks, cellars and collections while the house stands empty, and where a visual inspection fits in.",
+    "categories": [
+      "Property Risks",
+      "Insurance Documentation"
+    ],
+    "slug": "art-wine-collections-empty-villa-algarve",
+    "date": "2026-11-23",
+    "seoTitle": "Art and Wine in an Empty Algarve Villa",
+    "author": "Hugo Gonçalves",
+    "content": "Many of the homes we look after hold more than furniture. A painting bought on the day the house was finished, a cellar built up over years, books, textiles, a piano. While the owner is in residence, these things are noticed every day. When the house is closed for months, nobody is looking at them at all.\n\nThe Algarve is kind to people and less kind to some objects. Salt air, strong sun through large windows, closed rooms and the shift from a dry summer to a damp winter all leave their mark on a house that nobody opens.\n\n## What changes when the house is closed\n\nThe risks are rarely dramatic. They are slow:\n\n- **Humidity.** A closed house with the shutters down can hold damp air for weeks, particularly after autumn rain. Canvas, paper, wood and leather respond to that long before a stain appears on a wall.\n- **Light.** Sun moves across a room through the year. A work that hung in shade in spring may sit in direct afternoon light in winter.\n- **Temperature.** A wine store without active cooling follows the house. A power cut or a tripped breaker can stop a cellar unit without anyone knowing.\n- **Pests.** Moths and wood-boring insects favour quiet rooms. Their early signs are small and easy to miss.\n- **Water.** A small leak above a wall where art hangs is a different problem from a leak in a garage.\n\nNone of this needs a crisis to cause a loss. It needs time and no one watching.\n\n## What a documented visit can and cannot do\n\nOn a Guardemar visit we record what we see, in the same places each time: the condition of rooms, signs of damp or condensation, the humidity reading, whether the cellar unit is running and showing its usual display, and anything that has changed since the last visit. The photographs are taken from the same viewpoints, so a slow change becomes visible over a season.\n\nWe do not move, clean, handle or value artworks or collections, and we do not give conservation or insurance advice. Where something needs a specialist — a conservator, a cellar engineer, an electrician — we tell you, with the photographs, and arrange access once you have approved the work.\n\n## Practical steps before you leave\n\nA short list, agreed in advance, works better than a long one:\n\n1. **Note what matters most.** A simple room-by-room list of the pieces you want checked on every visit, with a reference photograph of each.\n2. **Ask a specialist about placement.** A conservator can advise on walls, light and humidity for particular works far better than a general rule can.\n3. **Check the cellar's power.** Know which breaker serves the cooling unit, and ask whether it restarts by itself after a cut.\n4. **Agree what we may do.** Whether we may open shutters to ventilate, close curtains in a south-facing room, or switch on a dehumidifier, should be written into your instructions.\n5. **Speak to your insurer.** Valuable items often need to be scheduled separately, and some policies have conditions for long absences. [Questions to ask your insurer](/blog/questions-to-ask-insurer-second-home-portugal/) is a useful starting point.\n\n## Keep the record together\n\nThe visit reports, the reference photographs and any specialist's notes belong in the same place. If a piece is ever damaged, a dated record of its condition and of the room it hung in is far more useful than a recollection. [A simple evidence file](/blog/evidence-file-vacant-algarve-home/) explains how to keep it factual.\n\nIf your home holds a collection that should be checked on every visit, mention it when you [request a private assessment](/contact/). Estates with several buildings or a cellar are usually better served by a [Private Estate proposal](/plans/) than by a standard plan.",
+    "_meta": {
+      "filePath": "art-wine-collections-empty-villa.md",
+      "fileName": "art-wine-collections-empty-villa.md",
+      "directory": ".",
+      "extension": "md",
+      "path": "art-wine-collections-empty-villa"
+    },
+    "readingTime": 3
+  },
+  {
+    "title": "Boreholes (Furos) for Algarve Gardens: Licensing and Practicalities",
+    "summary": "What overseas owners should understand about boreholes and wells on an Algarve property, from licensing to day-to-day care.",
+    "categories": [
+      "Gardens",
+      "Ownership"
+    ],
+    "slug": "boreholes-furos-algarve-gardens",
+    "date": "2026-11-18",
+    "seoTitle": "Boreholes (Furos) for Algarve Gardens",
+    "author": "Hugo Gonçalves",
+    "content": "Many villas and rural properties in the Western Algarve have a borehole (furo) or well (poço). For garden irrigation, it can seem like an obvious answer to the cost and restrictions of mains water. In practice, groundwater is a regulated resource, and an existing borehole is not automatically a licensed one.\n\n## Groundwater is licensed, not simply owned\n\nIn Portugal, the use of groundwater is subject to licensing by the environmental authorities, through the Portuguese Environment Agency (APA). That applies both to drilling a new borehole and to using an existing one. Buyers sometimes discover that a borehole on their land was never registered, or that its paperwork does not match how it is used.\n\nBefore relying on a borehole, ask your lawyer or a specialist to confirm its licensing status, and keep the documents in your property file.\n\n## Licensing has recently reopened in some areas\n\nDuring the drought years, licensing of new groundwater abstraction was frozen in several aquifer systems in the south. In 2026, after exceptional rainfall replenished reservoirs and aquifers, the government lifted those restrictions. Applications for new wells became possible again in previously frozen aquifers, including Querença-Silves and Almádena-Odiáxere. The latter lies in the Lagos area.\n\nThat does not mean every application will succeed, or that conditions will stay the same. Owners considering a new borehole should take specialist advice on the current position before commissioning any drilling.\n\n## Practical points for a borehole you already have\n\n- Know where the pump, pressure vessel and controls are, and how they are powered.\n- Record who installed and maintains the pump.\n- Check whether the borehole feeds only irrigation, or also the house or pool.\n- If the water is used for anything other than irrigation, ask a specialist about testing.\n- Make sure someone can switch the pump off if a pipe bursts or the garden is flooding.\n\nA pump running dry or cycling constantly can fail. A burst irrigation pipe fed by a borehole can run for days without anyone noticing.\n\n## While you are away\n\nBoreholes are typically part of the irrigation system, so they belong in the same written instructions: what runs, when, and who may turn it off. Read [irrigation and gardens during a long absence](/blog/irrigation-gardens-long-absence-algarve/) and the current [Algarve garden watering rules](/blog/algarve-garden-watering-rules/).\n\nDuring [holiday home checks](/home-watch-algarve/), the visible condition of the garden, irrigation and accessible pump areas can be recorded where agreed. Guardemar does not service pumps, test water or advise on licensing. Qualified specialists are arranged through [contractor access](/contractor-access-algarve/) when the owner authorises it.\n\nTo add your borehole to a property profile, [request a property assessment](/contact/).",
+    "_meta": {
+      "filePath": "boreholes-furos-algarve.md",
+      "fileName": "boreholes-furos-algarve.md",
+      "directory": ".",
+      "extension": "md",
+      "path": "boreholes-furos-algarve"
+    },
+    "readingTime": 3
+  },
+  {
     "title": "How to Brief a Local Property-Care Company",
     "summary": "The information an Algarve home-watch visit actually needs, and the decisions to take before anyone holds your keys.",
     "categories": [
@@ -37,6 +142,48 @@ export default [
       "directory": ".",
       "extension": "md",
       "path": "brief-property-care"
+    },
+    "readingTime": 3
+  },
+  {
+    "title": "Burglary Prevention for Holiday Homes in the Western Algarve",
+    "summary": "Practical, proportionate measures to make a closed second home look lived in and harder to target.",
+    "categories": [
+      "Security",
+      "Vacant Homes"
+    ],
+    "slug": "burglary-prevention-holiday-homes-western-algarve",
+    "date": "2026-11-18",
+    "seoTitle": "Burglary Prevention for Algarve Holiday Homes",
+    "author": "Hugo Gonçalves",
+    "content": "The Western Algarve is generally a calm place to own a home. Still, closed holiday homes have one obvious weakness: they look closed. Shutters down for months, post piling up and a garden that nobody tends all suggest that nobody is coming back soon.\n\nGood prevention is rarely dramatic. It is mostly about making the property look cared for, making entry harder and making sure someone notices quickly if something happens.\n\n## Make the house look occupied\n\n- Avoid the \"everything shut\" look. Some owners leave a few shutters partly open, if that is safe and the house remains secure.\n- Use timers or smart plugs for some lights.\n- Keep the garden maintained, particularly the front.\n- Do not let post, flyers and deliveries accumulate. See [mail, bins and deliveries when nobody is there](/blog/mail-bins-deliveries-empty-home/).\n- Avoid announcing absences on social media.\n\n## Make entry harder\n\n- Check that all doors, windows, shutters and gates lock properly.\n- Ask a locksmith about the quality of locks on external doors.\n- Secure ladders, tools and garden furniture that could be used to climb.\n- Keep side gates and garages locked.\n- Do not leave keys in obvious places.\n\n## Do not leave valuables behind\n\nJewellery, watches, cash, documents and small electronics should not stay in a closed holiday home. If they must, consider a properly fixed safe, and check your insurance. Guardemar never opens, inspects or holds credentials for safes.\n\n## Detect and respond\n\nAn alarm or cameras can tell you something happened. They work best with someone who can attend. Read [alarm monitoring in the Algarve](/blog/alarm-monitoring-algarve-what-happens/) and [CCTV at your Algarve home: what Portuguese law allows](/blog/cctv-algarve-home-portuguese-law/).\n\n## Know your neighbours\n\nNeighbours who know you and have your contact details are often the first to notice something unusual. In condominiums, the administrator should have your current details.\n\n## Regular visits\n\nA property visited regularly looks visited. Doors are tried, windows checked and the post collected. Changes are photographed and reported. Guardemar's [vacant property inspections](/home-watch-algarve/) and [key holding](/key-holding-algarve/) follow an agreed checklist. They do not guarantee that an intrusion will be detected or prevented, and Guardemar is not a security company.\n\n## If something happens\n\nIf a break-in is suspected, nobody should enter the property alone. Contact the police, and avoid moving anything until it has been documented. Notify your insurer promptly. Read [questions to ask your insurer](/blog/questions-to-ask-insurer-second-home-portugal/).\n\nFor a practical routine, [request a property assessment](/contact/).",
+    "_meta": {
+      "filePath": "burglary-prevention-holiday-homes.md",
+      "fileName": "burglary-prevention-holiday-homes.md",
+      "directory": ".",
+      "extension": "md",
+      "path": "burglary-prevention-holiday-homes"
+    },
+    "readingTime": 3
+  },
+  {
+    "title": "Burst Pipe or Leak While You Are Away: What Happens Next",
+    "summary": "A practical sequence for overseas owners when water is found in a closed Algarve home, from the first photograph to the insurer.",
+    "categories": [
+      "Property Risks",
+      "Contractors"
+    ],
+    "slug": "burst-pipe-leak-while-away-algarve",
+    "date": "2026-11-18",
+    "seoTitle": "Burst Pipe or Leak While You Are Away",
+    "author": "Hugo Gonçalves",
+    "content": "The message nobody wants is a photograph of water on a tiled floor. It may come from a neighbour, from the condominium, from a cleaner or during a scheduled inspection. What happens in the next few hours depends on decisions that should have been made long before.\n\n## 1. Make the situation safe, where possible\n\nIf water is actively escaping and the main stopcock can be reached safely, turning off the supply usually limits further damage. Where water is near electrical sockets, appliances or the consumer unit, nobody should take risks: that is a matter for a qualified electrician, and in a genuine emergency, the emergency services.\n\nOwners should know exactly where their stopcock is, and whether turning it off affects anything else, such as irrigation, a pool top-up or a heating system. Record this in the property profile. See [electricity and water in an empty home](/blog/electricity-water-empty-holiday-home/).\n\n## 2. Photograph before anything is moved\n\nBefore towels, mops or furniture move, take wide photographs of each affected room, close-ups of the visible source if it is apparent, and any marks on ceilings, walls or skirting. Note the date and time. This record helps the plumber, the condominium and the insurer understand the starting point.\n\nA simple [evidence file](/blog/evidence-file-vacant-algarve-home/) kept over previous visits makes it easier to show that the damage is new.\n\n## 3. Call the plumber, with authority\n\nA plumber can only act once they have access and know what they may do. If you have agreed a spending limit and a preferred plumber, this step takes minutes. If not, it can take days. Read [finding a reliable plumber from abroad](/blog/finding-plumber-western-algarve-from-abroad/).\n\n## 4. Tell the neighbours or condominium where relevant\n\nIn apartments, water rarely stays in one unit. The administrator may need to know, and the flat below may already be affected. Early, factual contact usually reduces disputes later.\n\n## 5. Notify your insurer promptly\n\nMost home policies expect prompt notification and reasonable steps to limit damage. Check your policy for the claim procedure, any time limits and whether you should wait for approval before repairs beyond what is urgent. Keep invoices, photographs and the plumber's report. Read [water damage claims: how to document before the plumber arrives](/blog/water-damage-claims-documenting-algarve-home/).\n\n## 6. Dry out and follow up\n\nWater that has stopped can still cause problems. Humidity, mould and swelling joinery often appear later. A follow-up visit a few days afterwards records whether the area is drying and whether anything new has appeared. See [humidity and mould in Algarve holiday homes](/blog/humidity-mould-algarve-holiday-homes/).\n\n## Where Guardemar fits\n\nGuardemar's role is visual observation, authorised access and coordination. Through [contractor access](/contractor-access-algarve/) and the optional emergency call-out listed on the [services page](/services/), subject to availability, Guardemar can attend, photograph, meet the plumber and report back. It is not a 24-hour emergency service and does not carry out plumbing work.\n\nTo put a response plan in place before it is needed, [request a property assessment](/contact/).",
+    "_meta": {
+      "filePath": "burst-pipe-leak-while-away.md",
+      "fileName": "burst-pipe-leak-while-away.md",
+      "directory": ".",
+      "extension": "md",
+      "path": "burst-pipe-leak-while-away"
     },
     "readingTime": 3
   },
@@ -83,6 +230,27 @@ export default [
     "readingTime": 3
   },
   {
+    "title": "CCTV at Your Algarve Home: What Portuguese Law Allows",
+    "summary": "The main rules on home security cameras in Portugal, and the mistakes overseas owners most often make when installing them.",
+    "categories": [
+      "Security",
+      "Ownership"
+    ],
+    "slug": "cctv-algarve-home-portuguese-law",
+    "date": "2026-11-18",
+    "seoTitle": "CCTV at Home: What Portuguese Law Allows",
+    "author": "Hugo Gonçalves",
+    "content": "Security cameras have become cheap and easy to install. Many overseas owners put up a camera at the gate or on the terrace so they can check the property from their phone. In Portugal, that is generally allowed, but the rules on what a camera may film are stricter than many owners expect.\n\nThis is a general overview, not legal advice. For a specific installation, speak to a qualified installer or a lawyer familiar with data protection.\n\n## No prior authorisation, but rules still apply\n\nSince the European General Data Protection Regulation (GDPR) came into force in 2018, private individuals in Portugal no longer need prior authorisation from the National Data Protection Commission (CNPD) to install a video surveillance system. That does not mean anything goes. The system must still comply with data protection rules and Portuguese law.\n\n## Cameras must film your property, not other people's\n\nThe key rule comes from Law 58/2019, which implements the GDPR in Portugal. Cameras may not be placed on public roads, neighbouring properties or other places that are not the exclusive domain of the person responsible, except where strictly necessary to cover access to the property.\n\nIn practice, a camera at your gate should show your gate and drive, not the street, the pavement opposite or your neighbour's garden. Many owners adjust the angle or use privacy masking to blank out areas they are not allowed to record.\n\n## No sound recording\n\nRecording sound is prohibited for this type of system, except with CNPD authorisation in specific circumstances. Many home cameras record audio by default. Check the settings and turn it off.\n\n## Inside the home\n\nCameras inside the home raise particular issues when other people are present: cleaners, gardeners, family, guests or contractors. They have a right to know they are being recorded, and some areas, such as bedrooms and bathrooms, should never be covered. If anyone works at the property, take advice before installing interior cameras.\n\n## Signage and retention\n\nClear signs informing people that the area is under video surveillance are generally expected. Footage should be kept only for as long as necessary, stored securely and accessed only by authorised people.\n\n## Practical checklist\n\n- point cameras at your own entrances, not the street or neighbours\n- switch off audio recording\n- put up clear signage\n- tell anyone who works at the property where cameras are\n- keep login details secure and change default passwords\n- check that cameras still work when the router or power goes off\n\n## Cameras are only part of the picture\n\nA camera tells you something happened. It cannot check for leaks, close a shutter or meet a contractor. Read [cameras and alarms vs a physical property visit](/blog/cameras-alarms-vs-physical-property-visit/) and [alarm monitoring: what happens when the alarm goes off](/blog/alarm-monitoring-algarve-what-happens/).\n\nGuardemar does not install or monitor cameras. Scheduled visits complement your system. [Request a property assessment](/contact/) to discuss your setup.",
+    "_meta": {
+      "filePath": "cctv-portuguese-law.md",
+      "fileName": "cctv-portuguese-law.md",
+      "directory": ".",
+      "extension": "md",
+      "path": "cctv-portuguese-law"
+    },
+    "readingTime": 3
+  },
+  {
     "title": "Closing the House After Summer",
     "summary": "A practical departure routine for Algarve second homes after the busy season, before the quiet months begin.",
     "categories": [
@@ -99,6 +267,49 @@ export default [
       "directory": ".",
       "extension": "md",
       "path": "closing-after-summer"
+    },
+    "readingTime": 3
+  },
+  {
+    "title": "Condominium Building Insurance vs Your Own Contents Policy",
+    "summary": "How insurance usually works in Portuguese apartment buildings, and the gaps overseas owners of Algarve apartments should check.",
+    "categories": [
+      "Insurance Documentation",
+      "Ownership"
+    ],
+    "slug": "condominium-building-insurance-vs-contents-policy",
+    "date": "2026-11-18",
+    "seoTitle": "Condominium Insurance vs Contents Policy",
+    "author": "Hugo Gonçalves",
+    "content": "Buying an apartment in Lagos, Portimão or Alvor usually means joining a condominium. Owners pay monthly fees, attend (or skip) annual meetings and assume the building is insured. Often it is. But that does not necessarily mean your apartment and its contents are protected in the way you expect.\n\nThis is a general overview, not insurance or legal advice. Check your condominium's policy and your own.\n\n## Fire insurance is compulsory in horizontal property\n\nUnder the Portuguese Civil Code, buildings held in horizontal property (propriedade horizontal), the legal form used for most apartment buildings, must be insured against fire, covering both the individual units and the common parts. Many condominiums arrange a single building policy. Others rely on each owner to insure their own unit.\n\nAsk the administrator which approach your building uses and request a copy of the policy.\n\n## What a building policy may cover\n\nA condominium policy typically focuses on the structure and common parts: walls, roof, façades, stairs, lifts, garages and shared installations. It may also cover the structure of individual units, depending on the policy. Additional risks, such as water damage, storms and liability, vary.\n\n## What it usually does not cover\n\n- **Your contents**: furniture, appliances, belongings.\n- **Your own improvements**: a new kitchen, built-in wardrobes or upgraded bathrooms may or may not be included.\n- **Your liability as an owner**: for example, if water from your apartment damages the unit below.\n- **Items in your storage room or parking space**.\n\nThese are usually matters for your own home policy.\n\n## The water-leak question\n\nLeaks between apartments are among the most common causes of disputes. Was the source in a common pipe or in your private installation? Was your apartment the source or the victim? The answer affects which policy responds. Clear photographs and a plumber's note on the source help. Read [water damage claims](/blog/water-damage-claims-documenting-algarve-home/).\n\n## Checks worth making\n\n- Does the building policy cover the structure of your unit, and for what amount?\n- Does it include water damage, and from which sources?\n- Do you need your own buildings cover, or only contents and liability?\n- Does your own policy cover your storeroom and garage space?\n- Are there conditions about long periods without occupation?\n\nRead [holiday home insurance in Portugal](/blog/holiday-home-insurance-portugal-what-is-covered/) and [questions to ask your insurer](/blog/questions-to-ask-insurer-second-home-portugal/).\n\n## Keep the administrator informed\n\nMake sure the administrator has your current contact details and those of your local keyholder. In an emergency affecting the building, they need to reach someone who can open your apartment.\n\nGuardemar does not give insurance advice. Through [key holding](/key-holding-algarve/) and [vacant property inspections](/home-watch-algarve/), it can be the local contact and keep a dated record. For apartments specifically, read [empty apartments in Portimão and Praia da Rocha](/blog/empty-apartments-portimao-praia-da-rocha/), or [request a property assessment](/contact/).",
+    "_meta": {
+      "filePath": "condominium-insurance-vs-contents.md",
+      "fileName": "condominium-insurance-vs-contents.md",
+      "directory": ".",
+      "extension": "md",
+      "path": "condominium-insurance-vs-contents"
+    },
+    "readingTime": 3
+  },
+  {
+    "title": "Deep Cleaning or Regular Cleaning: What a Second Home Really Needs",
+    "summary": "The different types of cleaning an Algarve second home needs across the year, and how to arrange them while you are abroad.",
+    "categories": [
+      "Contractors",
+      "Property Care"
+    ],
+    "slug": "deep-cleaning-vs-regular-cleaning-second-home",
+    "date": "2026-11-18",
+    "seoTitle": "Deep vs Regular Cleaning for a Second Home",
+    "noindex": true,
+    "author": "Hugo Gonçalves",
+    "content": "A closed home still gets dirty. Saharan dust settles on terraces, salt air films the windows, insects find their way in and a musty smell builds up in wardrobes. When owners arrive after months away, the first day is often spent cleaning rather than relaxing.\n\nNot every home needs the same cleaning, and not every clean needs to happen on a fixed schedule. It helps to separate the types.\n\n## Regular cleaning\n\nRegular cleaning keeps an occupied home tidy: floors, bathrooms, kitchen surfaces, bins and bedding. In a second home, it is most useful while the owner, family or guests are staying, and in the days around their visits.\n\nA fixed weekly clean in an empty house often adds less value than owners expect. Rooms nobody uses do not need repeated cleaning. What they need is airing, observation and occasional dusting.\n\n## Deep cleaning\n\nA deep clean goes further: inside cupboards and appliances, behind furniture, windows and frames, shutters, grout, extractor hoods, terraces and outdoor furniture. In the Algarve, typical moments are:\n\n- before the first arrival of the season\n- after a long summer of family and guests\n- after building or maintenance work\n- before a property is photographed or shown for sale\n- after a calima episode that leaves fine dust everywhere\n\nSee [Saharan dust and calima on Algarve homes](/blog/saharan-dust-calima-algarve-homes/) and [keeping a home presentable while it is for sale](/blog/keeping-home-presentable-while-for-sale/).\n\n## Post-works cleaning\n\nBuilding dust gets everywhere and often needs specialist equipment. Agree with your builder whether a final clean is included, and if not, book one separately before the furniture is uncovered.\n\n## Briefing a cleaner from abroad\n\n- Write a short room-by-room list and mark what is out of scope, such as valuables, safes or personal papers.\n- Say which products must not be used on specific surfaces, such as natural stone or wood.\n- Agree how linen and towels are handled.\n- Ask the cleaner to report anything unusual: damp patches, leaks, pests, broken items.\n- Decide who holds the key and who opens the property.\n\n## Coordination, not cleaning\n\nGuardemar does not employ cleaners. Its optional deep clean coordination and laundry and linen service, both listed on the [services page](/services/), arrange an external provider. [Arrival preparation](/arrival-preparation-algarve/) includes coordinating cleaners before you travel, so the house is checked and ready rather than simply tidied.\n\nIf you already have a cleaner you trust, read [working with your existing pool, garden and cleaning team](/blog/working-with-existing-pool-garden-cleaners/), or [request a property assessment](/contact/).",
+    "_meta": {
+      "filePath": "deep-cleaning-vs-regular-cleaning.md",
+      "fileName": "deep-cleaning-vs-regular-cleaning.md",
+      "directory": ".",
+      "extension": "md",
+      "path": "deep-cleaning-vs-regular-cleaning"
     },
     "readingTime": 3
   },
@@ -132,6 +343,7 @@ export default [
     ],
     "slug": "empty-apartments-portimao-praia-da-rocha",
     "date": "2026-09-15",
+    "noindex": true,
     "author": "Hugo Gonçalves",
     "content": "Portimão is not a single property type. City apartments, riverside homes and properties around Praia da Rocha sit in the same municipality and often share building systems, yet they empty differently. Many overseas owners use these homes for shorter visits through the year rather than one long summer stay.\n\nThat pattern still leaves gaps. Mail accumulates. A leak in an apartment can affect a neighbouring unit. Ventilation in a closed flat is limited. Building access may depend on a condominium rather than a private gate.\n\n## Shared buildings change the inspection\n\nIn a city apartment, the most useful visit is often the least dramatic. It confirms that the door, windows and shutters are as left, that there is no obvious water under sinks or around sanitary ware, that the air does not smell closed or damp, and that mail has not piled up behind the letterbox.\n\nCondominium contacts, access fobs, garage arrangements and the way building-wide issues are reported should be in the property file. A home-watch visit does not replace the building manager. It records the interior and the parts of the exterior that belong to the owner, then tells the owner if something needs the condominium or a contractor.\n\nLeaks deserve particular care in stacked buildings. A slow cistern, a failed seal or moisture beneath a sink can travel. The inspection is still visual and non-invasive. It is not a pressure test or a plumbing diagnosis. If water is visible, the owner can be contacted and a qualified plumber arranged where authorised. See [small water leaks in vacant homes](/blog/small-water-leaks-vacant-homes/).\n\n## Praia da Rocha and coastal exposure\n\nHomes around Praia da Rocha add balconies, shutters and marine exposure to the apartment picture. Salt-laden air and wind can show on fittings, metalwork and outdoor furniture. Drainage on a balcony or terrace is worth photographing on every visit, because that is where wind-driven rain often leaves a mark.\n\nRiverside properties can have a similar exterior theme with a different access arrangement. The principle is the same: record what is visible, compare it with the last visit, and do not confuse a photograph of a balcony with a structural survey.\n\nAfter significant weather, a visual check from safe ground can confirm whether openings, shutters and accessible rooms appear unchanged. Roof access, work at height and structural opinions remain outside that scope. [Storm property checks](/storm-property-checks-algarve/) and the guide to [what to check after a storm](/blog/what-check-after-storm-algarve/) set the limit.\n\n## Shorter visits still need a current record\n\nOwners who come several times a year can assume the home is “in use” enough to look after itself. Shorter stays still leave weeks in between. A current property record — keys, alarm instructions, water controls, condominium details — makes those gaps manageable.\n\n[Key holding](/key-holding-algarve/) is often the difference between being able to act and waiting for a neighbour. Keys should be coded rather than labelled with a complete address, and access should be recorded. That matters in a building where several people may already have fobs.\n\n[Arrival preparation](/arrival-preparation-algarve/) is useful even before a short stay. It is easier to learn that the water heater is not as left, or that a balcony shutter has been displaced, while there is still time to call someone.\n\n## Humidity in a closed apartment\n\nA Portimão apartment can stay shut with little air movement. Bathrooms, bedrooms against external walls and built-in cupboards are the usual places to look for condensation, odours or surface mould indicators. A humidity reading can add context; photographs and comparison matter more. The wider explanation is in [humidity and mould in Algarve holiday homes](/blog/humidity-mould-algarve-holiday-homes/).\n\nVentilation needs a property-specific instruction. Leaving windows unsecured is not a care plan. Neither is never opening the home.\n\n## A Portimão routine\n\nUse a repeatable [inspection checklist](/inspection-checklist/). Keep condominium and contractor contacts with the property file. Decide in advance who may authorise a plumber or electrician. [Contractor access](/contractor-access-algarve/) can then meet the trade, record attendance and report the visible condition afterwards.\n\nFrequency depends on the flat, the season and how long it typically stays unopened. Monthly may be enough for a straightforward apartment; a coastal property with more external exposure may justify more frequent visits. Compare [plans](/plans/) rather than assuming a city address is automatically low-risk.\n\nGuardemar provides [property care in Portimão](/areas/portimao/), including riverside homes and properties around Praia da Rocha. Nearby coverage includes Alvor, Ferragudo, Carvoeiro and Lagos.\n\nIf you leave an apartment empty between visits, [request a property assessment](/contact/).",
     "_meta": {
@@ -206,6 +418,27 @@ export default [
     "readingTime": 3
   },
   {
+    "title": "Exterior Painting and Upkeep in a Salt-Air Climate",
+    "summary": "How sun, salt and wind affect paint, render and woodwork on Algarve homes, and how to plan exterior work from abroad.",
+    "categories": [
+      "Maintenance",
+      "Contractors"
+    ],
+    "slug": "exterior-painting-salt-air-algarve",
+    "date": "2026-11-18",
+    "seoTitle": "Exterior Painting in a Salt-Air Climate",
+    "author": "Hugo Gonçalves",
+    "content": "The white walls of the Algarve look effortless. Keeping them that way is not. Strong sun, salt air, wind-blown sand and occasional heavy rain wear down paint, render and woodwork faster than many owners expect, particularly in homes close to the coast.\n\n## What wears out first\n\n- **Paint on south- and west-facing walls**, which fades and chalks in strong sun.\n- **Render**, which can crack and let water in, especially around windows and at the base of walls.\n- **Woodwork**, such as doors, pergolas, shutters and window frames, which dries, splits and loses its finish.\n- **Metalwork**, including railings, gates and fixings, which corrodes in salt air.\n- **Garden walls and parapets**, which collect damp at the base and stain.\n\nFor the metal side, see [salt air, shutters and outdoor metalwork](/blog/salt-air-shutters-outdoor-metalwork-algarve/).\n\n## Signs that work is due\n\nLook for chalky paint that rubs off on your hand, hairline cracks in render, bubbling or peeling paint, dark staining at the base of walls and dry, grey woodwork. Damp patches inside, behind exterior walls, may also point to a problem with the render outside.\n\n## Planning the work\n\n- **Timing.** Spring and early autumn are usually best: dry, but not at the height of summer heat.\n- **Quotes.** Ask for written quotes that list preparation work, products and number of coats. Preparation matters more than the topcoat.\n- **Condominiums.** In apartments and many developments, façades are a common part. Changes and repairs may need approval from the condominium.\n- **Water.** Pressure-washing walls before painting uses water and has been restricted in some drought periods. Check current local rules. Read [Algarve garden watering rules](/blog/algarve-garden-watering-rules/).\n- **Scaffolding and height.** Work at height should be carried out by contractors equipped for it.\n\n## Arranging it from abroad\n\nExterior work often runs over several weeks, with several contractors. The owner needs to know when work started, who was on site and whether the property was secured at the end of each day.\n\nGuardemar's [contractor access](/contractor-access-algarve/) service provides authorised access and attendance records. Photographs of the visible condition before and after can be taken where agreed. Guardemar does not supervise or certify building work, and the contractor remains responsible for quality and safety.\n\nFor the wider picture, see the [preventive maintenance calendar](/blog/preventive-maintenance-calendar-algarve-second-home/), or [request a property assessment](/contact/).",
+    "_meta": {
+      "filePath": "exterior-painting-salt-air.md",
+      "fileName": "exterior-painting-salt-air.md",
+      "directory": ".",
+      "extension": "md",
+      "path": "exterior-painting-salt-air"
+    },
+    "readingTime": 3
+  },
+  {
     "title": "When Family and Guests Use the House Between Your Stays",
     "summary": "How to keep keys, condition and instructions intact when relatives or friends use an Algarve second home.",
     "categories": [
@@ -247,6 +480,50 @@ export default [
     "readingTime": 4
   },
   {
+    "title": "Garages and Storage Rooms in Algarve Condominiums",
+    "summary": "Humidity, security and access issues in underground garages and storage rooms, and what owners abroad should keep an eye on.",
+    "categories": [
+      "Vehicles",
+      "Vacant Homes"
+    ],
+    "slug": "garages-storage-rooms-algarve-condominiums",
+    "date": "2026-11-18",
+    "seoTitle": "Garages and Storage Rooms in Condominiums",
+    "noindex": true,
+    "author": "Hugo Gonçalves",
+    "content": "Apartments in Lagos, Portimão, Alvor and Praia da Luz often come with a parking space in an underground garage and a small storage room (arrecadação). Owners rarely think about them. Yet these spaces are often where problems start: damp, flooding, theft and disputes with the condominium.\n\n## Humidity and flooding\n\nUnderground garages are cool, poorly ventilated and sometimes below the level of the street. In heavy rain, water can enter through ramps, drains or walls. Storage rooms without ventilation collect damp, and anything stored in cardboard boxes, fabric or wood can develop mould.\n\nPractical steps:\n\n- store items on shelves, not on the floor\n- use sealed plastic boxes instead of cardboard\n- avoid storing documents, mattresses, clothing or anything valuable\n- leave a gap between stored items and walls\n- consider moisture absorbers, replaced regularly\n\nSee [humidity and mould in Algarve holiday homes](/blog/humidity-mould-algarve-holiday-homes/).\n\n## Security\n\nShared garages have many users and frequent access. Bicycles, surfboards, tools and golf bags are common targets. Keep storage rooms locked with a good-quality padlock, record what is inside, and photograph valuable items. Do not leave remote controls or keys for the apartment in the car or storeroom.\n\n## Condominium rules\n\nGarages and storage areas are usually governed by the condominium regulations. They may cover long-term parking, storage of fuel, gas bottles or flammable materials, charging electric vehicles, and the use of common areas. If you plan to install an electric-vehicle charger, check the condominium procedures first.\n\nThe condominium administrator is also the right contact for problems in common areas, such as a flooding ramp or a broken garage door.\n\n## Garage doors and remotes\n\nGarage doors and gates often stop working after power cuts or storms. Keep spare remotes with working batteries and note who maintains the door. If the door is shared, faults are a matter for the condominium. If it is private, they are yours.\n\n## Visual checks while you are away\n\nOwners often never see their garage space between visits. During [vacant property inspections](/home-watch-algarve/), garages and storage rooms can be included where keys are provided and the owner has asked for it. Visible damp, water on the floor and signs of interference can be recorded and photographed. Guardemar does not open safes or inventory contents.\n\nFor apartments in particular, read [villa vs apartment: what actually needs checking](/blog/villa-vs-apartment-what-to-check/) and [empty apartments in Portimão and Praia da Rocha](/blog/empty-apartments-portimao-praia-da-rocha/). For a car kept in the garage, see [leaving a car in Portugal while you are abroad](/blog/leaving-car-portugal-while-abroad/).\n\nTo include your garage and storeroom, [request a property assessment](/contact/).",
+    "_meta": {
+      "filePath": "garages-storage-rooms-condominiums.md",
+      "fileName": "garages-storage-rooms-condominiums.md",
+      "directory": ".",
+      "extension": "md",
+      "path": "garages-storage-rooms-condominiums"
+    },
+    "readingTime": 3
+  },
+  {
+    "title": "Gardener or Garden Maintenance Company in the Algarve?",
+    "summary": "How to choose garden care for an Algarve second home, what to agree in writing and how to know the work is done while you are away.",
+    "categories": [
+      "Gardens",
+      "Contractors"
+    ],
+    "slug": "gardener-vs-garden-maintenance-company-algarve",
+    "date": "2026-11-18",
+    "seoTitle": "Gardener or Garden Company in the Algarve?",
+    "noindex": true,
+    "author": "Hugo Gonçalves",
+    "content": "A well-kept garden is one of the first things visitors notice and one of the first things to decline when nobody is watching. In the Algarve, a garden can go from tidy to tired in a single summer if irrigation fails or visits become irregular.\n\nOwners usually choose between an independent gardener and a garden maintenance company. Both can work well. The difference lies in continuity, cover and communication.\n\n## An independent gardener\n\nMany Algarve homes have been looked after by the same local gardener for years. Their advantages are real: they know the plants, the irrigation and the quirks of the plot. They are often flexible and know the neighbours.\n\nThe risks tend to appear when that person is ill, on holiday or busy elsewhere. There may be no written schedule, no report and no clear way to know whether a visit happened.\n\n## A garden maintenance company\n\nA company usually offers more people, more equipment and cover when one person is unavailable. Some send reports or invoices that show visit dates. The trade-off can be less personal knowledge of the property, and different staff from one visit to the next.\n\n## What to agree, whoever you choose\n\nWrite down a simple scope:\n\n- visit frequency in summer and in winter\n- what is included: mowing, pruning, weeding, hedge cutting, green waste removal\n- who checks and adjusts the irrigation, and how often\n- whether pool-area planting is the gardener's responsibility\n- who keeps keys or gate codes\n- how the gardener reports a problem, such as a broken pipe or a dying tree\n\nFor irrigation in particular, see [irrigation and gardens during a long absence](/blog/irrigation-gardens-long-absence-algarve/) and the current [Algarve garden watering rules](/blog/algarve-garden-watering-rules/).\n\n## Land beyond the garden\n\nRural and semi-rural plots may have land-clearing obligations that go beyond ordinary gardening. These are legal duties with annual deadlines, not a question of appearance. Read [mandatory land clearing in Portugal](/blog/mandatory-land-clearing-portugal-foreign-owners/).\n\n## Knowing the work is done\n\nOwners abroad often only discover problems at the next visit. An independent visual check helps. Guardemar's optional pool and garden contractor check, listed on the [services page](/services/), provides a visual update after a contractor has attended. Regular [holiday home checks](/home-watch-algarve/) also include the visible condition of the garden and irrigation. This is observation, not horticultural or technical inspection.\n\nGuardemar works alongside your existing gardener rather than replacing them. Read [working with your existing pool, garden and cleaning team](/blog/working-with-existing-pool-garden-cleaners/), or [request a property assessment](/contact/).",
+    "_meta": {
+      "filePath": "gardener-vs-garden-company.md",
+      "fileName": "gardener-vs-garden-company.md",
+      "directory": ".",
+      "extension": "md",
+      "path": "gardener-vs-garden-company"
+    },
+    "readingTime": 3
+  },
+  {
     "title": "Heatwaves and Closed Algarve Homes",
     "summary": "What high temperatures do to a locked holiday home, and which checks stay visual rather than technical.",
     "categories": [
@@ -263,6 +540,28 @@ export default [
       "directory": ".",
       "extension": "md",
       "path": "heatwaves-closed-homes"
+    },
+    "readingTime": 3
+  },
+  {
+    "title": "Hiring an Electrician in Portugal: What Overseas Owners Should Know",
+    "summary": "How to find, brief and give access to a qualified electrician for an Algarve second home while you are abroad.",
+    "categories": [
+      "Contractors",
+      "Maintenance"
+    ],
+    "slug": "hiring-electrician-portugal-overseas-owners",
+    "date": "2026-11-18",
+    "seoTitle": "Hiring an Electrician in Portugal",
+    "noindex": true,
+    "author": "Hugo Gonçalves",
+    "content": "Electrical problems in a second home are rarely dramatic. More often, a circuit keeps tripping, an outside light has stopped working, the water heater no longer comes on, or the gate motor is dead after a storm. Each one needs a qualified electrician. Each one is harder to arrange from another country.\n\n## Electrical work is not a job for a handyman\n\nMany owners have a general handyman who can hang a picture or replace a tap washer. Electrical work is different. Wiring, consumer units, earthing and outdoor circuits should be handled by a properly qualified electrician. Ask for a written quote, an invoice with your tax number (NIF) and, where the work requires it, the relevant documentation for the installation.\n\nA property-care visit can record what is visible, such as a tripped breaker, a scorched socket or a damp consumer unit. It cannot diagnose the cause.\n\n## Common issues in Algarve homes\n\nSome electrical problems come up again and again in coastal second homes:\n\n- moisture in outdoor sockets, garden lighting and pool equipment\n- corrosion of exterior fittings in salt air\n- trips caused by a faulty appliance, often a water heater or a fridge left running\n- gate and garage-door automation affected by storms or power cuts\n- older installations in village houses that were never designed for modern loads\n\nFor the salt-air side, see [salt air, shutters and outdoor metalwork](/blog/salt-air-shutters-outdoor-metalwork-algarve/).\n\n## Prepare a short electrical profile\n\nOwners can help any electrician by keeping a simple record:\n\n- where the consumer unit is, with a photograph of the labelled breakers\n- which circuits must stay on while the house is closed, such as the fridge, alarm, router or dehumidifier\n- what can safely be switched off\n- the installer of the alarm, solar panels or gate automation, if there is one\n\nThat profile is also what a property-care contact needs before deciding whether a breaker should be reset. If in doubt, the answer is to call the electrician.\n\n## Access and records\n\nElectricians often need to come back: once to diagnose, once with a part. Each visit means opening and securing the property. Guardemar's [contractor access](/contractor-access-algarve/) service provides authorised access, records attendance and photographs the visible state afterwards where agreed. Guardemar does not supervise or certify electrical work.\n\nFor what to do when the power goes off in a closed home, read [power cuts and tripped breakers in an empty Algarve home](/blog/power-cuts-tripped-breakers-empty-algarve-home/).\n\nIf you want a local contact who can meet your electrician and report back, [request a property assessment](/contact/).",
+    "_meta": {
+      "filePath": "hiring-electrician-portugal.md",
+      "fileName": "hiring-electrician-portugal.md",
+      "directory": ".",
+      "extension": "md",
+      "path": "hiring-electrician-portugal"
     },
     "readingTime": 3
   },
@@ -286,6 +585,27 @@ export default [
       "path": "holiday-home-care-guide"
     },
     "readingTime": 5
+  },
+  {
+    "title": "Holiday Home Insurance in Portugal: What Is Usually Covered, and What Is Not",
+    "summary": "A plain-English overview of home insurance for a second home in Portugal, and the points overseas owners most often overlook.",
+    "categories": [
+      "Insurance Documentation",
+      "Ownership"
+    ],
+    "slug": "holiday-home-insurance-portugal-what-is-covered",
+    "date": "2026-11-18",
+    "seoTitle": "Holiday Home Insurance in Portugal",
+    "author": "Hugo Gonçalves",
+    "content": "Most owners take out home insurance when they buy, often through the bank or the agent, and rarely read the policy again. For a second home that stays empty for months, that can be a mistake. Policies differ, and many contain conditions that matter specifically when nobody lives in the property.\n\nThis is a general overview. Only your policy wording, and a qualified insurance professional, can tell you what your own cover includes.\n\n## The usual structure\n\nHome insurance in Portugal is commonly sold as a multi-risk policy (seguro multirriscos habitação). It typically combines:\n\n- **Buildings cover**: the structure, walls, roof, fixed installations and, depending on the policy, pools, walls and outbuildings.\n- **Contents cover**: furniture, appliances and personal belongings.\n- **Liability cover**: damage you, or your property, cause to others, such as water leaking into the flat below.\n\nAdditional cover, such as for accidental damage, legal protection or assistance services, is often optional.\n\n## Risks commonly included\n\nPolicies commonly include fire, storms, water damage, theft and certain electrical risks. The details matter: what counts as a storm, whether gradual leaks are covered, and what conditions apply to theft.\n\n## Points that matter for a second home\n\n- **Unoccupancy.** Many policies have conditions or reduced cover when a property is unoccupied for a specified period. Read [unoccupied property clauses](/blog/unoccupied-property-clauses-documented-inspections/).\n- **Gradual damage.** Slow leaks, damp and mould are often treated differently from sudden events.\n- **Security conditions.** Some policies ask for particular locks, alarms or for the property to be secured in a certain way.\n- **Valuables.** Jewellery, watches, art and cash may be limited or excluded, particularly in an unoccupied home.\n- **Outdoor items.** Garden furniture, pool equipment and items left outside may not be covered for every risk.\n- **Rental use.** If the property is let, even occasionally, the insurer may need to know.\n- **Sums insured.** If the rebuild value or contents are under-insured, a claim may be reduced.\n\n## Questions worth asking\n\nRead [questions to ask your insurer about a second home in Portugal](/blog/questions-to-ask-insurer-second-home-portugal/) for a fuller list.\n\n## Documentation helps\n\nWhatever the policy says, a clear record of the property's condition makes claims easier to explain. Dated photographs from regular visits show what the property looked like before an event. Read [a simple evidence file for a vacant Algarve home](/blog/evidence-file-vacant-algarve-home/).\n\n## Where Guardemar fits\n\nGuardemar is not an insurer and does not give insurance advice. Its [vacant property inspections](/home-watch-algarve/) produce dated photo reports that owners can keep in their own records. Whether those reports meet a policy condition depends on the policy and the insurer.\n\nFor specific claim types, read [water damage claims](/blog/water-damage-claims-documenting-algarve-home/), [storm damage claims](/blog/storm-damage-claims-algarve-practical-sequence/) and [condominium insurance vs your own contents policy](/blog/condominium-building-insurance-vs-contents-policy/).\n\nTo set up a documented inspection routine, [request a property assessment](/contact/).",
+    "_meta": {
+      "filePath": "holiday-home-insurance-portugal-cover.md",
+      "fileName": "holiday-home-insurance-portugal-cover.md",
+      "directory": ".",
+      "extension": "md",
+      "path": "holiday-home-insurance-portugal-cover"
+    },
+    "readingTime": 3
   },
   {
     "title": "Keeping a Home Presentable While It Is for Sale",
@@ -349,6 +669,27 @@ export default [
     "readingTime": 3
   },
   {
+    "title": "Household Staff and Contractors When the Owner Is Abroad",
+    "summary": "How owners of larger Algarve homes can keep housekeepers, gardeners and pool teams working well while they are away, without becoming a remote switchboard.",
+    "categories": [
+      "Ownership",
+      "Contractors"
+    ],
+    "slug": "household-staff-absent-owner-algarve",
+    "date": "2026-11-23",
+    "seoTitle": "Household Staff When the Owner Is Abroad",
+    "author": "Hugo Gonçalves",
+    "content": "A larger home in the Western Algarve rarely runs on its owner alone. There is usually a housekeeper, a gardener, a pool company, sometimes a handyman or a caretaker who has known the house for years. When the owner is in residence, this works naturally. When the owner is in London, Zurich or New York, it can quietly drift.\n\nThe issue is seldom bad faith. It is that nobody is accountable for the whole picture. The gardener sees the garden, the pool technician sees the pool, and the problem that sits between them — the irrigation leak that floods the pool plant room, the shutter left open before a storm — belongs to no one.\n\n## Keep the people who know the house\n\nGood staff and long-standing contractors are valuable. They know where the stopcock is, which shutter sticks and which neighbour to call. Replacing them with a single company is rarely the answer. What helps is a clear structure around them.\n\n## Write down who does what\n\nA one-page schedule removes most misunderstandings:\n\n- who comes, on which days, and for how long\n- what each person is responsible for, and what they are not\n- who holds which keys and alarm codes\n- who they call if something goes wrong, and who may approve spending\n\nWhen this is written down, a missed visit or an overlap becomes visible rather than assumed.\n\n## One accountable person on the ground\n\nThe role we play for owners of larger homes is simple to describe. We visit on a fixed schedule, see the whole house rather than one part of it, and record what we find. If the garden has not been watered, the pool looks wrong or a room has not been cleaned, the photographs show it, and you decide what to do.\n\nWe coordinate access and communication with your staff and contractors, pass you their quotes before any work is agreed, and record who attended and when. We do not employ, manage or pay your staff, and we do not give employment or tax advice. Those relationships remain yours, with your accountant or lawyer where needed.\n\n## Access and keys\n\nThe more people who hold keys, the more important it is to know who has which. Keep an inventory, change codes when someone leaves, and avoid keys labelled with the address. [Smart locks, key safes and access codes](/blog/smart-locks-key-safes-access-codes/) covers the practical trade-offs.\n\n## Before you arrive\n\nThe week before an owner arrives is when small failures show up: a pool that has turned green, linen not ready, hot water off. A [pre-arrival check](/blog/preparing-algarve-home-before-arrival/) a few days ahead leaves time to put it right with the people who normally do the work.\n\nFor homes with household staff, several contractors or more than one building, a [Private Estate proposal](/plans/) sets the visit schedule and the coordination around the house itself. [Request a private assessment](/contact/) and we will look at how the house runs today.",
+    "_meta": {
+      "filePath": "household-staff-absent-owner.md",
+      "fileName": "household-staff-absent-owner.md",
+      "directory": ".",
+      "extension": "md",
+      "path": "household-staff-absent-owner"
+    },
+    "readingTime": 3
+  },
+  {
     "title": "How Often Should an Empty Property in Portugal Be Inspected?",
     "summary": "A sensible way to choose between monthly, fortnightly and weekly property inspections.",
     "categories": [
@@ -357,9 +698,10 @@ export default [
     ],
     "slug": "how-often-inspect-empty-property-portugal",
     "date": "2026-09-03",
+    "updated": "2026-11-23",
     "seoTitle": "How Often to Inspect an Empty Property, Portugal",
     "author": "Hugo Gonçalves",
-    "content": "There is no single correct inspection frequency for every empty property. The right schedule reflects the home’s complexity, vacancy period, season and the owner’s tolerance for time passing before a problem is noticed.\n\n## Monthly checks\n\nA monthly visit can be a reasonable starting point for a straightforward apartment with few external systems, particularly where condominium management monitors common areas. It still leaves several weeks between observations, which owners should consider carefully.\n\n## Twice-monthly checks\n\nFortnightly visits reduce the observation gap and suit many villas or townhouses with water, air conditioning, terraces, irrigation or a pool. They also create a more useful rhythm for ventilation and running water where those tasks are appropriate and agreed.\n\n## Weekly checks\n\nWeekly oversight may be preferable for larger villas, complex systems, known maintenance concerns or owners who want a higher service priority. Frequency does not make an inspection technical; it simply means visible changes are more likely to be reported sooner.\n\n## Adjust through the year\n\nInspection needs can change around extended absences, major works or periods of severe weather. A property that receives monthly visits may need an additional post-storm or contractor follow-up visit.\n\nThe best starting point is a property assessment rather than a generic rule. Compare [Guardemar Care plans](/plans/) or [request an assessment](/contact/) for your home.",
+    "content": "There is no single correct inspection frequency for every empty property. The right schedule reflects the home’s complexity, vacancy period, season and the owner’s tolerance for time passing before a problem is noticed.\n\n## Monthly checks\n\nA monthly visit can be a reasonable starting point for a straightforward apartment with few external systems, particularly where condominium management monitors common areas. It still leaves several weeks between observations, which owners should consider carefully.\n\n## Twice-monthly checks\n\nFortnightly visits reduce the observation gap and suit many villas or townhouses with water, air conditioning, terraces, irrigation or a pool. They also create a more useful rhythm for ventilation and running water where those tasks are appropriate and agreed.\n\n## Weekly checks\n\nWeekly oversight may be preferable for larger villas, complex systems, known maintenance concerns or owners who want a higher service priority. Frequency does not make an inspection technical; it simply means visible changes are more likely to be reported sooner.\n\n## Adjust through the year\n\nInspection needs can change around extended absences, major works or periods of severe weather. A property that receives monthly visits may need an additional post-storm or contractor follow-up visit.\n\nThe best starting point is a property assessment rather than a generic rule. At Guardemar each plan has a fixed visit frequency: **CARE** includes one documented visit per month, **CARE+** two per month and **COMPLETE** a minimum of one per week. Estates and homes with household staff receive a Private Estate proposal with a schedule set to the property. Compare [Guardemar care plans](/plans/) or [request an assessment](/contact/) for your home.",
     "_meta": {
       "filePath": "how-often-inspect-empty-property.md",
       "fileName": "how-often-inspect-empty-property.md",
@@ -470,6 +812,48 @@ export default [
       "directory": ".",
       "extension": "md",
       "path": "key-holding-portugal"
+    },
+    "readingTime": 3
+  },
+  {
+    "title": "Mandatory Land Clearing in Portugal: A Guide for Foreign Owners",
+    "summary": "What the fuel-management rules mean for owners of rural and semi-rural homes in the Western Algarve, and how to plan the work from abroad.",
+    "categories": [
+      "Gardens",
+      "Ownership"
+    ],
+    "slug": "mandatory-land-clearing-portugal-foreign-owners",
+    "date": "2026-11-18",
+    "seoTitle": "Mandatory Land Clearing in Portugal",
+    "author": "Hugo Gonçalves",
+    "content": "Every spring, owners of rural properties in Portugal receive the same reminder: clear the land around your buildings before the deadline. For foreign owners, the rules can be confusing, and the work has to be arranged from abroad, often when contractors are at their busiest.\n\nThis is a summary for orientation, not legal advice. Your municipality and a local professional are the right sources for how the rules apply to your plot.\n\n## What the rules require\n\nUnder Portugal's integrated rural fire management system (Decree-Law 82/2021), owners and others responsible for land near buildings in rural or forest areas must manage vegetation, known as fuel management (gestão de combustível). The best-known requirement is a strip of at least 50 metres around homes and other buildings in rural or forest areas. In agricultural land, the strip is narrower, at 10 metres.\n\nAround villages and settlements next to forest areas, a wider strip of at least 100 metres applies, normally coordinated at local level.\n\nFuel management means cutting and thinning vegetation, removing dead material and keeping trees and shrubs away from walls and roofs. It does not mean bare earth everywhere. Properly maintained gardens are treated differently.\n\n## Deadlines change each year\n\nThere is an annual deadline for the work, and it is regularly extended. In 2026, the government first set 31 May for most of mainland Portugal and 30 June for municipalities under a declaration of calamity. It later extended the deadline to 30 June across the whole country.\n\nDo not plan around last year's date. Check the current deadline each winter.\n\n## What happens if the land is not cleared\n\nIf owners do not carry out the work, the municipality can do it instead. Owners must allow access and repay the cost. Fines can also apply. Inspections focus on land around buildings, settlements and other sensitive infrastructure.\n\n## Planning from abroad\n\n- Find out early whether your plot falls within a fuel-management strip, and whether a neighbour's land does too.\n- Book a clearing contractor in winter. Many are fully booked by April.\n- Ask for dated photographs before and after the work, and keep the invoice.\n- Agree how cut material will be removed or processed. Burning is restricted and may require authorisation.\n- Do not forget access tracks, the area under trees overhanging the house, and gutters full of dry leaves.\n\nFor homes inland from Lagos and around Vila do Bispo and Aljezur, this is often the most important maintenance task of the year. See [rural and village homes in Vila do Bispo](/blog/rural-village-homes-vila-do-bispo/).\n\n## Where Guardemar fits\n\nGuardemar does not clear land. It can provide authorised access for your contractor through [contractor access](/contractor-access-algarve/) and record the visible condition of the plot before and after, where agreed. That record is useful if questions arise later.\n\nFor the rest of the garden, read [gardener or garden maintenance company?](/blog/gardener-vs-garden-maintenance-company-algarve/), or [request a property assessment](/contact/).",
+    "_meta": {
+      "filePath": "land-clearing-portugal.md",
+      "fileName": "land-clearing-portugal.md",
+      "directory": ".",
+      "extension": "md",
+      "path": "land-clearing-portugal"
+    },
+    "readingTime": 3
+  },
+  {
+    "title": "Leaving a Car in Portugal While You Are Abroad",
+    "summary": "The practical and administrative points to consider when a car stays at your Algarve home between visits.",
+    "categories": [
+      "Vehicles",
+      "Ownership"
+    ],
+    "slug": "leaving-car-portugal-while-abroad",
+    "date": "2026-11-18",
+    "seoTitle": "Leaving a Car in Portugal While Abroad",
+    "author": "Hugo Gonçalves",
+    "content": "Many second-home owners keep a car in the Algarve. It saves on rentals, makes airport runs simpler and means the beach is never far away. But a car that sits for months also has its own needs, both mechanical and administrative.\n\nThis is a practical overview, not legal or tax advice. The rules for Portuguese-registered and foreign-registered vehicles differ, and your situation may need specialist advice.\n\n## The administrative side\n\nFor a car registered in Portugal, owners should keep track of:\n\n- **Insurance.** Cars on the public road must be insured. Ask your insurer whether cover can be adjusted for long periods when the car is parked, and what conditions apply.\n- **Annual vehicle tax (IUC).** It is due every year for registered vehicles, whether or not the car is used.\n- **Periodic inspection.** Cars above a certain age need regular roadworthiness inspections. Missing one while abroad is easy.\n- **Registration documents.** Keep copies in your property file, not only in the glovebox.\n\nForeign-registered cars kept in Portugal are subject to specific rules on how long they can stay and by whom they can be used. Owners in that situation should take advice from a specialist rather than relying on what neighbours say.\n\n## The mechanical side\n\nA car that is not driven for months can suffer from:\n\n- a flat or failing battery\n- tyres developing flat spots or losing pressure\n- brakes seizing, especially in damp or salty air\n- mould or musty smells in the interior\n- fuel deteriorating over long periods\n- animals or insects nesting in the engine bay\n\nA mechanic can advise on the right preparation for your car, such as battery conditioning, tyre pressure and whether the handbrake should be left on.\n\n## Where to keep it\n\nA closed garage protects the car from sun, salt and dust, but can trap humidity. Outside, a breathable cover helps. In condominiums, check the rules for long-term parking. Read [garages and storage rooms in Algarve condominiums](/blog/garages-storage-rooms-algarve-condominiums/).\n\n## Keys and access\n\nCar keys left in the house should be kept securely and recorded. Anyone authorised to move the car needs your written permission and must be covered by your insurance. Guardemar's terms exclude responsibility for vehicles, and the car is not moved unless that has been separately and expressly approved.\n\n## Visual checks and vehicle care\n\nGuardemar's optional Vehicle Care service, listed on the [services page](/services/), covers agreed visual checks of a vehicle left at the property and, where specifically agreed and permitted, basic measures to help keep it ready for your return. It does not include mechanical maintenance, repairs or a guaranteed battery condition. Read [vehicle checks between visits](/blog/vehicle-checks-between-visits-algarve/).\n\nTo include your car in a property profile, [request a property assessment](/contact/).",
+    "_meta": {
+      "filePath": "leaving-car-portugal.md",
+      "fileName": "leaving-car-portugal.md",
+      "directory": ".",
+      "extension": "md",
+      "path": "leaving-car-portugal"
     },
     "readingTime": 3
   },
@@ -597,6 +981,70 @@ export default [
     "readingTime": 3
   },
   {
+    "title": "Finding a Reliable Plumber in the Western Algarve When You Live Abroad",
+    "summary": "How overseas owners can choose, brief and give access to a plumber for a second home between Lagos and Sagres.",
+    "categories": [
+      "Contractors",
+      "Maintenance"
+    ],
+    "slug": "finding-plumber-western-algarve-from-abroad",
+    "date": "2026-11-18",
+    "seoTitle": "Finding a Plumber in the Algarve from Abroad",
+    "noindex": true,
+    "author": "Hugo Gonçalves",
+    "content": "Almost every Algarve second home will need a plumber at some point. A dripping mixer tap, a cistern that keeps running, a water heater that has stopped working, or a damp patch under the kitchen sink. None of these is unusual. What makes them harder is distance: the owner is in London, Amsterdam or Toronto, and the property is closed.\n\nFinding someone competent is only part of the problem. The plumber also needs keys, information and a clear decision about what they are allowed to do.\n\n## Start before there is a problem\n\nThe best time to find a plumber is when nothing is leaking. Ask neighbours, your condominium administrator, the agent who sold you the property, or other providers who already work at the house. Pool and garden teams often know which local trades turn up when they say they will.\n\nKeep at least two names. Good plumbers in the Western Algarve are busy, particularly before Easter and in early summer, when many owners return at once.\n\n## What to record for each plumber\n\nA short entry in your property file saves time later:\n\n- name, company and mobile number\n- languages spoken, and whether they send written quotes by email or WhatsApp\n- whether they issue invoices with your tax number (NIF)\n- work they have already done at the property\n- whether they are happy to work with a keyholder present\n\n## Brief them with facts, not guesses\n\nWhen something goes wrong, the plumber needs more than \"there is a leak\". Useful information includes where the water is visible, when it was first noticed, whether the supply has been turned off, and photographs of the area. A dated [photo report](/blog/what-photo-report-should-contain/) from a recent visit is often the quickest way to show what changed.\n\nThe plumber diagnoses and repairs. A property-care contact should not guess at causes or present a visual observation as a technical finding.\n\n## Agree spending limits in advance\n\nMany delays come from authority, not availability. Decide in writing:\n\n- who can call the plumber on your behalf\n- the amount that can be approved without asking you first\n- whether the water can be turned off at the main stopcock where it is safe to do so\n- how quotes and invoices reach you\n\n## Access while you are abroad\n\nLeaving a key under a pot, or with whichever neighbour is at home, makes it difficult to know who entered the property and when. With Guardemar's [contractor access](/contractor-access-algarve/) service, an authorised person meets the plumber, records attendance and photographs the visible condition afterwards where agreed. Guardemar does not supervise or certify the plumbing work. The plumber remains responsible for it.\n\nFor water risks in closed homes, read [why small water leaks are a major risk in vacant homes](/blog/small-water-leaks-vacant-homes/) and [what to do about a burst pipe or leak while you are away](/blog/burst-pipe-leak-while-away-algarve/).\n\nIf you would like one local contact for access, records and follow-up, [request a property assessment](/contact/).",
+    "_meta": {
+      "filePath": "plumber-western-algarve.md",
+      "fileName": "plumber-western-algarve.md",
+      "directory": ".",
+      "extension": "md",
+      "path": "plumber-western-algarve"
+    },
+    "readingTime": 3
+  },
+  {
+    "title": "Pool Maintenance Contracts in the Algarve: What Should Be Included",
+    "summary": "The questions to ask a pool company before you sign, and how to know your pool is being looked after while you are away.",
+    "categories": [
+      "Contractors",
+      "Maintenance"
+    ],
+    "slug": "pool-maintenance-contracts-algarve",
+    "date": "2026-11-18",
+    "seoTitle": "Pool Maintenance Contracts in the Algarve",
+    "author": "Hugo Gonçalves",
+    "content": "A pool is usually the most expensive outdoor feature of an Algarve villa, and the one most likely to turn green while the owner is away. Most owners rely on a pool company. Few have a clear written agreement about what that company actually does.\n\n## Typical services\n\nA pool maintenance contract usually covers some or all of the following:\n\n- scheduled visits, more frequent in summer and fewer in winter\n- skimming, vacuuming and brushing\n- water testing and chemical balance\n- filter and skimmer cleaning, and backwashing where relevant\n- a visual check of the pump and plant room\n- reporting faults, leaks or unusual water loss\n\nRepairs, replacement parts, chemicals and refilling are often charged separately. Ask.\n\n## Questions to ask before you sign\n\n- How many visits per month in each season?\n- Are chemicals included, or invoiced separately?\n- How will I know a visit took place? Photographs, a visit log or an app?\n- Who decides whether to cover the pool, lower the water or put it into winter mode?\n- What happens if the pump fails? Who can approve the repair, and up to what amount?\n- Does the company check the water level and report unusual loss?\n- Who has the key or gate code, and is the plant room locked?\n\n## Water loss and leaks\n\nEvaporation in the Algarve summer is significant, but persistent loss can indicate a leak. Pool leaks are a specialist matter. Early reporting gives the owner time to arrange detection before the problem affects surrounding paving or foundations.\n\n## Water rules\n\nPool filling and topping up have been restricted in some periods. Before draining or refilling, check what currently applies with your municipality. Read [Algarve garden watering rules](/blog/algarve-garden-watering-rules/).\n\n## Safety\n\nIf children or guests use the pool, ask the company to report damaged covers, fencing, alarms or lighting. Fencing and covers are part of safe use, not decoration.\n\n## Independent visual checks\n\nPool companies see the pool. They rarely look at the rest of the property, and owners abroad have no way to confirm what they see. Guardemar's optional pool and garden contractor check, listed on the [services page](/services/), provides a visual update after a contractor has attended. Regular [holiday home checks](/home-watch-algarve/) include the visible pool condition. This is observation, not water testing or technical inspection.\n\nFor leaving a pool while you are away, read [leaving a pool while you are away](/blog/leaving-pool-while-away-algarve/), or [request a property assessment](/contact/).",
+    "_meta": {
+      "filePath": "pool-maintenance-contracts.md",
+      "fileName": "pool-maintenance-contracts.md",
+      "directory": ".",
+      "extension": "md",
+      "path": "pool-maintenance-contracts"
+    },
+    "readingTime": 3
+  },
+  {
+    "title": "Power Cuts and Tripped Breakers in an Empty Algarve Home",
+    "summary": "What a power cut or tripped circuit means for a closed second home, and how to plan the response before it happens.",
+    "categories": [
+      "Property Risks",
+      "Vacant Homes"
+    ],
+    "slug": "power-cuts-tripped-breakers-empty-algarve-home",
+    "date": "2026-11-18",
+    "seoTitle": "Power Cuts in an Empty Algarve Home",
+    "author": "Hugo Gonçalves",
+    "content": "In an occupied home, a tripped breaker is noticed within minutes. In a closed one, it may go unnoticed for weeks. By the time someone opens the door, the freezer has defrosted, the dehumidifier has stopped, the alarm has gone quiet and the router no longer sends camera images.\n\n## Why a closed home is more exposed\n\nA second home usually keeps only a few things running: a fridge or freezer, an alarm, a router, perhaps a dehumidifier or an irrigation controller. Every one of those depends on a single supply. When the power goes, so does everything the owner relies on remotely.\n\nCommon triggers include a storm, a faulty appliance, moisture in an outdoor socket, or a general supply interruption in the area.\n\n## Signs that the power may be off\n\nOwners abroad often notice indirectly:\n\n- cameras or smart devices go offline\n- the alarm company reports a power failure, if the system is set up to do so\n- smart meters or energy apps show no consumption\n- a neighbour mentions that the house lights did not come on\n\nNone of these confirms the cause. Someone still needs to visit.\n\n## Decide in advance what a visitor may do\n\nA property-care visitor can observe whether the main switch or a circuit breaker appears to have tripped. Whether they should reset it is a different question. Resetting a breaker that trips because of a fault can make the problem worse. The safest approach is to agree in writing:\n\n- which circuits may be reset once, if there is no visible damage, water or burning smell\n- which circuits must never be reset without an electrician\n- what happens to the contents of the fridge and freezer\n\nIf a breaker trips again, the next step is an electrician. Read [hiring an electrician in Portugal](/blog/hiring-electrician-portugal-overseas-owners/).\n\n## Reduce the impact\n\nSimple measures help:\n\n- empty the freezer before long absences, or accept that its contents are at risk\n- label the consumer unit clearly, in English and Portuguese\n- ask your alarm installer whether the system has battery backup and how long it lasts\n- keep a record of which devices must stay on\n\nFor a wider view, see [should you leave electricity and water on in an empty holiday home?](/blog/electricity-water-empty-holiday-home/).\n\n## How Guardemar helps\n\nDuring [vacant property inspections](/home-watch-algarve/), the visible electrical status can be checked where agreed in the property profile. Guardemar records what it sees, follows the owner's written instructions and arranges an electrician through [contractor access](/contractor-access-algarve/) where authorised. It does not carry out electrical work.\n\nTo set out those instructions properly, [request a property assessment](/contact/).",
+    "_meta": {
+      "filePath": "power-cuts-tripped-breakers.md",
+      "fileName": "power-cuts-tripped-breakers.md",
+      "directory": ".",
+      "extension": "md",
+      "path": "power-cuts-tripped-breakers"
+    },
+    "readingTime": 3
+  },
+  {
     "title": "Preparing Your Algarve Home Before You Arrive",
     "summary": "A pre-arrival checklist that leaves time to solve issues before your flight lands.",
     "categories": [
@@ -634,6 +1082,27 @@ export default [
       "directory": ".",
       "extension": "md",
       "path": "preventive-maintenance-calendar"
+    },
+    "readingTime": 3
+  },
+  {
+    "title": "Privacy and Discretion for Owners of Significant Homes",
+    "summary": "Practical ways to keep your Algarve home, your movements and your information private when other people look after the house.",
+    "categories": [
+      "Security",
+      "Ownership"
+    ],
+    "slug": "privacy-discretion-significant-homes-algarve",
+    "date": "2026-11-23",
+    "seoTitle": "Privacy for Owners of Algarve Villas",
+    "author": "Hugo Gonçalves",
+    "content": "Owners of significant homes in the Western Algarve often say the same thing: they want the house looked after properly, and they want as few people as possible to know about it. That is a reasonable expectation, and it shapes how a care arrangement should work.\n\n## Fewer people, clearly named\n\nEvery person who holds a key, knows an alarm code or has the owner's travel dates is part of the picture. The aim is not to have nobody involved; it is to know exactly who is, and why. A short written list of authorised people, reviewed when someone leaves, does more for privacy than any single device.\n\n## Keys without addresses\n\nKeys should never carry the address of the house or the owner's name. Coded tags, kept separately from any list that links code to property, mean that a lost key is only a key. Every use should be recorded, so you can see who entered and when.\n\n## Travel dates are information too\n\nWhen the owner is arriving, when the house will be empty and when staff will be off are details worth protecting. Share them with the people who need them to do their work, and avoid broadcasting them in group chats with people who do not.\n\n## Information about the house\n\nFloor plans, alarm details, photographs of interiors and of valuable items are useful to the people looking after the house, and to nobody else. Ask anyone who holds them how they are stored, who can see them and how long they are kept. Under the GDPR you are entitled to clear answers.\n\n## How Guardemar works\n\nWe do not put signage on client homes, do not use your house or your name in our marketing, and do not publish an address for our own base, because we hold keys. Client and property details are shared only with people you have authorised, and every key use is recorded.\n\nIt is worth being clear about what we are not. Guardemar is not a security company: we do not provide guarding, surveillance or alarm response, which in Portugal are reserved to licensed private security companies. If a house needs those services, they should come from a licensed provider. [Cameras and alarms vs a physical property visit](/blog/cameras-alarms-vs-physical-property-visit/) explains how the two fit together.\n\nIf discretion matters as much as the care of the house, tell us when you [request a private assessment](/contact/). We take on a limited number of properties so that each one can be looked after this way.",
+    "_meta": {
+      "filePath": "privacy-discretion-significant-homes.md",
+      "fileName": "privacy-discretion-significant-homes.md",
+      "directory": ".",
+      "extension": "md",
+      "path": "privacy-discretion-significant-homes"
     },
     "readingTime": 3
   },
@@ -687,9 +1156,10 @@ export default [
     ],
     "slug": "property-management-cost-algarve",
     "date": "2026-10-02",
+    "updated": "2026-11-23",
     "seoTitle": "Property Management Cost in the Algarve",
     "author": "Hugo Gonçalves",
-    "content": "\"Property management\" covers two very different services in the Algarve, and they are priced in very different ways. Before comparing numbers, it is worth knowing which one you are being quoted for.\n\n## Two models: rental management and second-home management\n\n**Rental management** is built around guests. The company markets the home, takes bookings, handles check-ins, cleaning turnovers and guest messages, and usually runs the Alojamento Local obligations. Fees are typically a percentage of rental income, plus cleaning and laundry charged per stay. If the house earns nothing, the arrangement rarely makes sense for either side.\n\n**Second-home management** is built around the house. Nobody is booking it; you use it yourself, or lend it to family. The service is scheduled inspections, key holding, reports and coordination of the people who maintain the pool, garden and building. Because there is no rental income to take a share of, it is charged as a fixed monthly fee.\n\nIf you use the house yourself, a percentage-of-rent quote is the wrong comparison. You need a fixed fee for oversight.\n\n## What drives the monthly price\n\nFor a non-rental home, the price mostly reflects how much time someone spends at, and travelling to, your property:\n\n- **Visit frequency.** Monthly, twice a month or weekly is the biggest single factor.\n- **Size and complexity.** A two-bedroom apartment takes less time to inspect properly than a villa with a pool, a garden, irrigation zones and several outbuildings.\n- **Location.** A compact service area keeps travel time down. Remote rural properties take longer to reach.\n- **What happens after the visit.** A short message is cheaper to produce than a dated report with photographs and a clear status for each part of the house. The report is also what makes the service useful from abroad — and useful as a record if you ever need to show your insurer how the home was looked after.\n- **Coordination.** Meeting your pool company, letting in a plumber or chasing a quote is real work, and should be clear in the price.\n\n## Guardemar's prices, as an example\n\nAt the time of writing, Guardemar's plans for privately used homes between Carvoeiro and Sagres are:\n\n| Plan | Visits | Price per month (incl. VAT) |\n| --- | --- | --- |\n| CARE | 1 scheduled inspection a month | €97.17 |\n| CARE+ | 2 scheduled inspections a month | €158.67 |\n| COMPLETE | Weekly scheduled inspections | €232.47 |\n\nEvery plan includes secure key holding, a digital report with photographs after each visit, and notification of anything that needs attention. Plans run on a 12-month agreement; paying annually in advance saves 10%. One-off needs — letting in a contractor, a storm check or an emergency call-out — are listed as optional services with their own published fees. The current figures are always on the [plans page](/plans/).\n\n## What a management fee does not include\n\nWhoever you choose, some costs sit outside the management fee:\n\n- **Pool maintenance, gardening and cleaning.** These are paid to the providers who do the work. A good manager coordinates them rather than replacing them.\n- **Repairs and technical work.** Plumbers, electricians and air-conditioning engineers invoice for their own work. Ask whether you approve every quote before work starts.\n- **Running costs of the house.** Utilities, condominium charges, IMI and insurance remain the owner's.\n\n## How to compare quotes fairly\n\nWhen you have two or three proposals, put them side by side on the same questions:\n\n1. **How often will someone actually enter the house?** \"Regular checks\" is not a frequency.\n2. **What will I receive after each visit?** Ask to see a sample report.\n3. **How are keys stored and who may use them?** Keys labelled with your address are a risk.\n4. **Is VAT included in the price shown?**\n5. **How long is the contract, and how does it end?**\n6. **What happens in an emergency, and what does a call-out cost?**\n7. **Who approves spending?** You should see quotes before anyone commits your money.\n\nThe cheapest monthly figure is not always the cheapest outcome. An empty house that is checked rarely can hide a small leak or a failed irrigation zone for weeks; see [why small water leaks matter in vacant homes](/blog/small-water-leaks-vacant-homes/) and [how often an empty property should be inspected](/blog/how-often-inspect-empty-property-portugal/).\n\nIf you would like a price for your own house, [request a property assessment](/contact/). We will look at the home and recommend a frequency, rather than starting from the most expensive plan.",
+    "content": "\"Property management\" covers two very different services in the Algarve, and they are priced in very different ways. Before comparing numbers, it is worth knowing which one you are being quoted for.\n\n## Two models: rental management and second-home management\n\n**Rental management** is built around guests. The company markets the home, takes bookings, handles check-ins, cleaning turnovers and guest messages, and usually runs the Alojamento Local obligations. Fees are typically a percentage of rental income, plus cleaning and laundry charged per stay. If the house earns nothing, the arrangement rarely makes sense for either side.\n\n**Second-home management** is built around the house. Nobody is booking it; you use it yourself, or lend it to family. The service is scheduled inspections, key holding, reports and coordination of the people who maintain the pool, garden and building. Because there is no rental income to take a share of, it is charged as a fixed monthly fee.\n\nIf you use the house yourself, a percentage-of-rent quote is the wrong comparison. You need a fixed fee for oversight.\n\n## What drives the monthly price\n\nFor a non-rental home, the price mostly reflects how much time someone spends at, and travelling to, your property:\n\n- **Visit frequency.** Monthly, twice a month or weekly is the biggest single factor.\n- **Size and complexity.** A two-bedroom apartment takes less time to inspect properly than a villa with a pool, a garden, irrigation zones and several outbuildings.\n- **Location.** A compact service area keeps travel time down. Remote rural properties take longer to reach.\n- **What happens after the visit.** A short message is cheaper to produce than a dated report with photographs and a clear status for each part of the house. The report is also what makes the service useful from abroad — and useful as a record if you ever need to show your insurer how the home was looked after.\n- **Coordination.** Meeting your pool company, letting in a plumber or chasing a quote is real work, and should be clear in the price.\n\n## Guardemar's prices, as an example\n\nAt the time of writing, Guardemar's plans for villas and homes in private use between Carvoeiro and Sagres are:\n\n| Plan | Visits | Price per month (incl. VAT) |\n| --- | --- | --- |\n| CARE | 1 documented visit per month | €100.00 |\n| CARE+ | 2 documented visits per month | €180.00 |\n| COMPLETE | A minimum of 1 documented visit per week | €300.00 |\n| PRIVATE ESTATE | Schedule set to the estate | By private proposal |\n\nA documented visit is an on-site inspection followed by a dated photo report sent the same day. Every plan includes secure key holding, a digital report with photographs after each visit, and notification of anything that needs attention. Plans run on a 12-month agreement; paying annually in advance saves 10%. One-off needs — letting in a contractor, a storm check or an emergency call-out — are listed as optional services with their own published fees. The current figures are always on the [plans page](/plans/).\n\n## What a management fee does not include\n\nWhoever you choose, some costs sit outside the management fee:\n\n- **Pool maintenance, gardening and cleaning.** These are paid to the providers who do the work. A good manager coordinates them rather than replacing them.\n- **Repairs and technical work.** Plumbers, electricians and air-conditioning engineers invoice for their own work. Ask whether you approve every quote before work starts.\n- **Running costs of the house.** Utilities, condominium charges, IMI and insurance remain the owner's.\n\n## How to compare quotes fairly\n\nWhen you have two or three proposals, put them side by side on the same questions:\n\n1. **How often will someone actually enter the house?** \"Regular checks\" is not a frequency.\n2. **What will I receive after each visit?** Ask to see a sample report.\n3. **How are keys stored and who may use them?** Keys labelled with your address are a risk.\n4. **Is VAT included in the price shown?**\n5. **How long is the contract, and how does it end?**\n6. **What happens in an emergency, and what does a call-out cost?**\n7. **Who approves spending?** You should see quotes before anyone commits your money.\n\nThe cheapest monthly figure is not always the cheapest outcome. An empty house that is checked rarely can hide a small leak or a failed irrigation zone for weeks; see [why small water leaks matter in vacant homes](/blog/small-water-leaks-vacant-homes/) and [how often an empty property should be inspected](/blog/how-often-inspect-empty-property-portugal/).\n\nIf you would like a price for your own house, [request a property assessment](/contact/). We will look at the home and recommend the plan that fits it, rather than starting from the most expensive one.",
     "_meta": {
       "filePath": "property-management-cost-algarve.md",
       "fileName": "property-management-cost-algarve.md",
@@ -716,6 +1186,48 @@ export default [
       "directory": ".",
       "extension": "md",
       "path": "protect-home-living-abroad"
+    },
+    "readingTime": 3
+  },
+  {
+    "title": "Overseeing a Renovation in the Algarve from Abroad",
+    "summary": "What owners can do to keep a renovation or major works on track while they are not in Portugal, and how independent, dated site records help.",
+    "categories": [
+      "Ownership",
+      "Contractors"
+    ],
+    "slug": "renovation-from-abroad-algarve",
+    "date": "2026-11-23",
+    "seoTitle": "Renovation in the Algarve from Abroad",
+    "author": "Hugo Gonçalves",
+    "content": "Renovating a villa in the Western Algarve while living in another country is common, and often stressful. Progress photographs arrive from the builder, payments fall due on milestones, and the owner has to judge from a distance whether what is reported is what is happening on site.\n\n## Start with the right professionals\n\nBuilding work in Portugal involves licensed builders, and often an architect or engineer responsible for the project. Licensing, design and technical supervision are their responsibility, and they should be appointed before work starts. Nothing in this article replaces them.\n\nWhat owners often lack is something simpler: an independent, regular look at the site by someone who works for them, not for the builder.\n\n## Agree the record before the work starts\n\nA few things make a remote project easier to follow:\n\n- **A written programme.** Milestones with dates, so a visit can be compared against what should have happened.\n- **A single channel.** Decide who reports to you, and in what form. Scattered messages from several people are hard to follow and harder to rely on later.\n- **Payment tied to evidence.** Where a payment depends on a stage being complete, ask how completion will be shown.\n- **Protection of what stays.** Floors, joinery, furniture and planting that are not part of the works should be protected, and their condition recorded before work begins.\n\n## What independent visits add\n\nOn site visits we photograph the same areas each time, note who was working and what has visibly changed, and record anything that looks inconsistent with the programme or with your instructions — an unprotected floor, standing water, a window left open, materials stored where they should not be. You receive the report the same day.\n\nWe do not supervise the works technically, approve stages, certify quality or instruct the builder on your behalf. Those are matters for your architect, engineer or builder. Our role is to give you an independent, dated account of what was visible on the day.\n\n## When the builders leave\n\nThe weeks after completion are when snags appear: a leak at a new shower, irrigation reconnected the wrong way, a door that no longer closes in damp weather. A handover inspection and a few follow-up visits catch these while the builder is still involved. [Property handover inspections](/property-handover-algarve/) explains what that visit covers.\n\nRenovation oversight is part of a [Private Estate proposal](/plans/), alongside the regular care of the house. If works are planned on your Algarve home, [request a private assessment](/contact/) before they begin.",
+    "_meta": {
+      "filePath": "renovation-from-abroad-algarve.md",
+      "fileName": "renovation-from-abroad-algarve.md",
+      "directory": ".",
+      "extension": "md",
+      "path": "renovation-from-abroad-algarve"
+    },
+    "readingTime": 3
+  },
+  {
+    "title": "Roof and Gutter Checks Before the Autumn Rains",
+    "summary": "Why the first heavy rain of autumn often reveals roof, terrace and drainage problems in Algarve second homes, and how to prepare.",
+    "categories": [
+      "Maintenance",
+      "Weather"
+    ],
+    "slug": "roof-gutter-checks-before-autumn-rains-algarve",
+    "date": "2026-11-18",
+    "seoTitle": "Roof and Gutter Checks Before Autumn Rain",
+    "author": "Hugo Gonçalves",
+    "content": "After a long, dry Algarve summer, the first serious rain often arrives suddenly. Gutters full of leaves, blocked terrace drains and cracked roof tiles all show up at once. In a closed home, water may come in for days before anyone sees it.\n\n## Why autumn is the risk point\n\nThrough the summer, gutters and drains fill with leaves, pine needles, sand and dust. Terrace waterproofing dries and cracks in the heat. Tiles shift in the wind. None of this matters until the rain comes. Then, water that cannot drain finds the next way down, often through a ceiling, a terrace door or a wall.\n\n## What to look at\n\nA qualified roofer or builder should assess the roof itself. Owners can ask for:\n\n- gutters and downpipes cleared and checked for flow\n- terrace and balcony drains cleared\n- flat roofs and terraces checked for cracked or lifting waterproofing\n- loose, broken or slipped roof tiles\n- flashings around chimneys, skylights and solar panels\n- trees and shrubs touching the roof or walls\n\nMany Algarve homes have flat roofs and roof terraces, which depend completely on drainage and waterproofing.\n\n## Safety first\n\nRoof work is work at height and should be done by people equipped for it. Guardemar does not access roofs or work at height. A visual check from the ground, terraces and inside the property can reveal signs such as staining, damp patches or water marks, but cannot confirm the condition of the roof itself.\n\n## When to arrange it\n\nSeptember and October are the usual months, ideally before the first forecast of heavy rain. Builders and roofers become busy after the first storm, when urgent repairs take priority.\n\n## After the first rain\n\nThe first heavy rain is a useful test. A visit afterwards can show whether water has entered at windows, terraces or ceilings. Guardemar's optional storm check and [storm property checks](/storm-property-checks-algarve/) provide a visual record after significant weather, subject to safe access and availability. Read [what to check after a storm in the Algarve](/blog/what-check-after-storm-algarve/).\n\n## Arranging the work from abroad\n\nThe roofer needs access, sometimes to the inside of the property and to the roof hatch. Guardemar's [contractor access](/contractor-access-algarve/) service provides authorised access and records attendance. The contractor remains responsible for the work.\n\nFor the rest of the year, see the [preventive maintenance calendar](/blog/preventive-maintenance-calendar-algarve-second-home/), or [request a property assessment](/contact/).",
+    "_meta": {
+      "filePath": "roof-gutter-checks.md",
+      "fileName": "roof-gutter-checks.md",
+      "directory": ".",
+      "extension": "md",
+      "path": "roof-gutter-checks"
     },
     "readingTime": 3
   },
@@ -842,6 +1354,48 @@ export default [
     "readingTime": 3
   },
   {
+    "title": "Smart Locks, Key Safes and Access Codes: Benefits and Risks",
+    "summary": "How keyless access works for Algarve second homes, and the security and practical issues owners should weigh before relying on it.",
+    "categories": [
+      "Security",
+      "Ownership"
+    ],
+    "slug": "smart-locks-key-safes-access-codes",
+    "date": "2026-11-18",
+    "seoTitle": "Smart Locks and Key Safes: Benefits and Risks",
+    "author": "Hugo Gonçalves",
+    "content": "For an owner abroad, keyless access is appealing. No keys to post, no neighbour to call, no lost spare. A code can be sent to the cleaner on Monday and changed on Tuesday. But keyless systems have their own risks, and they do not remove the need for someone to manage access.\n\n## Key safes\n\nAn external key safe with a combination is cheap and simple. It is also the least secure option. Codes are shared and rarely changed, safes can be forced, and a key safe on the wall tells everyone that a key is close by. Some insurers may take a view on how keys are stored, so check your policy.\n\nIf you use one, choose a sturdy model, fix it properly, keep it out of sight from the street and change the code regularly.\n\n## Smart locks\n\nSmart locks allow access by app, code or card, often with a log of who entered and when. Advantages include individual codes for each person, time-limited access and remote changes.\n\nPractical issues to consider:\n\n- **Batteries.** Most smart locks run on batteries. A flat battery at the wrong moment can lock everyone out.\n- **Connectivity.** Some features depend on Wi-Fi or a hub. A power cut or router failure can disable remote control.\n- **Backup access.** Many smart locks still need a physical key as a backup. That key needs managing too.\n- **Salt and weather.** Exterior locks near the sea need to withstand corrosion.\n- **Condominium doors.** In apartments, the building entrance may still need a physical key or fob.\n\n## Codes are only as good as their management\n\nThe real security question is not the lock, but how codes are issued and withdrawn. Ask:\n\n- who has a code at this moment?\n- when was each code last changed?\n- are codes for cleaners and contractors removed when they no longer need them?\n- is there a record of who entered, and is anyone actually looking at it?\n\n## A hybrid approach\n\nMany owners combine a smart lock for regular providers with professional key holding for everything else. Guardemar's [key holding](/key-holding-algarve/) uses coded keys that are not labelled with the property address, owner-approved access instructions and records of arranged attendance. Guardemar does not install or maintain locks.\n\nFor the wider security picture, read [key holding in Portugal](/blog/key-holding-portugal-overseas-owners/) and [neighbour, house-sitter or professional keyholder?](/blog/neighbour-housesitter-or-professional-keyholder/), or [request a property assessment](/contact/).",
+    "_meta": {
+      "filePath": "smart-locks-key-safes.md",
+      "fileName": "smart-locks-key-safes.md",
+      "directory": ".",
+      "extension": "md",
+      "path": "smart-locks-key-safes"
+    },
+    "readingTime": 3
+  },
+  {
+    "title": "Storm Damage Claims in the Algarve: A Practical Sequence",
+    "summary": "What overseas owners should do, and in what order, after wind or heavy rain damages a closed Algarve home.",
+    "categories": [
+      "Insurance Documentation",
+      "Weather"
+    ],
+    "slug": "storm-damage-claims-algarve-practical-sequence",
+    "date": "2026-11-18",
+    "seoTitle": "Storm Damage Claims in the Algarve",
+    "author": "Hugo Gonçalves",
+    "content": "Atlantic storms reach the Western Algarve every winter. Most pass without consequence. Occasionally, strong wind or heavy rain damages shutters, roofs, garden walls, pergolas or trees, or water finds its way inside. For an owner abroad, the first sign may be a neighbour's message or a gap in the camera feed.\n\nA clear sequence makes the following days easier, both for repairs and for any insurance claim.\n\n## 1. Wait until it is safe\n\nNobody should go up on roofs, under damaged structures or near fallen cables during or immediately after a storm. Where there is immediate danger, the emergency services come first. A visit should take place when conditions and access are safe.\n\n## 2. Record the condition\n\nBefore anything is cleared or repaired, take dated photographs of:\n\n- the exterior from several angles\n- damaged shutters, windows, doors, gates and roof areas visible from the ground\n- fallen trees, branches and displaced items\n- terraces, drains and any standing water\n- interior signs of water entry, such as ceilings, walls and floors near openings\n\nKeep a short note of what was found and when. Read [what to check after a storm in the Algarve](/blog/what-check-after-storm-algarve/).\n\n## 3. Limit further damage\n\nReasonable temporary measures, such as securing a loose shutter, covering a broken window or moving items away from water, are usually expected. Keep receipts for any emergency work.\n\n## 4. Notify your insurer\n\nCheck your policy for the claim procedure and time limits. Storm cover often depends on how the policy defines a storm. Some policies refer to wind speeds or to official weather records. Make a note of the date and keep links to weather warnings issued for the area.\n\n## 5. Get quotes and keep the evidence\n\nAsk builders, roofers or glaziers for written quotes that describe the damage. Do not dispose of damaged items until you know whether the insurer wants to see them. If an assessor (perito) is sent, someone will need to provide access.\n\n## 6. Follow up\n\nWater that entered during a storm can lead to damp and mould weeks later. A follow-up visit can record whether affected areas are drying. Read [humidity and mould in Algarve holiday homes](/blog/humidity-mould-algarve-holiday-homes/).\n\n## Prevention for next winter\n\nMany storm claims start with blocked gutters, loose shutters or overhanging trees. Read [roof and gutter checks before the autumn rains](/blog/roof-gutter-checks-before-autumn-rains-algarve/) and [salt air, shutters and outdoor metalwork](/blog/salt-air-shutters-outdoor-metalwork-algarve/).\n\n## Where Guardemar fits\n\nGuardemar's [storm property checks](/storm-property-checks-algarve/) provide a dated visual record after significant weather, subject to safe access and availability, without roof access or structural assessment. Through [contractor access](/contractor-access-algarve/), it can meet builders and assessors. Guardemar does not assess claims or give insurance advice.\n\nFor a wider view, read [holiday home insurance in Portugal](/blog/holiday-home-insurance-portugal-what-is-covered/), or [request a property assessment](/contact/).",
+    "_meta": {
+      "filePath": "storm-damage-claims.md",
+      "fileName": "storm-damage-claims.md",
+      "directory": ".",
+      "extension": "md",
+      "path": "storm-damage-claims"
+    },
+    "readingTime": 3
+  },
+  {
     "title": "Unoccupied Property Clauses: Why Documented Inspections Matter to Your Insurer",
     "summary": "A practical guide to vacancy conditions, inspection records and the limits of what documented home watch visits can prove.",
     "categories": [
@@ -862,6 +1416,27 @@ export default [
       "path": "unoccupied-property-clauses-documented-inspections"
     },
     "readingTime": 5
+  },
+  {
+    "title": "Vehicle Checks Between Visits: Keeping a Car Ready for Your Return",
+    "summary": "What can realistically be checked on a car left at an Algarve home, and where a mechanic needs to take over.",
+    "categories": [
+      "Vehicles",
+      "Property Care"
+    ],
+    "slug": "vehicle-checks-between-visits-algarve",
+    "date": "2026-11-18",
+    "seoTitle": "Vehicle Checks Between Visits",
+    "author": "Hugo Gonçalves",
+    "content": "Arriving at Faro airport, collecting the keys and finding that the car at the villa will not start is a familiar story. A flat battery, a soft tyre or a car covered in dust and bird droppings is rarely serious, but it is an unwelcome start to a stay.\n\nSome of this can be prevented with simple checks. Some of it needs a mechanic. The distinction matters.\n\n## What a visual check can cover\n\nA visual check of a parked car can record:\n\n- whether the car is where it was left and appears undamaged\n- visible tyre condition, such as an obviously flat tyre\n- whether doors, windows and the boot are closed and locked\n- signs of fluid leaking beneath the car\n- signs of animals, nests or insects around the wheels or under the bonnet area\n- the condition of a car cover, if one is used\n- dust, sap or salt build-up\n\nPhotographs taken in the same positions each visit make changes easy to spot.\n\n## What may be agreed separately\n\nSome owners ask for basic measures to help keep the car ready, such as connecting a battery maintainer supplied by the owner, or starting the engine for a short period where that is safe and legally permitted. These need specific written instructions, the owner's insurance position, and agreement that such measures are appropriate for the car.\n\nMoving the car, driving it, taking it for inspection or to a garage are separate matters. They need express approval and the right insurance cover.\n\n## What needs a mechanic\n\n- battery replacement or diagnosis\n- brake, tyre or suspension problems\n- warning lights on the dashboard\n- preparing a car for a long period of storage\n- roadworthiness inspections\n\nAsk your local garage what preparation it recommends before you leave, and keep its contact details in your property file.\n\n## Practical tips before you leave\n\n- leave the car with a full tank and correct tyre pressures\n- clean the interior and leave nothing that attracts insects\n- consider a battery maintainer, or ask your mechanic about disconnecting the battery\n- leave the spare key, documents and remote in a secure place agreed in writing\n- check insurance, annual vehicle tax and inspection dates. See [leaving a car in Portugal while you are abroad](/blog/leaving-car-portugal-while-abroad/)\n\n## Guardemar Vehicle Care\n\nThe optional Vehicle Care service, listed on the [services page](/services/), covers agreed visual checks and, where specifically agreed and legally and operationally permitted, basic measures to help keep a vehicle ready. It does not include mechanical maintenance, repairs, roadworthiness, a guaranteed battery condition, or moving the vehicle unless separately and expressly approved.\n\nIf the car stays at the house, it can be added to [holiday home checks](/home-watch-algarve/) and [arrival preparation](/arrival-preparation-algarve/). [Request a property assessment](/contact/) to discuss it.",
+    "_meta": {
+      "filePath": "vehicle-checks-between-visits.md",
+      "fileName": "vehicle-checks-between-visits.md",
+      "directory": ".",
+      "extension": "md",
+      "path": "vehicle-checks-between-visits"
+    },
+    "readingTime": 3
   },
   {
     "title": "Villa vs Apartment: What Actually Needs Checking",
@@ -902,6 +1477,27 @@ export default [
       "path": "village-homes-vila-do-bispo"
     },
     "readingTime": 4
+  },
+  {
+    "title": "Water Damage Claims: How to Document Before the Plumber Arrives",
+    "summary": "Why the first hour after water is found matters for an insurance claim, and what to record in an Algarve second home.",
+    "categories": [
+      "Insurance Documentation",
+      "Property Risks"
+    ],
+    "slug": "water-damage-claims-documenting-algarve-home",
+    "date": "2026-11-18",
+    "seoTitle": "Water Damage Claims: Document It First",
+    "author": "Hugo Gonçalves",
+    "content": "Water damage is one of the most common reasons for home insurance claims. In a second home, it is also one of the hardest to explain, because nobody saw it happen. By the time the property is opened, the leak may have run for days or weeks.\n\nWhat the owner can show matters. The quality of the record made in the first hour often shapes the conversation with the insurer.\n\n## Safety and limiting damage first\n\nMaking the situation safe and limiting further damage comes before documentation, but the two can happen together. If the main stopcock can be turned off safely, it usually should be. Where water is near electrics, a qualified electrician or the emergency services should be involved. Read [burst pipe or leak while you are away](/blog/burst-pipe-leak-while-away-algarve/).\n\nMost policies expect owners to take reasonable steps to limit damage. Delays caused by waiting to photograph everything should be avoided.\n\n## What to record\n\n- **Wide shots** of every affected room, from the doorway, before anything is moved.\n- **Close-ups** of the visible source, if apparent: a pipe, a fitting, an appliance.\n- **Ceilings, walls and skirting**, including stains, bubbling paint or swelling.\n- **Floors**, showing how far the water spread.\n- **Affected belongings**: furniture, rugs, appliances, boxes.\n- **The date and time** of each photograph.\n- **The condition of neighbouring units**, if water has reached them and access is possible.\n\nA short written note of what was found, by whom and when, complements the photographs.\n\n## Keep the evidence\n\nDo not throw away damaged items or replaced parts until you know whether the insurer wants to see them. Ask the plumber to keep the failed part and to note the cause in the invoice or a short report.\n\n## Show the \"before\"\n\nInsurers often ask how long a leak was running and whether the damage is new. Photographs from earlier visits, taken in the same rooms, can show the previous condition. That is why an [evidence file](/blog/evidence-file-vacant-algarve-home/) built over time is useful.\n\n## Notify promptly\n\nCheck your policy for the claim procedure and any time limits. Notify the insurer or your insurance intermediary as soon as reasonably possible. Ask whether you can proceed with urgent repairs, and whether the insurer will send an assessor (perito).\n\n## Condominiums\n\nIn apartments, the origin of the water and who is responsible may be disputed. Involve the administrator early. Read [condominium insurance vs your own contents policy](/blog/condominium-building-insurance-vs-contents-policy/).\n\n## Where Guardemar fits\n\nGuardemar can attend, photograph, provide authorised access for the plumber and report what is visible, through [contractor access](/contractor-access-algarve/) and the optional emergency call-out on the [services page](/services/), subject to availability. Guardemar does not determine causes, assess claims or advise on insurance.\n\nTo build a dated record before you need it, [request a property assessment](/contact/).",
+    "_meta": {
+      "filePath": "water-damage-claims.md",
+      "fileName": "water-damage-claims.md",
+      "directory": ".",
+      "extension": "md",
+      "path": "water-damage-claims"
+    },
+    "readingTime": 3
   },
   {
     "title": "Why Small Water Leaks Are a Major Risk in Vacant Homes",

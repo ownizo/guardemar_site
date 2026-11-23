@@ -1,5 +1,6 @@
 ---
 date: 2026-09-03
+updated: 2026-11-23
 title: "How Often Should an Empty Property in Portugal Be Inspected?"
 seoTitle: "How Often to Inspect an Empty Property, Portugal"
 summary: "A sensible way to choose between monthly, fortnightly and weekly property inspections."
@@ -26,4 +27,4 @@ Weekly oversight may be preferable for larger villas, complex systems, known mai
 
 Inspection needs can change around extended absences, major works or periods of severe weather. A property that receives monthly visits may need an additional post-storm or contractor follow-up visit.
 
-The best starting point is a property assessment rather than a generic rule. Compare [Guardemar Care plans](/plans/) or [request an assessment](/contact/) for your home.
+The best starting point is a property assessment rather than a generic rule. At Guardemar each plan has a fixed visit frequency: **CARE** includes one documented visit per month, **CARE+** two per month and **COMPLETE** a minimum of one per week. Estates and homes with household staff receive a Private Estate proposal with a schedule set to the property. Compare [Guardemar care plans](/plans/) or [request an assessment](/contact/) for your home.

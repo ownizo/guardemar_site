@@ -6,6 +6,7 @@ summary: "How to choose garden care for an Algarve second home, what to agree in
 categories: ["Gardens", "Contractors"]
 slug: "gardener-vs-garden-maintenance-company-algarve"
 author: "Hugo Gonçalves"
+noindex: true
 ---
 
 A well-kept garden is one of the first things visitors notice and one of the first things to decline when nobody is watching. In the Algarve, a garden can go from tidy to tired in a single summer if irrigation fails or visits become irregular.

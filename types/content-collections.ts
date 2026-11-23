@@ -7,6 +7,7 @@ export type Post = {
   date: string
   updated?: string
   seoTitle?: string
+  noindex?: boolean
   author: string
   content: string
   readingTime: number

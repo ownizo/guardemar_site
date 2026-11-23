@@ -1,12 +1,13 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { ArrowRight, Check, ClipboardCheck, CloudRain, KeyRound, ShieldCheck } from 'lucide-react'
+import { ArrowRight, Check, ClipboardCheck, CloudRain, EyeOff, KeyRound, ShieldCheck, UserRound } from 'lucide-react'
 
 import { AssessmentCta, ButtonLink, PageIntro, PropertyFocusSection, ReportPreview, SectionHeading, TrustSection } from '@/components/site'
-import { formatEuro, plans, trustPoints, vatNote } from '@/config/site'
+import { PlanCards, PrivateEstateCard } from '@/components/plan-cards'
+import { documentedVisitDefinition, trustPoints, vatNote } from '@/config/site'
 import { pageHead } from '@/lib/seo'
 
 export const Route = createFileRoute('/')({
-  head: () => pageHead({ title: 'Second Home Care & Key Holding, Western Algarve | Guardemar', description: 'Guardemar looks after second homes from Carvoeiro to Sagres while you are away: scheduled home watch visits, key holding and a photo report after every visit.', path: '/' }),
+  head: () => pageHead({ title: 'Private Estate Care, Western Algarve | Guardemar', description: 'Discreet, documented care for villas and estates from Carvoeiro to Sagres while you are away: fixed visit schedules, coded key holding and one accountable person.', path: '/' }),
   component: HomePage,
 })
 
@@ -15,14 +16,14 @@ function HomePage() {
     <>
       <section className="hero shell">
         <div className="hero-copy reveal">
-          <p className="eyebrow">Second-home care · Western Algarve</p>
-          <h1>Your Algarve home, looked after while you&apos;re away.</h1>
-          <p className="hero-lede">Scheduled home watch visits, secure key holding and a photo report after every visit, from Carvoeiro to Sagres. One local contact who knows the house, and who coordinates the pool, garden and cleaning companies you already use.</p>
+          <p className="eyebrow">Private estate care · Western Algarve</p>
+          <h1>Private care for exceptional homes.</h1>
+          <p className="hero-lede">Discreet, documented oversight of your villa or estate while you are away, from Carvoeiro to Sagres. One accountable person who knows the house, a dated photo report after every visit, and careful coordination of the staff and contractors you already trust.</p>
           <div className="button-row">
-            <ButtonLink to="/contact/" event="assessment_form_start">Request a Property Assessment</ButtonLink>
-            <ButtonLink href="https://wa.me/351928226570" variant="text" event="whatsapp_click">WhatsApp Guardemar <ArrowRight size={16} /></ButtonLink>
+            <ButtonLink to="/contact/" event="assessment_form_start">Request a private assessment</ButtonLink>
+            <ButtonLink href="https://wa.me/351928226570" variant="text" event="whatsapp_click">Message Guardemar <ArrowRight size={16} /></ButtonLink>
           </div>
-          <p className="territory-line">Western Algarve — from Carvoeiro to Sagres.</p>
+          <p className="territory-line">Western Algarve — from Carvoeiro to Sagres. A limited number of properties.</p>
         </div>
         <div className="hero-visual">
           <picture>
@@ -60,7 +61,7 @@ function HomePage() {
         <SectionHeading eyebrow="The reason we exist" title="Your home doesn’t stop needing attention when you leave Portugal." />
         <div className="editorial-copy">
           <p className="large-copy">A leaking pipe, failed irrigation system or patch of damp can go unnoticed for weeks in an empty property.</p>
-          <p>Guardemar visits your home on a scheduled basis, checks its condition and lets you know exactly how things are. A small issue detected today can avoid a significant repair later.</p>
+          <p>Guardemar visits your home on a fixed schedule, inspects its condition and tells you exactly how things are. A small issue found today avoids a significant repair, and a disputed insurance claim, later.</p>
           <div className="plain-list"><span>No assumptions.</span><span>No informal arrangements.</span><span>No wondering from another country.</span></div>
         </div>
       </section>
@@ -89,20 +90,22 @@ function HomePage() {
 
       <section className="section warm-section">
         <div className="shell">
-          <PageIntro eyebrow="Management plans" title="Choose how often we come." text="Monthly, twice a month or weekly, confirmed after we have seen the house. Repairs are carried out by your trades, and only after you have approved the quote." />
-          <div className="plans-grid">
-            {plans.map((plan) => (
-              <article className={`plan-card ${plan.popular ? 'popular' : ''}`} key={plan.name}>
-                {plan.popular && <span className="popular-label">Most popular</span>}
-                <p className="eyebrow">{plan.name}</p>
-                <div className="price">From <strong>{formatEuro(plan.grossPrice)}</strong><span>/month incl. VAT</span></div>
-                <p>{plan.description}</p>
-                <ul>{plan.highlights.map((item) => <li key={item}><Check size={15} />{item}</li>)}</ul>
-                <ButtonLink to="/plans/" variant={plan.popular ? 'primary' : 'outline'} event="plan_cta_click">View plan details</ButtonLink>
-              </article>
-            ))}
+          <PageIntro eyebrow="Care plans" title="A fixed visit schedule, documented every time." text="Each plan sets how often we visit: once a month, twice a month or at least once a week. Repairs are carried out by your trades, and only after you have approved the quote." />
+          <PlanCards linkTo="/plans/" buttonLabel="View plan details" />
+          <PrivateEstateCard />
+          <p className="pricing-note">{documentedVisitDefinition} {vatNote} The plan is confirmed after an initial assessment of the house.</p>
+        </div>
+      </section>
+
+      <section className="section section-blue">
+        <div className="shell">
+          <PageIntro eyebrow="Discretion by design" title="Your home and your name stay private." text="Owners of significant homes value quiet competence over visibility. Guardemar is built around that." light />
+          <div className="feature-grid">
+          <article><EyeOff /><h3>No visible branding</h3><p>No signage, no branded vehicles at the gate and no mention of your home or your name in our marketing.</p></article>
+          <article><KeyRound /><h3>Coded keys</h3><p>Keys are coded, never labelled with an address, and every use is recorded.</p></article>
+          <article><UserRound /><h3>One accountable person</h3><p>The same person knows the house, its systems and the people who work there.</p></article>
+            <article><ShieldCheck /><h3>A limited client list</h3><p>We take on a limited number of properties, so every house receives full attention.</p></article>
           </div>
-          <p className="pricing-note">{vatNote} The plan is confirmed after we have seen the property. Custom plans are available for larger villas, estates and properties with complex requirements.</p>
         </div>
       </section>
 

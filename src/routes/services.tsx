@@ -7,7 +7,7 @@ import { pageHead } from '@/lib/seo'
 export const Route = createFileRoute('/services')({
   head: () => pageHead({
     title: 'Property Services for Second Homes, Algarve | Guardemar',
-    description: 'Key holding, contractor access, arrival preparation, handover and weather checks for privately used second homes in the Western Algarve.',
+    description: 'Key holding, contractor access, arrival preparation, handover and weather checks for privately used villas, estates and second homes in the Western Algarve.',
     path: '/services/',
   }),
   component: Services,

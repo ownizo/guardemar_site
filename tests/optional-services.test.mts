@@ -53,13 +53,15 @@ test('Services presents the catalogue without prices or transactional controls',
 
 test('Plans presents the catalogue with prices after the core care plans', async () => {
   const page = await source('../src/routes/plans.tsx')
-  assert.match(page, /plans\.map/)
-  assert.match(page, /Request an assessment/)
+  assert.match(page, /<PlanCards detailed \/>/)
+  const cards = await source('../src/components/plan-cards.tsx')
+  assert.match(cards, /plans\.map/)
+  assert.match(cards, /Request an assessment/)
   assert.match(page, /OptionalServicesCatalogue/)
   assert.match(page, /showPrice/)
   assert.match(page, /Optional services are available in addition to your Guardemar care plan/)
   const optionalSection = page.indexOf('optional-services-section')
-  const careGrid = page.indexOf('detailed-plans')
+  const careGrid = page.indexOf('<PlanCards detailed')
   assert.ok(careGrid >= 0 && optionalSection > careGrid)
 })
 

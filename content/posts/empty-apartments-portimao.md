@@ -5,6 +5,7 @@ summary: "What overseas owners should watch for in city apartments, riverside ho
 categories: ["Local Guides", "Vacant Homes"]
 slug: "empty-apartments-portimao-praia-da-rocha"
 author: "Hugo Gonçalves"
+noindex: true
 ---
 
 Portimão is not a single property type. City apartments, riverside homes and properties around Praia da Rocha sit in the same municipality and often share building systems, yet they empty differently. Many overseas owners use these homes for shorter visits through the year rather than one long summer stay.

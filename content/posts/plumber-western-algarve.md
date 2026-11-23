@@ -6,6 +6,7 @@ summary: "How overseas owners can choose, brief and give access to a plumber for
 categories: ["Contractors", "Maintenance"]
 slug: "finding-plumber-western-algarve-from-abroad"
 author: "Hugo Gonçalves"
+noindex: true
 ---
 
 Almost every Algarve second home will need a plumber at some point. A dripping mixer tap, a cistern that keeps running, a water heater that has stopped working, or a damp patch under the kitchen sink. None of these is unusual. What makes them harder is distance: the owner is in London, Amsterdam or Toronto, and the property is closed.

@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { allPosts } from 'content-collections'
+import { listedPosts as allPosts } from '@/lib/posts'
 import BlogPosts from '@/components/blog-posts'
 import { Breadcrumbs, PageHero } from '@/components/site'
 import { pageHead } from '@/lib/seo'
