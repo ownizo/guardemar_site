@@ -17,6 +17,17 @@ Six new LIVE recurring Prices are required on the existing Products (EUR, tax be
 | COMPLETE | Monthly | €243.90 | €56.10 | €300.00 | `STRIPE_PRICE_COMPLETE_MONTHLY` |
 | COMPLETE | Annual | €2,634.12 | €605.85 | €3,239.97 | `STRIPE_PRICE_COMPLETE_YEARLY` |
 
+Created LIVE on 23 November 2026 and set in Netlify Production:
+
+- `STRIPE_PRICE_CARE_MONTHLY` = `price_1UeuY4HFqsWIut8WtgcjyYpo`
+- `STRIPE_PRICE_CARE_YEARLY` = `price_1UeuYFHFqsWIut8WkwteYWSx`
+- `STRIPE_PRICE_CARE_PLUS_MONTHLY` = `price_1UeuYGHFqsWIut8WONqamJmS`
+- `STRIPE_PRICE_CARE_PLUS_YEARLY` = `price_1UeuYHHFqsWIut8WmRU6MCqu`
+- `STRIPE_PRICE_COMPLETE_MONTHLY` = `price_1UeuYIHFqsWIut8WnfEzb3jT`
+- `STRIPE_PRICE_COMPLETE_YEARLY` = `price_1UeuYIHFqsWIut8WKtP59leO`
+
+The Supabase migration `fee_schedule_20261123` was applied to `ablktbpledjceddessyg` on the same date.
+
 Annual amounts apply the 10% discount of Clause 15.4 to twelve monthly Fees, rounded to the nearest cent. Run `npm run stripe:verify-live` after updating the variables.
 
 The historical sections below describe the original 5 September 2026 release.
