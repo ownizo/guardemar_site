@@ -844,3 +844,7 @@ h1,h2,h3 { color:var(--navy); }
 @media print { .whatsapp-float { display:none; } }
 /* Never cover the open mobile menu. */
 .site-header:has(.main-nav.open) ~ .whatsapp-float { display:none; }
+
+/* Homepage hero photograph: keep the framed sea view and loungers in view at every crop. */
+.hero-image-pool { object-position:40% 52%; }
+@media (max-width:640px) { .hero-image-pool { object-position:60% 55%; } }
