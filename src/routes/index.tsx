@@ -3,7 +3,7 @@ import { ArrowRight, Check, ClipboardCheck, CloudRain, EyeOff, KeyRound, ShieldC
 
 import { AssessmentCta, ButtonLink, PageIntro, PropertyFocusSection, ReportPreview, SectionHeading, TrustSection } from '@/components/site'
 import { PlanCards, PrivateEstateCard } from '@/components/plan-cards'
-import { documentedVisitDefinition, trustPoints, vatNote } from '@/config/site'
+import { business, documentedVisitDefinition, trustPoints, vatNote } from '@/config/site'
 import { pageHead } from '@/lib/seo'
 
 export const Route = createFileRoute('/')({
@@ -21,7 +21,7 @@ function HomePage() {
           <p className="hero-lede">Discreet, documented oversight of your villa or estate while you are away, from Carvoeiro to Sagres. One accountable person who knows the house, a dated photo report after every visit, and careful coordination of the staff and contractors you already trust.</p>
           <div className="button-row">
             <ButtonLink to="/contact/" event="assessment_form_start">Request a private assessment</ButtonLink>
-            <ButtonLink href="https://wa.me/351928226570" variant="text" event="whatsapp_click">Message Guardemar <ArrowRight size={16} /></ButtonLink>
+            <ButtonLink href={business.whatsapp} variant="text" event="whatsapp_click">Message Guardemar <ArrowRight size={16} /></ButtonLink>
           </div>
           <p className="territory-line">Western Algarve — from Carvoeiro to Sagres. A limited number of properties.</p>
         </div>

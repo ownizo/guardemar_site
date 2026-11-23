@@ -1,11 +1,12 @@
 import { HeadContent, Link, Outlet, Scripts, createRootRoute, useRouterState } from '@tanstack/react-router'
-import { Menu, MessageCircle, X } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 import { useState } from 'react'
 
 import { AnalyticsLink } from '@/components/site'
 import { CookieConsent } from '@/components/cookie-consent'
 import { GoogleAnalytics } from '@/components/google-analytics'
 import { SiteVisitCounter } from '@/components/site-visit-counter'
+import { WhatsAppButton } from '@/components/whatsapp-button'
 import { business, footerLinks, legalEntity, navigation } from '@/config/site'
 import { openCookieSettings } from '@/lib/consent'
 import '../styles.css'
@@ -48,7 +49,6 @@ function Header() {
           <a href="/contact/" className="nav-cta" onClick={() => setOpen(false)}>Request an Assessment</a>
         </nav>
         <div className="mobile-actions">
-          <AnalyticsLink href={business.whatsapp} event="whatsapp_click" aria-label="Message Guardemar on WhatsApp"><MessageCircle size={20} /></AnalyticsLink>
           <button className="menu-button" onClick={() => setOpen(!open)} aria-expanded={open} aria-label="Toggle menu">{open ? <X /> : <Menu />}</button>
         </div>
       </div>
@@ -74,7 +74,7 @@ function Footer() {
 function RootDocument({ children }: { children: React.ReactNode }) {
   const pathname = useRouterState({ select: (state) => state.location.pathname })
   const isPrivateArea = pathname.startsWith('/portal') || pathname.startsWith('/admin') || pathname.startsWith('/reset-password')
-  return <html lang="en-GB"><head><HeadContent /></head><body>{isPrivateArea ? <main id="main">{children}</main> : <><a className="skip-link" href="#main">Skip to content</a><Header /><main id="main">{children}</main><Footer /><CookieConsent /><GoogleAnalytics /><SiteVisitCounter /></>}<Scripts /></body></html>
+  return <html lang="en-GB"><head><HeadContent /></head><body>{isPrivateArea ? <main id="main">{children}</main> : <><a className="skip-link" href="#main">Skip to content</a><Header /><main id="main">{children}</main><Footer /><CookieConsent /><WhatsAppButton /><GoogleAnalytics /><SiteVisitCounter /></>}<Scripts /></body></html>
 }
 
 function NotFound() {
