@@ -827,3 +827,20 @@ h1,h2,h3 { color:var(--navy); }
 .private-estate-card>div>p:not(.eyebrow):not(.plan-visits) { margin-bottom:1.5rem; }
 .private-estate-card ul { margin:0; padding-top:0; border-top:0; }
 @media (max-width:980px) { .private-estate-card { grid-template-columns:1fr; gap:1rem; } }
+
+/* Floating WhatsApp contact (public pages) */
+.whatsapp-float { position:fixed; right:max(1.25rem, env(safe-area-inset-right)); bottom:max(1.25rem, env(safe-area-inset-bottom)); z-index:45; display:inline-flex; align-items:center; gap:.55rem; min-height:52px; padding:0 1.15rem 0 .95rem; border-radius:999px; background:#25D366; color:#fff; font:600 .86rem 'DM Sans',sans-serif; letter-spacing:.01em; box-shadow:0 10px 28px rgba(17,27,31,.28); transition:transform .2s ease, box-shadow .2s ease; }
+.whatsapp-float:hover { transform:translateY(-2px); box-shadow:0 14px 34px rgba(17,27,31,.34); color:#fff; }
+.whatsapp-float:focus-visible { outline:3px solid var(--bronze); outline-offset:3px; }
+.whatsapp-float svg { flex:none; }
+/* Keep the cookie banner fully usable: hide the button until consent is given. */
+.cookie-banner ~ .whatsapp-float, .cookie-modal-backdrop ~ .whatsapp-float { display:none; }
+@media (max-width:640px) {
+  .whatsapp-float { right:max(14px, env(safe-area-inset-right)); bottom:max(14px, env(safe-area-inset-bottom)); width:54px; height:54px; min-height:0; padding:0; justify-content:center; }
+  .whatsapp-float-label { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+  /* Room at the very bottom so the button never covers the last footer links. */
+  .site-footer { padding-bottom:84px; }
+}
+@media print { .whatsapp-float { display:none; } }
+/* Never cover the open mobile menu. */
+.site-header:has(.main-nav.open) ~ .whatsapp-float { display:none; }

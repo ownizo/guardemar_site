@@ -6,7 +6,9 @@ import { business, faqs, founder } from '@/config/site'
 import { type AnalyticsEvent, trackEvent } from '@/lib/analytics'
 
 export function AnalyticsLink({ href, event, children, className, ...props }: { href: string; event: AnalyticsEvent; children: ReactNode; className?: string; 'aria-label'?: string }) {
-  return <a href={href} className={className} onClick={() => trackEvent(event)} {...props}>{children}</a>
+  // WhatsApp opens in a new tab so the visitor keeps the page on desktop.
+  const external = href.startsWith('https://wa.me/')
+  return <a href={href} className={className} onClick={() => trackEvent(event)} {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})} {...props}>{children}</a>
 }
 
 export function ButtonLink({ to, href, children, variant = 'primary', event }: { to?: string; href?: string; children: ReactNode; variant?: 'primary' | 'outline' | 'text' | 'light'; event?: AnalyticsEvent }) {

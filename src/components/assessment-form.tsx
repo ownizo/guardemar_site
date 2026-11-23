@@ -63,6 +63,6 @@ export function AssessmentForm() {
     <p className="form-privacy-notice">By submitting this form, you ask Guardemar to contact you about your enquiry. Your information is handled in accordance with our <a href="/privacy-policy/">Privacy Policy</a>.</p>
     <p className="response-commitment">Guardemar reviews every enquiry personally and replies with next steps as soon as practical.</p>
     <button className="button primary" disabled={status === 'sending'}>{status === 'sending' ? 'Sending…' : <>Request my assessment <Send size={16} /></>}</button>
-    <div aria-live="polite">{status === 'error' && <p className="form-error">We couldn&apos;t send your enquiry just now. Please try again or contact us directly at <a href="mailto:info@guardemar.com">info@guardemar.com</a> or <a href="tel:+351928226570">+351 928 226 570</a>.</p>}</div>
+    <div aria-live="polite">{status === 'error' && <p className="form-error">We couldn&apos;t send your enquiry just now. Please try again or contact us directly at <a href="mailto:info@guardemar.com">info@guardemar.com</a> or <a href="tel:+351928316913">+351 928 316 913</a>.</p>}</div>
   </form>
 }

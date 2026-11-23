@@ -11,7 +11,7 @@ export const legalEntity = {
     addressLines: ['Avenida do Atlântico 16', 'Escritório 5.07', '1990-019 Lisboa', 'Portugal'],
   },
   contactEmail: 'info@guardemar.com',
-  phone: '+351 928 226 570',
+  phone: '+351 928 316 913',
 } as const
 
 export const operationalContact = {
@@ -45,7 +45,7 @@ export const business = {
   phoneHref: `tel:${legalEntity.phone.replace(/\s/g, '')}`,
   email: legalEntity.contactEmail,
   emailHref: `mailto:${legalEntity.contactEmail}`,
-  whatsapp: `https://wa.me/${legalEntity.phone.replace(/\D/g, '')}`,
+  whatsapp: `https://wa.me/${legalEntity.phone.replace(/\D/g, '')}?text=${encodeURIComponent('Hello Guardemar, I would like to know more about caring for my home in the Algarve.')}`,
   addressLines: operationalContact.address.addressLines,
   territory: 'Western Algarve — from Carvoeiro to Sagres.',
   schema: { '@context': 'https://schema.org', '@graph': [
