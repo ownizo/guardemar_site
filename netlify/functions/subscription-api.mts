@@ -34,7 +34,7 @@ async function loadCanonicalDocuments(database: any) {
     throw new HttpError(503, 'The approved General Terms Version 2.5 document is not configured correctly. Checkout remains disabled.', 'LEGAL_CONFIGURATION_ERROR')
   }
   if (feeScheduleResult.error || !fees || fees.title !== feeSchedule.title || fees.sha256 !== feeSchedule.sha256) {
-    throw new HttpError(503, 'The approved Fee Schedule applicable from 5 September 2026 is not configured correctly. Checkout remains disabled.', 'LEGAL_CONFIGURATION_ERROR')
+    throw new HttpError(503, `The approved Fee Schedule applicable from ${feeSchedule.effectiveDateLabel} is not configured correctly. Checkout remains disabled.`, 'LEGAL_CONFIGURATION_ERROR')
   }
   const acknowledgements = parseAnnexCAcknowledgements(terms.document_text)
   const withdrawalClause = extractClause(terms.document_text, '5.4')
