@@ -57,7 +57,7 @@ export function AssessmentForm() {
     </div>
     <div className="form-grid two">
       <label>Property location <span aria-hidden="true">*</span><input name="property_location" required placeholder="Town or area" /></label>
-      <label>Property type <span aria-hidden="true">*</span><select name="property_type" required defaultValue=""><option value="" disabled>Select</option><option>Apartment</option><option>Townhouse</option><option>Villa</option><option>Estate / large property</option><option>Other</option></select></label>
+      <label>Property type <span aria-hidden="true">*</span><select name="property_type" required defaultValue=""><option value="" disabled>Select</option><option>Villa</option><option>Estate / large property</option><option>Country house / quinta</option><option>Townhouse</option><option>Apartment</option><option>Other</option></select></label>
     </div>
     <label>Message<textarea name="message" rows={5} placeholder="Tell us what you need help with." /></label>
     <p className="form-privacy-notice">By submitting this form, you ask Guardemar to contact you about your enquiry. Your information is handled in accordance with our <a href="/privacy-policy/">Privacy Policy</a>.</p>

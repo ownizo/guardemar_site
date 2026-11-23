@@ -814,3 +814,16 @@ h1,h2,h3 { color:var(--navy); }
 .assessment-form label>input:not([type=checkbox]):not([type=radio]),.assessment-form label>select,.assessment-form label>textarea { display:block; margin-top:.45rem; }
 .assessment-form .checkbox-grid label,.assessment-form .consent { display:flex; gap:.5rem; }
 @media(max-width:640px){ .assessment-form button[type=submit] { width:100%; justify-content:center; min-height:54px; } }
+
+/* Plan visit frequency and Private Estate tier */
+.plan-visits { display:flex; flex-direction:column; gap:.2rem; margin:.4rem 0 .6rem; padding:.7rem 0; border-bottom:1px solid var(--line); }
+.plan-visits strong { font-size:1.02rem; color:var(--navy); font-weight:600; }
+.plan-visits span { font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--ocean); }
+.plan-card>p.plan-visits { min-height:0; }
+.private-estate-card { margin-top:1.2rem; display:grid; grid-template-columns:1fr 1fr; gap:2.5rem; align-items:start; }
+.private-estate-card .plan-visits { border-bottom-color:var(--line-dark); }
+.private-estate-card .plan-visits strong { color:var(--champagne); }
+.private-estate-card .plan-visits span { color:var(--bronze); }
+.private-estate-card>div>p:not(.eyebrow):not(.plan-visits) { margin-bottom:1.5rem; }
+.private-estate-card ul { margin:0; padding-top:0; border-top:0; }
+@media (max-width:980px) { .private-estate-card { grid-template-columns:1fr; gap:1rem; } }

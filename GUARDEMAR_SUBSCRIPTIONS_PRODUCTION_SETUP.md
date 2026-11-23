@@ -2,6 +2,25 @@
 
 The application is ready for final review but is not ready to accept payments until the external LIVE Stripe, VAT, Netlify, and Supabase steps below are completed. No migration or Stripe object was created automatically.
 
+## 23 November 2026 Fee Schedule (current)
+
+New Service Orders use `legal/guardemar-fee-schedule-2026-11-23.md` (SHA-256 `7b73b3440d41d2e82a17b0c547f07b1427d26e65ba4180a36f2942dc43d69c89`), seeded by `supabase/migrations/20261123100000_fee_schedule_20261123.sql`, which also replaces `public.create_service_agreement_acceptance` with the new Plan Fees and visit frequencies. The 5 September 2026 schedule and its Stripe Prices below remain in place for Service Orders accepted before 23 November 2026 — do not archive those Prices.
+
+Six new LIVE recurring Prices are required on the existing Products (EUR, tax behaviour Exclusive), and the six `STRIPE_PRICE_*` Netlify variables must point to them:
+
+| Plan | Billing | Net | VAT 23% | Gross | Variable |
+| --- | --- | ---: | ---: | ---: | --- |
+| CARE | Monthly | €81.30 | €18.70 | €100.00 | `STRIPE_PRICE_CARE_MONTHLY` |
+| CARE | Annual | €878.04 | €201.95 | €1,079.99 | `STRIPE_PRICE_CARE_YEARLY` |
+| CARE+ | Monthly | €146.34 | €33.66 | €180.00 | `STRIPE_PRICE_CARE_PLUS_MONTHLY` |
+| CARE+ | Annual | €1,580.47 | €363.51 | €1,943.98 | `STRIPE_PRICE_CARE_PLUS_YEARLY` |
+| COMPLETE | Monthly | €243.90 | €56.10 | €300.00 | `STRIPE_PRICE_COMPLETE_MONTHLY` |
+| COMPLETE | Annual | €2,634.12 | €605.85 | €3,239.97 | `STRIPE_PRICE_COMPLETE_YEARLY` |
+
+Annual amounts apply the 10% discount of Clause 15.4 to twelve monthly Fees, rounded to the nearest cent. Run `npm run stripe:verify-live` after updating the variables.
+
+The historical sections below describe the original 5 September 2026 release.
+
 ## Canonical contractual documents
 
 The repository contains the final approved documents exactly as supplied:

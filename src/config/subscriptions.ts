@@ -8,9 +8,16 @@ export const subscriptionTerms = {
 } as const
 
 export const feeSchedule = {
-  effectiveDate: '2026-09-05',
-  effectiveDateLabel: '5 September 2026',
+  effectiveDate: '2026-11-23',
+  effectiveDateLabel: '23 November 2026',
   title: 'GUARDEMAR — Fee Schedule',
+  sha256: '7b73b3440d41d2e82a17b0c547f07b1427d26e65ba4180a36f2942dc43d69c89',
+  canonicalPath: 'legal/guardemar-fee-schedule-2026-11-23.md',
+} as const
+
+// Superseded schedule. Governs Service Orders accepted before 23 November 2026.
+export const previousFeeSchedule = {
+  effectiveDate: '2026-09-05',
   sha256: '0f41a94e894cb6a60af6bd87a433688107a6ae774bf83d420dfc1f0c179a483b',
   canonicalPath: 'legal/guardemar-fee-schedule-2026-09-05.md',
 } as const
@@ -19,31 +26,31 @@ export const subscriptionPlans = {
   care: {
     code: 'care',
     name: 'GUARDEMAR CARE',
-    monthlyAmount: 7_900,
-    annualListAmount: 94_800,
-    yearlyAmount: 85_320,
-    annualDiscountAmount: 9_480,
-    frequency: 'One scheduled inspection per month',
+    monthlyAmount: 8_130,
+    annualListAmount: 97_560,
+    yearlyAmount: 87_804,
+    annualDiscountAmount: 9_756,
+    frequency: 'One documented visit per month',
     scope: ['Secure key holding', 'Interior and exterior visual inspection', 'Doors and windows check', 'Signs of forced entry or visible damage', 'Visible water leak and plumbing checks', 'Electricity status', 'Humidity, damp and mould indicators', 'Ceiling and wall inspection', 'Bathrooms and toilets', 'Mail collection and check', 'Inspection photographs', 'Digital visit report', 'Notification of detected issues'],
   },
   care_plus: {
     code: 'care_plus',
     name: 'GUARDEMAR CARE+',
-    monthlyAmount: 12_900,
-    annualListAmount: 154_800,
-    yearlyAmount: 139_320,
-    annualDiscountAmount: 15_480,
-    frequency: 'Two scheduled inspections per month',
-    scope: ['Everything included in CARE', 'Property ventilation where appropriate', 'Running taps and flushing toilets', 'Drain checks', 'Air-conditioning visual or function check where agreed', 'Garden irrigation visual check', 'Pool condition visual check', 'Gate and exterior access check', 'Appliance visual check', 'Enhanced photo reporting', 'Contractor access coordination', 'Pre-arrival basic property check', 'Priority issue reporting', 'One post-severe-weather visual inspection where operationally applicable'],
+    monthlyAmount: 14_634,
+    annualListAmount: 175_608,
+    yearlyAmount: 158_047,
+    annualDiscountAmount: 17_561,
+    frequency: 'Two documented visits per month',
+    scope: ['Everything included in CARE', 'Property ventilation where appropriate', 'Running taps and flushing toilets', 'Drain checks', 'Air-conditioning visual or function check where agreed', 'Garden irrigation visual check', 'Pool condition visual check', 'Gate and exterior access check', 'Appliance visual check', 'Enhanced photo reporting', 'Contractor access coordination', 'Pre-arrival property check', 'Priority issue reporting', 'One post-severe-weather visual inspection where operationally applicable'],
   },
   complete: {
     code: 'complete',
     name: 'GUARDEMAR COMPLETE',
-    monthlyAmount: 18_900,
-    annualListAmount: 226_800,
-    yearlyAmount: 204_120,
-    annualDiscountAmount: 22_680,
-    frequency: 'Weekly scheduled inspections',
+    monthlyAmount: 24_390,
+    annualListAmount: 292_680,
+    yearlyAmount: 263_412,
+    annualDiscountAmount: 29_268,
+    frequency: 'A minimum of one documented visit per week',
     scope: ['Everything included in CARE+', 'Priority response', 'Enhanced maintenance oversight', 'Contractor coordination', 'Delivery or access assistance by arrangement', 'Mail management', 'Arrival preparation coordination', 'Preventive maintenance reminders', 'Monthly property condition summary', 'Priority post-weather inspection', 'Higher service priority'],
   },
 } as const

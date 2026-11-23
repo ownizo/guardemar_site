@@ -6,6 +6,7 @@ summary: "What drives the price of looking after a second home in the Western Al
 categories: ["Guides", "Ownership"]
 slug: "property-management-cost-algarve"
 author: "Hugo Gonçalves"
+updated: 2026-11-23
 ---
 
 "Property management" covers two very different services in the Algarve, and they are priced in very different ways. Before comparing numbers, it is worth knowing which one you are being quoted for.
@@ -30,15 +31,16 @@ For a non-rental home, the price mostly reflects how much time someone spends at
 
 ## Guardemar's prices, as an example
 
-At the time of writing, Guardemar's plans for privately used homes between Carvoeiro and Sagres are:
+At the time of writing, Guardemar's plans for villas and homes in private use between Carvoeiro and Sagres are:
 
 | Plan | Visits | Price per month (incl. VAT) |
 | --- | --- | --- |
-| CARE | 1 scheduled inspection a month | €97.17 |
-| CARE+ | 2 scheduled inspections a month | €158.67 |
-| COMPLETE | Weekly scheduled inspections | €232.47 |
+| CARE | 1 documented visit per month | €100.00 |
+| CARE+ | 2 documented visits per month | €180.00 |
+| COMPLETE | A minimum of 1 documented visit per week | €300.00 |
+| PRIVATE ESTATE | Schedule set to the estate | By private proposal |
 
-Every plan includes secure key holding, a digital report with photographs after each visit, and notification of anything that needs attention. Plans run on a 12-month agreement; paying annually in advance saves 10%. One-off needs — letting in a contractor, a storm check or an emergency call-out — are listed as optional services with their own published fees. The current figures are always on the [plans page](/plans/).
+A documented visit is an on-site inspection followed by a dated photo report sent the same day. Every plan includes secure key holding, a digital report with photographs after each visit, and notification of anything that needs attention. Plans run on a 12-month agreement; paying annually in advance saves 10%. One-off needs — letting in a contractor, a storm check or an emergency call-out — are listed as optional services with their own published fees. The current figures are always on the [plans page](/plans/).
 
 ## What a management fee does not include
 
@@ -62,4 +64,4 @@ When you have two or three proposals, put them side by side on the same question
 
 The cheapest monthly figure is not always the cheapest outcome. An empty house that is checked rarely can hide a small leak or a failed irrigation zone for weeks; see [why small water leaks matter in vacant homes](/blog/small-water-leaks-vacant-homes/) and [how often an empty property should be inspected](/blog/how-often-inspect-empty-property-portugal/).
 
-If you would like a price for your own house, [request a property assessment](/contact/). We will look at the home and recommend a frequency, rather than starting from the most expensive plan.
+If you would like a price for your own house, [request a property assessment](/contact/). We will look at the home and recommend the plan that fits it, rather than starting from the most expensive one.

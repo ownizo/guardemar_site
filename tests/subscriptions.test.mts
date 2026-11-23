@@ -3,40 +3,40 @@ import { createHash, createHmac } from 'node:crypto'
 import { readFile } from 'node:fs/promises'
 import test from 'node:test'
 
-import { annexCAcknowledgementKeys, calculateTaxAmount, feeSchedule, parseAnnexCAcknowledgements, selectedAmount, subscriptionPlans, subscriptionTerms, subscriptionVat } from '../src/config/subscriptions.ts'
+import { annexCAcknowledgementKeys, calculateTaxAmount, feeSchedule, previousFeeSchedule, parseAnnexCAcknowledgements, selectedAmount, subscriptionPlans, subscriptionTerms, subscriptionVat } from '../src/config/subscriptions.ts'
 import { verifyStripeSignature } from '../netlify/functions/_subscription-shared.mts'
 
 const source = (path: string) => readFile(new URL(path, import.meta.url), 'utf8')
 
 const combinations = [
-  ['care', 'month', 7_900],
-  ['care', 'year', 85_320],
-  ['care_plus', 'month', 12_900],
-  ['care_plus', 'year', 139_320],
-  ['complete', 'month', 18_900],
-  ['complete', 'year', 204_120],
+  ['care', 'month', 8_130],
+  ['care', 'year', 87_804],
+  ['care_plus', 'month', 14_634],
+  ['care_plus', 'year', 158_047],
+  ['complete', 'month', 24_390],
+  ['complete', 'year', 263_412],
 ] as const
 
 const vatCombinations = [
-  ['care', 'month', 7_900, 1_817, 9_717],
-  ['care', 'year', 85_320, 19_624, 104_944],
-  ['care_plus', 'month', 12_900, 2_967, 15_867],
-  ['care_plus', 'year', 139_320, 32_044, 171_364],
-  ['complete', 'month', 18_900, 4_347, 23_247],
-  ['complete', 'year', 204_120, 46_948, 251_068],
+  ['care', 'month', 8_130, 1_870, 10_000],
+  ['care', 'year', 87_804, 20_195, 107_999],
+  ['care_plus', 'month', 14_634, 3_366, 18_000],
+  ['care_plus', 'year', 158_047, 36_351, 194_398],
+  ['complete', 'month', 24_390, 5_610, 30_000],
+  ['complete', 'year', 263_412, 60_585, 323_997],
 ] as const
 
 test('all six plan and billing combinations use approved integer-cent Fees', () => {
   for (const [planCode, interval, expected] of combinations) assert.equal(selectedAmount(planCode, interval), expected)
   for (const plan of Object.values(subscriptionPlans)) {
     assert.equal(plan.annualListAmount, plan.monthlyAmount * 12)
-    assert.equal(plan.annualDiscountAmount, plan.annualListAmount / 10)
+    assert.equal(plan.annualDiscountAmount, Math.round(plan.annualListAmount / 10))
     assert.equal(plan.yearlyAmount, plan.annualListAmount - plan.annualDiscountAmount)
   }
 })
 
 test('annual savings are exactly ten per cent without months-free wording', async () => {
-  assert.deepEqual(Object.values(subscriptionPlans).map((plan) => plan.annualDiscountAmount), [9_480, 15_480, 22_680])
+  assert.deepEqual(Object.values(subscriptionPlans).map((plan) => plan.annualDiscountAmount), [9_756, 17_561, 29_268])
   const subscriptionSources = await Promise.all([
     source('../src/config/subscriptions.ts'),
     source('../src/routes/portal.subscriptions_.new.tsx'),
@@ -48,19 +48,23 @@ test('annual savings are exactly ten per cent without months-free wording', asyn
 test('public plan pricing derives from the canonical subscription configuration', async () => {
   const site = await source('../src/config/site.ts')
   assert.match(site, /import \{ subscriptionPlans \} from '(?:@\/config\/subscriptions|\.\/subscriptions\.ts)'/)
-  assert.match(site, /price: subscriptionPlans\.care\.monthlyAmount \/ 100/)
-  assert.doesNotMatch(site, /price: (79|129|189), annualPrice:/)
+  assert.match(site, /price: plan\.monthlyAmount \/ 100/)
+  assert.doesNotMatch(site, /price: (79|129|189|81\.3|146\.34|243\.9), annualPrice:/)
+  assert.match(site, /planCard\('care'/)
 })
 
 test('canonical Version 2.5 Terms and Fee Schedule hashes match exact attached documents', async () => {
   const terms = await source('../legal/guardemar-general-terms-v2.5.md')
-  const fees = await source('../legal/guardemar-fee-schedule-2026-09-05.md')
+  const fees = await source('../legal/guardemar-fee-schedule-2026-11-23.md')
+  const previousFees = await source('../legal/guardemar-fee-schedule-2026-09-05.md')
   assert.equal(subscriptionTerms.version, '2.5')
   assert.equal(subscriptionTerms.effectiveDate, '2026-09-05')
   assert.equal(createHash('sha256').update(terms).digest('hex'), subscriptionTerms.sha256)
   assert.equal(createHash('sha256').update(fees).digest('hex'), feeSchedule.sha256)
+  assert.equal(createHash('sha256').update(previousFees).digest('hex'), previousFeeSchedule.sha256)
   assert.match(terms, /\*\*Version 2\.5 — in force from 5 September 2026\.\*\*/)
-  assert.match(fees, /\*\*Applicable from 5 September 2026\.\*\*/)
+  assert.match(fees, /\*\*Applicable from 23 November 2026\*\*/)
+  assert.match(previousFees, /\*\*Applicable from 5 September 2026\.\*\*/)
 })
 
 test('migration seeds the exact canonical Terms and Fee Schedule bytes', async () => {
@@ -70,8 +74,22 @@ test('migration seeds the exact canonical Terms and Fee Schedule bytes', async (
   assert.equal(migration.split('$guardemar_terms_v25$')[1], terms)
   assert.equal(migration.split('$guardemar_fees_20260905$')[1], fees)
   assert.match(migration, new RegExp(subscriptionTerms.sha256))
-  assert.match(migration, new RegExp(feeSchedule.sha256))
+  assert.match(migration, new RegExp(previousFeeSchedule.sha256))
   assert.match(migration, /extensions\.digest\(convert_to\(document_text, 'UTF8'\), 'sha256'\)/)
+})
+
+test('23 November 2026 migration seeds the exact new Fee Schedule and new Plan Fees', async () => {
+  const migration = await source('../supabase/migrations/20261123100000_fee_schedule_20261123.sql')
+  const fees = await source('../legal/guardemar-fee-schedule-2026-11-23.md')
+  assert.equal(migration.split('$guardemar_fees_20261123$')[1], fees)
+  assert.match(migration, new RegExp(feeSchedule.sha256))
+  assert.match(migration, new RegExp(`date '${feeSchedule.effectiveDate}'`))
+  for (const plan of Object.values(subscriptionPlans)) {
+    assert.match(migration, new RegExp(`when '${plan.code}' then monthly_amount := ${plan.monthlyAmount};`))
+    assert.match(migration, new RegExp(plan.frequency))
+  }
+  assert.match(migration, /annual_discount_amount := round\(annual_list_amount \/ 10\.0\)::integer;/)
+  assert.match(migration, /grant execute on function public\.create_service_agreement_acceptance\(.*\) to service_role;/)
 })
 
 test('all Annex C acknowledgements are parsed verbatim from Version 2.5', async () => {

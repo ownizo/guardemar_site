@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { allPosts } from 'content-collections'
+import { listedPosts as allPosts } from '@/lib/posts'
 
 import { areas, business, formatEuro, legalEntity, plans, vatNote } from '@/config/site'
 
@@ -28,7 +28,7 @@ export function buildLlmsTxt() {
   const lines: Array<string> = []
   lines.push('# GUARDEMAR')
   lines.push('')
-  lines.push(`> GUARDEMAR is a second-home management and home watch company for privately used holiday homes in the Western Algarve, Portugal, from Carvoeiro to Sagres. It provides scheduled inspections with dated photo reports, key holding, contractor access and coordination, arrival preparation and storm checks for owners who live abroad.`)
+  lines.push(`> GUARDEMAR is a private estate care and home watch company for villas, estates and second homes in private use in the Western Algarve, Portugal, from Carvoeiro to Sagres. It works discreetly with a limited number of properties and provides fixed-schedule documented visits with dated photo reports, key holding, contractor access and coordination, arrival preparation and storm checks for owners who live abroad.`)
   lines.push('')
   lines.push('Important facts:')
   lines.push('')
@@ -36,7 +36,7 @@ export function buildLlmsTxt() {
   lines.push('- GUARDEMAR carries out visual observation, authorised access and coordination. It does not carry out plumbing, electrical, building, pool or garden work itself; qualified contractors do, and remain responsible for their work.')
   lines.push('- It is not a security company, does not monitor alarms and is not a 24-hour emergency service. It is not an insurer and does not give legal, tax or insurance advice.')
   lines.push(`- Contact: ${business.email}, ${business.phone} (WhatsApp available).`)
-  lines.push(`- Plans: ${plans.map((plan) => `${plan.name} ${formatEuro(plan.grossPrice)}/month`).join(', ')}. ${vatNote} 12-month service agreements, billed monthly or annually in advance (annual billing saves 10%).`)
+  lines.push(`- Plans: ${plans.map((plan) => `${plan.name} ${formatEuro(plan.grossPrice)}/month (${plan.visits.toLowerCase()})`).join(', ')}; GUARDEMAR PRIVATE ESTATE by proposal. ${vatNote} 12-month service agreements, billed monthly or annually in advance (annual billing saves 10%).`)
   lines.push('')
   lines.push('## Key pages')
   lines.push('')

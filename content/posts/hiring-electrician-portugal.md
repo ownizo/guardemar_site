@@ -6,6 +6,7 @@ summary: "How to find, brief and give access to a qualified electrician for an A
 categories: ["Contractors", "Maintenance"]
 slug: "hiring-electrician-portugal-overseas-owners"
 author: "Hugo Gonçalves"
+noindex: true
 ---
 
 Electrical problems in a second home are rarely dramatic. More often, a circuit keeps tripping, an outside light has stopped working, the water heater no longer comes on, or the gate motor is dead after a storm. Each one needs a qualified electrician. Each one is harder to arrange from another country.

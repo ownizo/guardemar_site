@@ -6,6 +6,7 @@ summary: "Humidity, security and access issues in underground garages and storag
 categories: ["Vehicles", "Vacant Homes"]
 slug: "garages-storage-rooms-algarve-condominiums"
 author: "Hugo Gonçalves"
+noindex: true
 ---
 
 Apartments in Lagos, Portimão, Alvor and Praia da Luz often come with a parking space in an underground garage and a small storage room (arrecadação). Owners rarely think about them. Yet these spaces are often where problems start: damp, flooding, theft and disputes with the condominium.

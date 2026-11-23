@@ -67,8 +67,8 @@ function PropertyManagementPage() {
       </section>
       <section className="section shell link-panel">
         <div>
-          <h2>Plans from {formatEuro(plans[0].grossPrice)} a month</h2>
-          <p>CARE, CARE+ and COMPLETE set how often we come. Coordination of trades sits on top of that, and is only done with your approval. {vatNote}</p>
+          <h2>One, two or weekly documented visits a month</h2>
+          <p>CARE ({formatEuro(plans[0].grossPrice)}), CARE+ ({formatEuro(plans[1].grossPrice)}) and COMPLETE ({formatEuro(plans[2].grossPrice)}) a month set how often we come; estates receive a Private Estate proposal. Coordination of trades sits on top of that, and is only done with your approval. {vatNote}</p>
           <a href="/plans/">Compare the three plans</a>
         </div>
         <div>

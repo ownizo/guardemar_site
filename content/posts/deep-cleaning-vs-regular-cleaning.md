@@ -6,6 +6,7 @@ summary: "The different types of cleaning an Algarve second home needs across th
 categories: ["Contractors", "Property Care"]
 slug: "deep-cleaning-vs-regular-cleaning-second-home"
 author: "Hugo Gonçalves"
+noindex: true
 ---
 
 A closed home still gets dirty. Saharan dust settles on terraces, salt air films the windows, insects find their way in and a musty smell builds up in wardrobes. When owners arrive after months away, the first day is often spent cleaning rather than relaxing.
