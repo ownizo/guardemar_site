@@ -7,7 +7,7 @@ import { CookieConsent } from '@/components/cookie-consent'
 import { GoogleAnalytics } from '@/components/google-analytics'
 import { SiteVisitCounter } from '@/components/site-visit-counter'
 import { WhatsAppButton } from '@/components/whatsapp-button'
-import { business, footerLinks, legalEntity, navigation } from '@/config/site'
+import { business, footerLinks, legalEntity, navigation, socialProfiles } from '@/config/site'
 import { openCookieSettings } from '@/lib/consent'
 import '../styles.css'
 
@@ -56,11 +56,29 @@ function Header() {
   )
 }
 
+const socialIcons: Record<string, React.ReactNode> = {
+  facebook: <path d="M14 8.5V6.8c0-.8.5-1.3 1.4-1.3H17V2.3c-.3 0-1.4-.1-2.6-.1-2.6 0-4.3 1.6-4.3 4.4v1.9H7.3v3.4h2.8V22H14V11.9h2.8l.4-3.4H14Z" fill="currentColor" />,
+  instagram: <><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" strokeWidth="1.8" /><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" strokeWidth="1.8" /><circle cx="17.4" cy="6.6" r="1.2" fill="currentColor" /></>,
+  linkedin: <path d="M4.6 8.6h3.6V20H4.6V8.6ZM6.4 3a2.1 2.1 0 1 1 0 4.2 2.1 2.1 0 0 1 0-4.2Zm4 5.6h3.4v1.6h.1c.5-.9 1.6-1.9 3.4-1.9 3.6 0 4.3 2.4 4.3 5.5V20h-3.6v-5.6c0-1.3 0-3-1.9-3s-2.1 1.4-2.1 2.9V20h-3.6V8.6Z" fill="currentColor" />,
+}
+
+function SocialLinks() {
+  return (
+    <div className="footer-social" aria-label="Guardemar on social media">
+      {socialProfiles.map((profile) => (
+        <a key={profile.network} href={profile.href} target="_blank" rel="noopener noreferrer" aria-label={`Guardemar on ${profile.label}`} title={profile.label}>
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">{socialIcons[profile.network]}</svg>
+        </a>
+      ))}
+    </div>
+  )
+}
+
 function Footer() {
   return (
     <footer className="site-footer">
       <div className="shell footer-grid">
-        <div><img className="footer-logo" src="/guardemar-logo-light.svg" alt="GUARDEMAR — Private Property Care" width="240" height="38" /><p>Second-home management</p><p className="footer-tagline">Here when you&apos;re away.</p><p>Western Algarve, Carvoeiro to Sagres.</p></div>
+        <div><img className="footer-logo" src="/guardemar-logo-light.svg" alt="GUARDEMAR — Private Property Care" width="240" height="38" /><p>Second-home management</p><p className="footer-tagline">Here when you&apos;re away.</p><p>Western Algarve, Carvoeiro to Sagres.</p><SocialLinks /></div>
         <div><h2>Explore</h2>{footerLinks.map((item) => <a key={item.href} href={item.href}>{item.label}</a>)}<Link to="/portal/login">Client Login</Link></div>
         <div><h2>Service area</h2><p>Western Algarve<br />from Carvoeiro to Sagres.</p><a href="/areas/">View all areas</a></div>
         <div><h2>Contact</h2><AnalyticsLink href={business.phoneHref} event="phone_click">{business.phone}</AnalyticsLink><AnalyticsLink href={business.emailHref} event="email_click">{business.email}</AnalyticsLink><p>{business.addressLines.join(', ')}</p></div>

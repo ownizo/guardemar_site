@@ -37,6 +37,13 @@ export const vatNote = 'Prices include VAT at 23%.'
 
 export const legalLastUpdated = '21 November 2026'
 
+// Official social media profiles (footer icons and schema.org sameAs).
+export const socialProfiles = [
+  { network: 'facebook', label: 'Facebook', href: 'https://www.facebook.com/guardemarcare' },
+  { network: 'instagram', label: 'Instagram', href: 'https://www.instagram.com/guardemar.algarve/' },
+  { network: 'linkedin', label: 'LinkedIn', href: 'https://www.linkedin.com/company/guardemar/' },
+] as const
+
 export const business = {
   name: 'GUARDEMAR',
   descriptor: operationalContact.descriptor,
@@ -49,7 +56,7 @@ export const business = {
   addressLines: operationalContact.address.addressLines,
   territory: 'Western Algarve — from Carvoeiro to Sagres.',
   schema: { '@context': 'https://schema.org', '@graph': [
-    { '@type': ['ProfessionalService', 'LocalBusiness', 'Organization'], '@id': 'https://guardemar.com/#business', name: 'GUARDEMAR', legalName: legalEntity.legalName, taxID: legalEntity.taxId, brand: { '@type': 'Brand', name: legalEntity.tradingName }, description: 'Private estate care for villas and second homes in the Western Algarve, Portugal: documented inspections, controlled key holding and oversight of contractors and household staff. Not a rental manager.', url: 'https://guardemar.com/', logo: 'https://guardemar.com/guardemar-logo.svg', image: 'https://guardemar.com/guardemar-og.png', priceRange: '€100–€300 per month incl. VAT; private estates by proposal', telephone: legalEntity.phone, email: legalEntity.contactEmail, address: { '@type': 'PostalAddress', addressLocality: operationalContact.address.city, addressRegion: 'Faro', addressCountry: 'PT' }, founder: { '@id': 'https://guardemar.com/about/hugo-goncalves/#person' }, sameAs: [] as string[], areaServed: ['Carvoeiro', 'Ferragudo', 'Portimão', 'Alvor', 'Lagos', 'Praia da Luz', 'Burgau', 'Salema', 'Vila do Bispo', 'Sagres'].map((name) => ({ '@type': 'Place', name })) },
+    { '@type': ['ProfessionalService', 'LocalBusiness', 'Organization'], '@id': 'https://guardemar.com/#business', name: 'GUARDEMAR', legalName: legalEntity.legalName, taxID: legalEntity.taxId, brand: { '@type': 'Brand', name: legalEntity.tradingName }, description: 'Private estate care for villas and second homes in the Western Algarve, Portugal: documented inspections, controlled key holding and oversight of contractors and household staff. Not a rental manager.', url: 'https://guardemar.com/', logo: 'https://guardemar.com/guardemar-logo.svg', image: 'https://guardemar.com/guardemar-og.png', priceRange: '€100–€300 per month incl. VAT; private estates by proposal', telephone: legalEntity.phone, email: legalEntity.contactEmail, address: { '@type': 'PostalAddress', addressLocality: operationalContact.address.city, addressRegion: 'Faro', addressCountry: 'PT' }, founder: { '@id': 'https://guardemar.com/about/hugo-goncalves/#person' }, sameAs: socialProfiles.map((profile) => profile.href), areaServed: ['Carvoeiro', 'Ferragudo', 'Portimão', 'Alvor', 'Lagos', 'Praia da Luz', 'Burgau', 'Salema', 'Vila do Bispo', 'Sagres'].map((name) => ({ '@type': 'Place', name })) },
     { '@type': 'WebSite', '@id': 'https://guardemar.com/#website', url: 'https://guardemar.com', name: 'GUARDEMAR', publisher: { '@id': 'https://guardemar.com/#business' }, inLanguage: 'en-GB' },
   ] },
 }

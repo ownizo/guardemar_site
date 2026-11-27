@@ -848,3 +848,6 @@ h1,h2,h3 { color:var(--navy); }
 /* Homepage hero photograph: keep the framed sea view and loungers in view at every crop. */
 .hero-image-pool { object-position:40% 52%; }
 @media (max-width:640px) { .hero-image-pool { object-position:60% 55%; } }
+
+/* Footer social media icons */
+.footer-social{display:flex;gap:.6rem;margin-top:.6rem}.footer-social a{display:grid;place-items:center;width:40px;height:40px;border:1px solid rgba(187,148,103,.45);border-radius:50%;color:var(--champagne);transition:background-color .2s,border-color .2s,color .2s}.footer-social a:hover,.footer-social a:focus-visible{background:var(--bronze);border-color:var(--bronze);color:var(--carvao-deep)}
